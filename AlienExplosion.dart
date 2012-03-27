@@ -13,7 +13,7 @@ class AlienExplosion extends GameEntity {
     }
   }
   
-  void draw(ctx) {
+  void draw(html.CanvasRenderingContext2D ctx) {
     super.draw(ctx);
     animation.drawFrame(game.clockTick, ctx, x, y);
   }

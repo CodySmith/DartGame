@@ -19,7 +19,8 @@ class BulletExplosion extends GameEntity {
     for (var i = 0; i < game.entities.length; i++) {
         var alien = game.entities[i];
         if (alien is Alien && isCaughtInExplosion(alien)) {
-            game.score += 10;
+            EvilAliens eg = game;
+            eg.score += 10;
             alien.explode();
         }
     }
@@ -35,7 +36,7 @@ class BulletExplosion extends GameEntity {
     return 1 + (animation.currentFrame() / 3);
   }
   
-  void draw(ctx) {
+  void draw(html.CanvasRenderingContext2D ctx) {
     animation.drawFrame(game.clockTick, ctx, x, y, scaleFactor());
     
     super.draw(ctx);

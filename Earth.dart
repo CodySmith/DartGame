@@ -6,7 +6,7 @@ class Earth extends GameEntity {
     sprite = game.assetManager.getAsset('img/earth.png');
   }
   
-  void draw(ctx) {
+  void draw(html.CanvasRenderingContext2D ctx) {
     ctx.drawImage(sprite, x - sprite.width/2, y - sprite.height/2);
   }
 }

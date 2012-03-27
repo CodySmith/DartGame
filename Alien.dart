@@ -22,11 +22,12 @@ class Alien extends GameEntity {
 
     if (hitPlanet()) {
         removeFromWorld = true;
-        game.lives -= 1;
+        EvilAliens eg = game;
+        eg.lives -= 1;
     }
   }
   
-  void draw(ctx) {
+  void draw(html.CanvasRenderingContext2D ctx) {
     drawSpriteCentered(ctx);
     
     super.draw(ctx);

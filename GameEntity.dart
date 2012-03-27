@@ -12,7 +12,7 @@ class GameEntity {
   
   void update() { }
   
-  void draw(ctx) {
+  void draw(html.CanvasRenderingContext2D ctx) {
     if (game.showOutlines) {
       ctx.beginPath();
       ctx.strokeStyle = "green";
@@ -22,10 +22,10 @@ class GameEntity {
     }
   }
   
-  void drawSpriteCentered(ctx) {
-    num x = x - sprite.width/2;
-    num y = y - sprite.height/2;
-    ctx.drawImage(sprite, x, y);
+  void drawSpriteCentered(html.CanvasRenderingContext2D ctx) {
+    num cx = x - sprite.width/2;
+    num cy = y - sprite.height/2;
+    ctx.drawImage(sprite, cx, cy);
   }
   
   bool outsideScreen() {

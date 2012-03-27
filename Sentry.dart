@@ -17,12 +17,12 @@ class Sentry extends GameEntity {
       x = (Math.cos(angle) * distanceFromEarthCenter);
       y = (Math.sin(angle) * distanceFromEarthCenter);
     }
-    if (game.click != null) {
+    if (game.click != null && game.click.x != null) {
       shoot();
     }
   }
   
-  void draw(ctx) {
+  void draw(html.CanvasRenderingContext2D ctx) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(angle + Math.PI/2);

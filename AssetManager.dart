@@ -38,7 +38,7 @@ class AssetManager {
     }
   }
 
-  getAsset(path) {
+  getAsset(String path) {
     return cache[path];
   }
   

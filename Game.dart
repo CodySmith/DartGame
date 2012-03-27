@@ -20,8 +20,8 @@ class Game {
     entities = [];
   }
 
-  void init(html.CanvasRenderingContext2D ctx) {
-    this.ctx = ctx;
+  void init(html.CanvasRenderingContext2D context) {
+    ctx = context;
     surfaceWidth = ctx.canvas.width;
     surfaceHeight = ctx.canvas.height;
     halfSurfaceWidth = surfaceWidth/2;
@@ -39,7 +39,14 @@ class Game {
   
   void start() {
     print("starting game");
-    html.window.webkitRequestAnimationFrame(loop, ctx.canvas);
+    
+    var w = html.window;
+    if (w.webkitRequestAnimationFrame != null)
+      w.webkitRequestAnimationFrame(loop, ctx.canvas);
+    else if (w.msRequestAnimationFrame != null)
+      w.msRequestAnimationFrame(loop);
+    else if (w.mozRequestAnimationFrame != null)
+      w.mozRequestAnimationFrame(loop);
   }
   
   void loop(int time) {

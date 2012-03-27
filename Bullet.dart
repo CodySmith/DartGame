@@ -25,7 +25,7 @@ class Bullet extends GameEntity {
     }
   }
   
-  void draw(ctx) {
+  void draw(html.CanvasRenderingContext2D ctx) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(angle + Math.PI/2);
