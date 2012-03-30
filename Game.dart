@@ -12,6 +12,7 @@ class Game {
   num halfSurfaceHeight;
   Point clientBoundingRect;
   AssetManager assetManager;
+  String bgStyle = "rgba(0, 0, 0, 0.85)";
 
   bool showOutlines = false;
   
@@ -39,17 +40,10 @@ class Game {
   
   void start() {
     print("starting game");
-    
-    var w = html.window;
-    if (w.webkitRequestAnimationFrame != null)
-      w.webkitRequestAnimationFrame(loop, ctx.canvas);
-    else if (w.msRequestAnimationFrame != null)
-      w.msRequestAnimationFrame(loop);
-    else if (w.mozRequestAnimationFrame != null)
-      w.mozRequestAnimationFrame(loop);
+    html.window.webkitRequestAnimationFrame(loop, ctx.canvas);
   }
   
-  void loop(int time) {
+  bool loop(int time) {
     clockTick = this.timer.tick();
     update();
     draw();
@@ -83,6 +77,8 @@ class Game {
   
   void draw() {
     ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    ctx.fillStyle = bgStyle;
+    ctx.fillRect(0,0,this.ctx.canvas.width, this.ctx.canvas.height);
     ctx.save();
     ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2);
     for (final GameEntity entity in entities) {
