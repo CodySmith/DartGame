@@ -4,7 +4,7 @@ class Paddle extends GameEntity {
   Paddle(Game game, num x, num y) : super.withPosition(game, x, y);
   
   void update() {
-    
+    y = game.mouse.y;
   }
   
   void draw(html.CanvasRenderingContext2D ctx) {
@@ -12,9 +12,5 @@ class Paddle extends GameEntity {
     ctx.fillRect(x, (y - 60), 8, 120);
     
     super.draw(ctx);
-  }
-  
-  bool collidePaddle() {
-    
   }
 }

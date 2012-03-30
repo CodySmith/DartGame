@@ -1,10 +1,10 @@
 class Ball extends GameEntity {
-  num playerBatOpacity = 0.2;
+  num playerBatOpacity = 1;
   
   num xVel;
   num yVel;
   
-  Ball(Game game, num x, num y, num xVelocity, num yVelocity) : super.withPosition(game, x, y){
+  Ball(Game game, num x, num y, num xVelocity, num yVelocity) : super.withPosition(game, x, y) {
     xVel = xVelocity;
     yVel = yVelocity;
   }

@@ -19,6 +19,7 @@ class Pong extends Game {
   }
   
   void update() {
+    checkCollision();
     super.update();
   }
   
@@ -34,5 +35,14 @@ class Pong extends Game {
   
   void drawMiddleLine() {
     ctx.fillRect(0, -300, 8, 1000);
+  }
+  
+  void checkCollision() {
+    if (ball.x < player1.x) {
+      ball.xVel = 5;
+      }
+    if (ball.x > player2.x - 30) {
+      ball.xVel = -5;
+      }
   }
 }
