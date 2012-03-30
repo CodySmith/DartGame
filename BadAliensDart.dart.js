@@ -2755,7 +2755,6 @@ $dynamic("is$html_Element").HTMLParagraphElement = function(){return true};
 // ********** Code for _ParamElementImpl **************
 $dynamic("is$html_Element").HTMLParamElement = function(){return true};
 $dynamic("get$value").HTMLParamElement = function() { return this.value; };
-// ********** Code for _PeerConnection00Impl **************
 // ********** Code for _PerformanceImpl **************
 // ********** Code for _PerformanceNavigationImpl **************
 // ********** Code for _PerformanceTimingImpl **************
