@@ -52,5 +52,11 @@ class Pong extends Game {
       hitPlaceP = 100 - ((hitPlace / 120 * 100));
       ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
       }
+    if(ball.y > 300){
+      ball.yVel = ball.yVel * -1;
+    }
+    if(ball.y < -295){
+      ball.yVel = ball.yVel * -1;
+    }
   }
 }
