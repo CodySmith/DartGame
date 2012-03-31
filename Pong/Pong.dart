@@ -41,22 +41,57 @@ class Pong extends Game {
   
   void checkCollision() {
     if (ball.x < player1.x) {
-      ball.xVel = 5;
+      if((player1.y - 60) < ball.y && (player1.y + 60) > ball.y){
       hitPlace = (player1.y - ball.y) + 60;
       hitPlaceP = 100 - ((hitPlace / 120 * 100));
       ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
+      score++;
+      ball.xVel -= 1;
+      ball.xVel = ball.xVel * -1;
+      player1Fade();
       }
+      else {
+        ball.xVel = 5;
+        ball.x = 0;
+        ball.y = 0;
+        score = 0;
+      }
+    }
     if (ball.x > player2.x - 30) {
-      ball.xVel = -5;
+      if((player2.y - 60) < ball.y && (player2.y + 60) > ball.y){
       hitPlace = (player2.y - ball.y) + 60;
       hitPlaceP = 100 - ((hitPlace / 120 * 100));
       ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
+      score++;
+      ball.xVel += 1;
+      ball.xVel = ball.xVel * -1;
+      player2Fade();
       }
+      else {
+        ball.xVel = 5;
+        ball.x = 0;
+        ball.y = 0;
+        score = 0;
+      }
+    }
     if(ball.y > 300){
       ball.yVel = ball.yVel * -1;
     }
     if(ball.y < -295){
       ball.yVel = ball.yVel * -1;
     }
+  }
+  
+  void player1Fade() {
+    player1.playerBatOpacity = 0.5;
+    html.window.setTimeout(() { player1.playerBatOpacity = 0.4;}, 50);
+    html.window.setTimeout(() { player1.playerBatOpacity = 0.3;}, 100);
+    html.window.setTimeout(() { player1.playerBatOpacity = 0.2;}, 150);
+  }
+  void player2Fade() {
+    player2.playerBatOpacity = 0.5;
+    html.window.setTimeout(() { player2.playerBatOpacity = 0.4;}, 50);
+    html.window.setTimeout(() { player2.playerBatOpacity = 0.3;}, 100);
+    html.window.setTimeout(() { player2.playerBatOpacity = 0.2;}, 150);
   }
 }
