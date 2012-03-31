@@ -1,6 +1,7 @@
 class Pong extends Game {
   
   num score = 0;
+  num highscore = 0;
   num hitPlace;
   num hitPlaceP;
   
@@ -27,6 +28,7 @@ class Pong extends Game {
   
   void drawBeforeCtxRestore() {
     drawScore();
+    drawHighScore();
     drawMiddleLine();
   }
   
@@ -35,6 +37,10 @@ class Pong extends Game {
     ctx.fillText("Score:   $score", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 50);
   }
   
+  void drawHighScore() {
+    ctx.font = "26px cinnamoncake, Verdana";
+    ctx.fillText("High Score:   $highscore", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 25);
+  }
   void drawMiddleLine() {
     ctx.fillRect(0, -300, 8, 1000);
   }
@@ -54,6 +60,9 @@ class Pong extends Game {
         ball.xVel = 5;
         ball.x = 0;
         ball.y = 0;
+        if (score > highscore){
+          highscore = score;
+        }
         score = 0;
       }
     }
@@ -71,6 +80,9 @@ class Pong extends Game {
         ball.xVel = 5;
         ball.x = 0;
         ball.y = 0;
+        if (score > highscore){
+          highscore = score;
+        }
         score = 0;
       }
     }
