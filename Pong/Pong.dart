@@ -1,6 +1,8 @@
 class Pong extends Game {
   
-  num score = 10;
+  num score = 0;
+  num hitPlace;
+  num hitPlaceP;
   
   Paddle player1;
   Paddle player2;
@@ -40,9 +42,15 @@ class Pong extends Game {
   void checkCollision() {
     if (ball.x < player1.x) {
       ball.xVel = 5;
+      hitPlace = (player1.y - ball.y) + 60;
+      hitPlaceP = 100 - ((hitPlace / 120 * 100));
+      ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
       }
     if (ball.x > player2.x - 30) {
       ball.xVel = -5;
+      hitPlace = (player2.y - ball.y) + 60;
+      hitPlaceP = 100 - ((hitPlace / 120 * 100));
+      ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
       }
   }
 }
