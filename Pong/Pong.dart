@@ -1,7 +1,7 @@
 class Pong extends Game {
   
   num score = 0;
-  num highscore = Math.parseInt(html.window.localStorage.getItem("highscore"));
+  num highscore = 0; //Math.parseInt(html.window.localStorage.getItem("highscore"));
   num hitPlace;
   num hitPlaceP;
   
