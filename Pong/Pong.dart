@@ -54,7 +54,7 @@ class Pong extends Game {
       score++;
       ball.xVel -= 1;
       ball.xVel = ball.xVel * -1;
-      player1Fade();
+      player1.fade();
       }
       else {
         ball.xVel = 5;
@@ -74,7 +74,7 @@ class Pong extends Game {
       score++;
       ball.xVel += 1;
       ball.xVel = ball.xVel * -1;
-      player2Fade();
+      player2.fade();
       }
       else {
         ball.xVel = 5;
@@ -92,18 +92,5 @@ class Pong extends Game {
     if(ball.y < -295){
       ball.yVel = ball.yVel * -1;
     }
-  }
-  
-  void player1Fade() {
-    player1.playerBatOpacity = 0.5;
-    html.window.setTimeout(() { player1.playerBatOpacity = 0.4;}, 50);
-    html.window.setTimeout(() { player1.playerBatOpacity = 0.3;}, 100);
-    html.window.setTimeout(() { player1.playerBatOpacity = 0.2;}, 150);
-  }
-  void player2Fade() {
-    player2.playerBatOpacity = 0.5;
-    html.window.setTimeout(() { player2.playerBatOpacity = 0.4;}, 50);
-    html.window.setTimeout(() { player2.playerBatOpacity = 0.3;}, 100);
-    html.window.setTimeout(() { player2.playerBatOpacity = 0.2;}, 150);
   }
 }
