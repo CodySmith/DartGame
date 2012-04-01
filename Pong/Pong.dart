@@ -96,21 +96,4 @@ class Pong extends Game {
       ball.yVel = ball.yVel * -1;
     }
   }
-<<<<<<< HEAD
-  
-  void player1Fade() {
-    player1.playerBatOpacity = 0.5;
-    html.window.setTimeout(() { player1.playerBatOpacity = 0.4;}, 50);
-    html.window.setTimeout(() { player1.playerBatOpacity = 0.3;}, 100);
-    html.window.setTimeout(() { player1.playerBatOpacity = 0.2;}, 150);
-  }
-  void player2Fade() {
-    player2.playerBatOpacity = 0.5;
-    html.window.setTimeout(() { player2.playerBatOpacity = 0.4;}, 50);
-    html.window.setTimeout(() { player2.playerBatOpacity = 0.3;}, 100);
-    html.window.setTimeout(() { player2.playerBatOpacity = 0.2;}, 150);
-  }
 }
-=======
-}
->>>>>>> 0d1a116ab178d851e9ed4afc19c8e4c37a5d2dcf

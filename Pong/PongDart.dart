@@ -9,7 +9,6 @@
 #source('Pong.dart');
 #source('Ball.dart');
 
-
 void main() {
   var canvas = html.document.query('#surface');
   var ctx = canvas.getContext('2d');
