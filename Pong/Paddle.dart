@@ -4,7 +4,8 @@ class Paddle extends GameEntity {
   Paddle(Game game, num x, num y) : super.withPosition(game, x, y);
   
   void update() {
-    y = game.mouse.y;
+    if (game.mouse != null)
+      y = game.mouse.y;
   }
   
   void draw(html.CanvasRenderingContext2D ctx) {
