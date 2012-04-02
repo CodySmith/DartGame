@@ -1,0 +1,16 @@
+* { margin:0px; padding:0px; }
+
+@font-face {
+    font-family: 'cinnamoncake';
+    src: url('fonts/cinnamoncake.ttf');
+}
+
+html, body {font-family:"Verdana"; font-size:14px;}
+
+a {color:#106AB4;}
+
+#pageWrap { width:800px;margin:0px auto; }
+
+canvas#surface { width:800px; height:600px; background:; margin:0px auto; margin-top:20px; box-shadow:0px 0px 20px #333; }
+
+#highestScore { text-align:center; margin-top:20px; font-size:23px; }
