@@ -33,31 +33,33 @@ class Pong extends Game {
   }
   
   void drawScore() {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.font = "26px cinnamoncake, Verdana";
     ctx.fillText("Score:   $score", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 50);
   }
   
   void drawHighScore() {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.font = "26px cinnamoncake, Verdana";
     ctx.fillText("High Score:   $highscore", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 25);
   }
   
   void drawMiddleLine() {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.fillRect(0, -300, 8, 1000);
   }
   
   void checkCollision() {
     if (ball.x < player1.x) {
       if((player1.y - 60) < ball.y && (player1.y + 60) > ball.y){
-      hitPlace = (player1.y - ball.y) + 60;
-      hitPlaceP = 100 - ((hitPlace / 120 * 100));
-      ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
-      score++;
-      ball.xVel -= 1;
-      ball.xVel = ball.xVel * -1;
-      player1.fade();
-      }
-      else {
+        hitPlace = (player1.y - ball.y) + 60;
+        hitPlaceP = 100 - ((hitPlace / 120 * 100));
+        ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
+        score++;
+        ball.xVel -= 1;
+        ball.xVel = ball.xVel * -1;
+        player1.fade();
+      } else {
         ball.xVel = 5;
         ball.x = 0;
         ball.y = 0;
@@ -70,15 +72,14 @@ class Pong extends Game {
     }
     if (ball.x > player2.x - 30) {
       if((player2.y - 60) < ball.y && (player2.y + 60) > ball.y){
-      hitPlace = (player2.y - ball.y) + 60;
-      hitPlaceP = 100 - ((hitPlace / 120 * 100));
-      ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
-      score++;
-      ball.xVel += 1;
-      ball.xVel = ball.xVel * -1;
-      player2.fade();
-      }
-      else {
+        hitPlace = (player2.y - ball.y) + 60;
+        hitPlaceP = 100 - ((hitPlace / 120 * 100));
+        ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
+        score++;
+        ball.xVel += 1;
+        ball.xVel = ball.xVel * -1;
+        player2.fade();
+      } else {
         ball.xVel = 5;
         ball.x = 0;
         ball.y = 0;
