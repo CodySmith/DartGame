@@ -52,9 +52,10 @@ class Pong extends Game {
       hitPlaceP = 100 - ((hitPlace / 120 * 100));
       ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
       score++;
-      ball.xVel -= 1;
+      ball.xVel -= .5;
       ball.xVel = ball.xVel * -1;
       player1.fade();
+      bgFade();
       }
       else {
         ball.xVel = 5;
@@ -72,9 +73,10 @@ class Pong extends Game {
       hitPlaceP = 100 - ((hitPlace / 120 * 100));
       ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
       score++;
-      ball.xVel += 1;
+      ball.xVel += .5;
       ball.xVel = ball.xVel * -1;
       player2.fade();
+      bgFade();
       }
       else {
         ball.xVel = 5;
@@ -92,5 +94,12 @@ class Pong extends Game {
     if(ball.y < -295){
       ball.yVel = ball.yVel * -1;
     }
+  }
+  
+  void bgFade() {
+    bgStyle = "rgba(0, 0, 0, 0.79)";
+    html.window.setTimeout(() { bgStyle = "rgba(0, 0, 0, 0.81)";}, 50);
+    html.window.setTimeout(() { bgStyle = "rgba(0, 0, 0, 0.83)";}, 100);
+    html.window.setTimeout(() { bgStyle = "rgba(0, 0, 0, 0.85)";}, 150);
   }
 }
