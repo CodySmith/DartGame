@@ -34,11 +34,13 @@ class Pong extends Game {
   
   void drawScore() {
     ctx.font = "26px cinnamoncake, Verdana";
+    ctx.fillStyle = "rgba(255, 255, 255, .2)";
     ctx.fillText("Score:   $score", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 50);
   }
   
   void drawHighScore() {
     ctx.font = "26px cinnamoncake, Verdana";
+    ctx.fillStyle = "rgba(255, 255, 255, .2)";
     ctx.fillText("High Score:   $highscore", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 25);
   }
   void drawMiddleLine() {
