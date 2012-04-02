@@ -15,7 +15,7 @@ class Pong extends Game {
     player1 = new Paddle(this, -360, 10);
     player2 = new Paddle(this, 350, 10);
     ball = new Ball(this, 0, 0, 5, 0);
-    addEntictx.fillStyle = "rgba(255, 255, 255, $opacity)";ty(ball);
+    addEntity(ball);
     addEntity(player1);
     addEntity(player2);
     super.start();
@@ -75,11 +75,11 @@ class Pong extends Game {
     }
     if (ball.x > player2.x - 30) {
       if((player2.y - 60) < ball.y && (player2.y + 60) > ball.y){
-        hctx.fillStyle = "rgba(255, 255, 255, $opacity)";itPlace = (player2.y - ball.y) + 60;
+        hitPlace = (player2.y - ball.y) + 60;
         hitPlaceP = 100 - ((hitPlace / 120 * 100));
         ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
         score++;
-      ball.xVel += .5;
+        ball.xVel += .5;
         ball.xVel = ball.xVel * -1;
         player2.fade();
         bgFade();
@@ -99,7 +99,7 @@ class Pong extends Game {
     }
     if(ball.y < -295){
       ball.yVel = ball.yVel * -1;
-  ctx.fillStyle = "rgba(255, 255, 255, $opacity)";  }
+    }
   }
   
   void bgFade() {
