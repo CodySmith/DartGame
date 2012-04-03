@@ -46,9 +46,39 @@ class Pong extends Game {
     ctx.fillText("High Score:   $highscore", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 25);
   }
   
-  void drawMiddleLine() {
+  void dashedLine(x,y,x2,y2,dashArray) { 
+    if (!dashArray) dashArray=[10,5];
+    var dashCount = dashArray.length;
+    ctx.moveTo(x, y);
+    var dx = (x2-x), dy = (y2-y);
+    var slope = dy/dx;
+    var distRemaining = Math.sqrt( dx*dx + dy*dy );
+    var dashIndex=0, 
+    drawline=true;
+    
+    while (distRemaining>=0.1){   
+      var dashLength = dashArray[dashIndex % dashCount];
+      if (dashLength==0) dashLength = 0.001;
+      if (dashLength > distRemaining) dashLength = distRemaining;
+      var xStep = Math.sqrt( dashLength*dashLength / (1 + slope*slope) );
+      x += xStep;
+      y += slope*xStep;
+      if (drawline) {
+        ctx.lineTo(x, y);
+      }
+      else {
+        ctx.moveTo(x, y);
+      }
+      distRemaining -= dashLength;
+      drawline = !drawline;
+      dashIndex++;
+    }
+  }
+  
+  void drawMiddleLine() {   
     ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.fillRect(0, -300, 8, 1000);
+    //dashedLine(0,300,0,-300,[30,10]);
   }
   
   void checkCollision() {
