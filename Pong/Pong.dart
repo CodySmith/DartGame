@@ -35,50 +35,52 @@ class Pong extends Game {
   void drawScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillStyle = "rgba(255, 255, 255, .2)";
     ctx.fillText("Score:   $score", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 50);
   }
   
   void drawHighScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillStyle = "rgba(255, 255, 255, .2)";
     ctx.fillText("High Score:   $highscore", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 25);
   }
   
-  void dashedLine(x,y,x2,y2,dashArray) { 
-    if (!dashArray) dashArray=[10,5];
-    var dashCount = dashArray.length;
+  void dashedLine(x, y, x2, y2, [da]) { 
+    if (da == null)
+      da=[10,5];
+    
+    var dashCount = da.length;
     ctx.moveTo(x, y);
     var dx = (x2-x), dy = (y2-y);
-    var slope = dy/dx;
+    var slope = dy;
+    if (dx != 0)
+      slope = dy/dx;
     var distRemaining = Math.sqrt( dx*dx + dy*dy );
-    var dashIndex=0, 
-    drawline=true;
-    
-    while (distRemaining>=0.1){   
-      var dashLength = dashArray[dashIndex % dashCount];
-      if (dashLength==0) dashLength = 0.001;
+    var dashIndex=0, drawLine=true;
+    while (distRemaining>=0.1 && dashIndex<10000){
+      var dashLength = da[dashIndex++%dashCount];
       if (dashLength > distRemaining) dashLength = distRemaining;
       var xStep = Math.sqrt( dashLength*dashLength / (1 + slope*slope) );
       x += xStep;
       y += slope*xStep;
-      if (drawline) {
-        ctx.lineTo(x, y);
-      }
-      else {
-        ctx.moveTo(x, y);
+      if (drawLine){
+        ctx.lineTo(x,y);
+      } else {
+        ctx.moveTo(x,y);
       }
       distRemaining -= dashLength;
-      drawline = !drawline;
-      dashIndex++;
+      drawLine = !drawLine;
     }
+    
+    ctx.moveTo(0,0);
   }
   
-  void drawMiddleLine() {   
-    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-    ctx.fillRect(0, -300, 8, 1000);
-    //dashedLine(0,300,0,-300,[30,10]);
+  void drawMiddleLine() {
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+    ctx.lineWidth = 3;
+    
+    ctx.beginPath();
+    dashedLine(0, -300, 0, 300);
+    ctx.stroke();
   }
   
   void checkCollision() {
@@ -88,7 +90,7 @@ class Pong extends Game {
         hitPlaceP = 100 - ((hitPlace / 120 * 100));
         ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
         score++;
-      ball.xVel -= .5;
+        ball.xVel -= .5;
         ball.xVel = ball.xVel * -1;
         player1.fade();
         bgFade();
