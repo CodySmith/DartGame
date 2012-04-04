@@ -10,7 +10,7 @@ class Paddle extends GameEntity {
   
   void draw(html.CanvasRenderingContext2D ctx) {
     ctx.fillStyle = "rgba(255, 255, 255, $opacity)";
-    ctx.fillRect(x, (y - 60), 8, 120);
+    ctx.fillRect(x - 4, y - 60, 8, 120);
     
     super.draw(ctx);
   }
