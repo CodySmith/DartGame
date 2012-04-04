@@ -51,7 +51,7 @@ class Ball extends GameEntity {
       xVel = xVel * -1;
       
       // increase speed
-      xVel = xVel * 1.05;
+      xVel = xVel + .1;
       
       return true;
     }

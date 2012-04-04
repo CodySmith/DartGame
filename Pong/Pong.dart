@@ -14,7 +14,7 @@ class Pong extends Game {
   void start() {
     player1 = new Paddle(this, -380, 10);
     player2 = new Paddle(this, 380, 10);
-    ball = new Ball(this, 0, 0, 3, 0);
+    ball = new Ball(this, 0, 0, 5, 0);
     addEntity(ball);
     addEntity(player1);
     addEntity(player2);
@@ -28,15 +28,15 @@ class Pong extends Game {
   }
   
   void drawScore() {
-    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+    ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("Score:   $score  ${ball.xVel}", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 50);
+    ctx.fillText("Score:   $score", -60, -270);
   }
   
   void drawHighScore() {
-    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-    ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("High Score:   $highscore", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 25);
+    ctx.fillStyle = "rgba(255, 255, 255, 1)";
+    ctx.font = "16px cinnamoncake, Verdana";
+    ctx.fillText("Your highest score:   $highscore", -75, -250);
   }
   
   void drawMiddleLine() {
@@ -44,7 +44,7 @@ class Pong extends Game {
     ctx.lineWidth = 3;
     
     ctx.beginPath();
-    dashedLine(0, -300, 0, 300);
+    dashedLine(0, -240, 0, 300);
     ctx.stroke();
   }
   
@@ -55,7 +55,7 @@ class Pong extends Game {
   
   void gameOver() {
     bgFade();
-    ball.xVel = 3;
+    ball.xVel = 5;
     ball.x = 0;
     ball.y = 0;
     if (score > highscore){
