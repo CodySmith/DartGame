@@ -35,46 +35,70 @@ class Pong extends Game {
   void drawScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillStyle = "rgba(255, 255, 255, .2)";
     ctx.fillText("Score:   $score", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 50);
   }
   
   void drawHighScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillStyle = "rgba(255, 255, 255, .2)";
     ctx.fillText("High Score:   $highscore", -ctx.canvas.width/2 + 50, ctx.canvas.height/2 - 25);
   }
   
+  void dashedLine(x, y, x2, y2, [da]) { 
+    if (da == null)
+      da=[10,5];
+    
+    var dashCount = da.length;
+    ctx.moveTo(x, y);
+    var dx = (x2-x), dy = (y2-y);
+    var slope = dy;
+    if (dx != 0)
+      slope = dy/dx;
+    var distRemaining = Math.sqrt( dx*dx + dy*dy );
+    var dashIndex=0, drawLine=true;
+    while (distRemaining>=0.1 && dashIndex<10000){
+      var dashLength = da[dashIndex++%dashCount];
+      if (dashLength > distRemaining) dashLength = distRemaining;
+      var xStep = Math.sqrt( dashLength*dashLength / (1 + slope*slope) );
+      x += xStep;
+      y += slope*xStep;
+      if (drawLine){
+        ctx.lineTo(x,y);
+      } else {
+        ctx.moveTo(x,y);
+      }
+      distRemaining -= dashLength;
+      drawLine = !drawLine;
+    }
+    
+    ctx.moveTo(0,0);
+  }
+  
   void drawMiddleLine() {
-    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-    ctx.fillRect(0, -300, 8, 1000);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+    ctx.lineWidth = 3;
+    
+    ctx.beginPath();
+    dashedLine(0, -300, 0, 300);
+    ctx.stroke();
   }
   
   void checkCollision() {
     if (ball.x < player1.x) {
       if((player1.y - 60) < ball.y && (player1.y + 60) > ball.y){
-<<<<<<< HEAD
-      hitPlace = (player1.y - ball.y) + 60;
-      hitPlaceP = 100 - ((hitPlace / 120 * 100));
-      ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
-      score++;
-      ball.xVel -= .5;
-      ball.xVel = ball.xVel * -1;
-      player1.fade();
-      bgFade();
-      }
-      else {
-=======
         hitPlace = (player1.y - ball.y) + 60;
         hitPlaceP = 100 - ((hitPlace / 120 * 100));
         ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
         score++;
-        ball.xVel -= 1;
+<<<<<<< HEAD
+        ball.xVel -= .5;
+=======
+        ball.xVel -= .2;
+>>>>>>> c55561821aff75c91af221e9e1ad7b5a9a22b596
         ball.xVel = ball.xVel * -1;
         player1.fade();
+        bgFade();
       } else {
->>>>>>> 721db7d045bfca1fd10929c78c2013119f256d89
         ball.xVel = 5;
         ball.x = 0;
         ball.y = 0;
@@ -87,27 +111,15 @@ class Pong extends Game {
     }
     if (ball.x > player2.x - 30) {
       if((player2.y - 60) < ball.y && (player2.y + 60) > ball.y){
-<<<<<<< HEAD
-      hitPlace = (player2.y - ball.y) + 60;
-      hitPlaceP = 100 - ((hitPlace / 120 * 100));
-      ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
-      score++;
-      ball.xVel += .5;
-      ball.xVel = ball.xVel * -1;
-      player2.fade();
-      bgFade();
-      }
-      else {
-=======
         hitPlace = (player2.y - ball.y) + 60;
         hitPlaceP = 100 - ((hitPlace / 120 * 100));
         ball.yVel = ((8 * (hitPlaceP / 100)) - 4)+0.5;
         score++;
-        ball.xVel += 1;
+        ball.xVel += .2;
         ball.xVel = ball.xVel * -1;
         player2.fade();
+        bgFade();
       } else {
->>>>>>> 721db7d045bfca1fd10929c78c2013119f256d89
         ball.xVel = 5;
         ball.x = 0;
         ball.y = 0;
@@ -118,14 +130,13 @@ class Pong extends Game {
         score = 0;
       }
     }
-    if(ball.y > 300){
+    if(ball.y > 290) {
       ball.yVel = ball.yVel * -1;
     }
-    if(ball.y < -295){
+    if(ball.y < -295) {
       ball.yVel = ball.yVel * -1;
     }
   }
-<<<<<<< HEAD
   
   void bgFade() {
     bgStyle = "rgba(0, 0, 0, 0.79)";
@@ -134,6 +145,3 @@ class Pong extends Game {
     html.window.setTimeout(() { bgStyle = "rgba(0, 0, 0, 0.85)";}, 150);
   }
 }
-=======
-}
->>>>>>> 721db7d045bfca1fd10929c78c2013119f256d89
