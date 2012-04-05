@@ -12,8 +12,8 @@ class Pong extends Game {
   Pong(AssetManager assetManager) : super(assetManager);
   
   void start() {
-    player1 = new Paddle(this, -380, 10);
-    player2 = new Paddle(this, 380, 10);
+    player1 = new Paddle(this, -390, 10);
+    player2 = new Paddle(this, 390, 10);
     ball = new Ball(this, 0, 0, 5, 0);
     addEntity(ball);
     addEntity(player1);
