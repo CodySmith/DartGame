@@ -5,6 +5,7 @@
 #source('../GameEntity.dart');
 #source('../Game.dart');
 #source('../Point.dart');
+#source('../Rectangle.dart');
 #source('Paddle.dart');
 #source('Pong.dart');
 #source('Ball.dart');
