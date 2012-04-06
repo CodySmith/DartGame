@@ -9,12 +9,23 @@ class Pong extends Game {
   Paddle player2;
   Ball ball;
   
+  html.AudioElement hit1;
+  html.AudioElement hit2;
+  html.AudioElement hit3;
+  html.AudioElement sweep;
+  
+  html.AudioContext audioContext = new html.AudioContext();
+  
   Pong(AssetManager assetManager) : super(assetManager);
   
   void start() {
     player1 = new Paddle(this, -390, 10);
     player2 = new Paddle(this, 390, 10);
     ball = new Ball(this, 0, 0, 5, 0);
+    hit1 = html.document.query("#hit1");
+    hit2 = html.document.query("#hit2");
+    hit3 = html.document.query("#hit2");
+    sweep = html.document.query("#sweep");
     addEntity(ball);
     addEntity(player1);
     addEntity(player2);
@@ -50,6 +61,10 @@ class Pong extends Game {
   
   void ballHit(){
     score++;
+    hit1.play();
+    hit2.play();
+    hit3.play();
+    sweep.play();
     subtleBgFade();
   }
   
