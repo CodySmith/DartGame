@@ -60,11 +60,11 @@ class Game {
         return new Point(x, y);
     }
     
-    ctx.canvas.on.click.add((e) {
+    html.document.on.click.add((e) {
         click = getXandY(e);
     });
     
-    ctx.canvas.on.mouseMove.add((e) {
+    html.document.on.mouseMove.add((e) {
         mouse = getXandY(e);
     });
     
