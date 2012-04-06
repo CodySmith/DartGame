@@ -33,6 +33,22 @@ class GameEntity {
         y > game.halfSurfaceHeight || y < -(game.halfSurfaceHeight));
   }
   
+  Rectangle getCollisionRectangle() {
+    return new Rectangle(x, y, 1, 1);
+  }
+  
+  bool collidesWith(GameEntity entity) {
+    var a = getCollisionRectangle();
+    var b = entity.getCollisionRectangle();
+    
+    return !(
+        ((a.y + a.height) < (b.y)) ||
+        (a.y > (b.y + b.height)) ||
+        ((a.x + a.width) < b.x) ||
+        (a.x > (b.x + b.width))
+    );
+  }
+  
   html.CanvasElement rotateAndCache(image, angle) {
     var offscreenCanvas = new html.Element.tag("canvas");
     var size = Math.max(image.width, image.height);

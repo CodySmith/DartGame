@@ -15,6 +15,10 @@ class Paddle extends GameEntity {
     super.draw(ctx);
   }
   
+  Rectangle getCollisionRectangle() {
+    return new Rectangle(x - 4, y - 60, 8, 120);
+  }
+  
   void fade() {
     opacity = 0.5;
     html.window.setTimeout(() { opacity = 0.4;}, 50);
