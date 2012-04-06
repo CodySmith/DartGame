@@ -14,8 +14,6 @@ class Pong extends Game {
   html.AudioElement hit3;
   html.AudioElement sweep;
   
-  html.AudioContext audioContext = new html.AudioContext();
-  
   Pong(AssetManager assetManager) : super(assetManager);
   
   void start() {
