@@ -1,9 +1,9 @@
 class Pong extends Game {
   
   num score = 0;
-  num highscore = 0; //Math.parseInt(html.window.localStorage.getItem("highscore"));
   num hitPlace;
   num hitPlaceP;
+  var highscore;
   
   Paddle player1;
   Paddle player2;
@@ -34,6 +34,7 @@ class Pong extends Game {
   
   void drawBeforeCtxRestore() {
     drawScore();
+    getHighScore();
     drawHighScore();
     drawMiddleLine();
   }
@@ -42,6 +43,13 @@ class Pong extends Game {
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "26px cinnamoncake, Verdana";
     ctx.fillText("Score:   $score", -60, -270);
+  }
+  
+  void getHighScore() {
+    ///highscore = Math.parseInt(html.window.localStorage.getItem("highscore"));
+    if (highscore == null) {
+      highscore = 0;
+    }
   }
   
   void drawHighScore() {
@@ -75,7 +83,7 @@ class Pong extends Game {
     ball.y = 0;
     if (score > highscore){
       highscore = score;
-      //html.window.localStorage.setItem(highscore.toString(), score.toString());
+      ///html.window.localStorage.setItem("highscore", score.toString());
     }
     score = 0;
   }
