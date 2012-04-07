@@ -2853,9 +2853,6 @@ function AssetManager() {
   this.downloadQueue = [];
   this.cache = new HashMapImplementation();
 }
-AssetManager.prototype.queueDownload = function(path) {
-  this.downloadQueue.add(path);
-}
 AssetManager.prototype.downloadAll = function(downloadCallback) {
   var $this = this; // closure support
   if (this.downloadQueue.get$length() == (0)) {
@@ -3093,6 +3090,7 @@ Pong.prototype.start = function() {
   this.player1 = new Paddle(this, (-380), (10));
   this.player2 = new Paddle(this, (380), (10));
   this.ball = new Ball(this, (0), (0), (5), (0));
+  this.hit1 = get$$document().query("#hit1");
   this.addEntity(this.ball);
   this.addEntity(this.player1);
   this.addEntity(this.player2);
@@ -3123,6 +3121,8 @@ Pong.prototype.drawMiddleLine = function() {
 Pong.prototype.ballHit = function() {
   this.score++;
   this.subtleBgFade();
+  var s = this.hit1.cloneNode(true);
+  s.play();
 }
 Pong.prototype.gameOver = function() {
   this.bgFade();
@@ -3289,10 +3289,6 @@ function main() {
   var canvas = get$$document().query("#surface");
   var ctx = canvas.getContext("2d");
   var assetManager = new AssetManager();
-  assetManager.queueDownload("sounds/hit1.mp3");
-  assetManager.queueDownload("sounds/hit2.mp3");
-  assetManager.queueDownload("sounds/hit3.mp3");
-  assetManager.queueDownload("sounds/sweep.mp3");
   var game = new Pong(assetManager);
   assetManager.downloadAll((function () {
     game.init(ctx);
