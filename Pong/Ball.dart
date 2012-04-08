@@ -12,16 +12,16 @@ class Ball extends GameEntity {
     if (xVel < 0 && collidesWith(g.player1)) {
       g.ballHit();
       ballHit(g.player1);
-      //soundHit3.play();
+      game.assetManager.playSound("sounds/hit1.ogg");
     } else if (xVel > 0 && collidesWith(g.player2)) {
       g.ballHit();
       ballHit(g.player2);
-      //soundHit2.play();
+      game.assetManager.playSound("sounds/hit2.ogg");
     }
     
     if (y > 296 || y < -296) {
       yVel = yVel * -1;
-      //soundHit2.play();
+      game.assetManager.playSound("sounds/hit3.ogg");
     }
     
     if (outsideScreen())

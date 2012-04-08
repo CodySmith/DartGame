@@ -15,11 +15,10 @@ void main() {
   var ctx = canvas.getContext('2d');
   
   AssetManager assetManager = new AssetManager();
-  
-  assetManager.queueDownload('sounds/hit1.mp3');
-  assetManager.queueDownload('sounds/hit2.mp3');
-  assetManager.queueDownload('sounds/hit3.mp3');
-  assetManager.queueDownload('sounds/sweep.mp3');
+  assetManager.queueDownload("sounds/hit1.ogg");
+  assetManager.queueDownload("sounds/hit2.ogg");
+  assetManager.queueDownload("sounds/hit3.ogg");
+  assetManager.queueDownload("sounds/sweep.ogg");
   
   var game = new Pong(assetManager);
   
