@@ -9,15 +9,12 @@ class Pong extends Game {
   Paddle player2;
   Ball ball;
   
-  html.AudioElement hit1;
-  
   Pong(AssetManager assetManager) : super(assetManager);
   
   void start() {
     player1 = new Paddle(this, -380, 10);
     player2 = new Paddle(this, 380, 10);
     ball = new Ball(this, 0, 0, 5, 0);
-    hit1 = html.document.query("#hit1");
     addEntity(ball);
     addEntity(player1);
     addEntity(player2);
@@ -54,8 +51,6 @@ class Pong extends Game {
   void ballHit(){
     score++;
     subtleBgFade();
-    var s = hit1.clone(true);
-    s.play();
   }
   
   void gameOver() {

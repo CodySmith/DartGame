@@ -1,49 +1,75 @@
 class AssetManager {
-  var successCount = 0;
-  var errorCount = 0;
-  Map cache;
-  List downloadQueue;
+  num _successCount = 0;
+  num _errorCount = 0;
+  Map _cache;
+  List _downloadQueue;
   
   AssetManager() {
-    downloadQueue = [];
-    cache = {};
+    _downloadQueue = [];
+    _cache = {};
   }
     
   void queueDownload(String path) {
-    downloadQueue.add(path);
+    _downloadQueue.add(path);
   }
   
   void downloadAll(downloadCallback) {
-    if (downloadQueue.length == 0) {
+    if (_downloadQueue.length == 0) {
       downloadCallback();
     }
     
-    for (final path in downloadQueue) {
-      html.ImageElement img = new html.Element.tag("img");
-      img.on.load.add((event) {
-        print(img.src + ' is loaded');
-        successCount += 1;
+    for (final String path in _downloadQueue) {
+      bool isImg = isImage(path);
+      var el = new html.Element.tag(isImg ? "img" : "audio");
+      if (isImg) {
+        el.on.load.add((event) {
+          print(el.src + ' is loaded');
+          _successCount += 1;
+          if (isDone()) {
+              downloadCallback();
+          }
+        });
+        el.on.error.add((event) {
+          _errorCount += 1;
+          if (isDone()) {
+              downloadCallback();
+          }
+        });
+      } else {
+        print(el.src + ' is loaded');
+        el.attributes["preload"] = "auto";
+        el.load();
+        _successCount += 1;
         if (isDone()) {
-            downloadCallback();
+          downloadCallback();
         }
-      });
-      img.on.error.add((event) {
-        errorCount += 1;
-        if (isDone()) {
-            downloadCallback();
-        }
-      });
-      img.src = path;
-      cache[path] = img;
+      }
+      el.src = path;
+      _cache[path] = el;
     }
   }
 
   getAsset(String path) {
-    return cache[path];
+    return _cache[path];
+  }
+  
+  playSound(String path) {
+    var s = getAsset(path);
+    var c = s.clone(true);
+    c.play();
   }
   
   bool isDone() {
-    return (downloadQueue.length == successCount + errorCount);
+    return (_downloadQueue.length == _successCount + _errorCount);
+  }
+  
+  bool isImage(String path) {
+    if (path.endsWith(".png")
+        || path.endsWith(".jpg")
+        || path.endsWith(".gif"))
+      return true;
+    
+    return false;
   }
     
 }
