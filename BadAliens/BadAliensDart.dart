@@ -6,6 +6,7 @@
 #source('../Game.dart');
 #source('../Point.dart');
 #source('../Rectangle.dart');
+#source('../Momentum.dart');
 #source('Alien.dart');
 #source('AlienExplosion.dart');
 #source('Sentry.dart');

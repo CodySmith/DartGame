@@ -36,7 +36,7 @@ class AssetManager {
           }
         });
       } else {
-        print(el.src + ' is loaded');
+        print(path + ' is loaded');
         el.attributes["preload"] = "auto";
         el.load();
         _successCount += 1;

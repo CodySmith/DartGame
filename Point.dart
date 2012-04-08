@@ -1,3 +1,8 @@
+interface IPoint default Point {
+  final num x;
+  final num y;
+}
+
 class Point {
   final num x;
   final num y;

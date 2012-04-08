@@ -6,6 +6,7 @@
 #source('../Game.dart');
 #source('../Point.dart');
 #source('../Rectangle.dart');
+#source('../Momentum.dart');
 #source('Paddle.dart');
 #source('Pong.dart');
 #source('Ball.dart');

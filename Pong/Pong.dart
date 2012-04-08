@@ -1,38 +1,26 @@
 class Pong extends Game {
-  
   num score = 0;
-  num hitPlace;
-  num hitPlaceP;
-  var highscore;
+  num highscore = 0;
   
   Paddle player1;
   Paddle player2;
   Ball ball;
   
-  html.AudioElement hit1;
-  html.AudioElement hit2;
-  html.AudioElement hit3;
-  html.AudioElement sweep;
-  
   Pong(AssetManager assetManager) : super(assetManager);
   
   void start() {
-    player1 = new Paddle(this, -390, 10);
-    player2 = new Paddle(this, 390, 10);
-    ball = new Ball(this, 0, 0, 5, 0);
-    hit1 = html.document.query("#hit1");
-    hit2 = html.document.query("#hit2");
-    hit3 = html.document.query("#hit2");
-    sweep = html.document.query("#sweep");
+    player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
+    player2 = new Paddle(this, halfSurfaceWidth - 10, 10);
+    ball = new Ball(this, 0, 0);
     addEntity(ball);
     addEntity(player1);
     addEntity(player2);
+    newGame();
     super.start();
   }
   
   void drawBeforeCtxRestore() {
     drawScore();
-    getHighScore();
     drawHighScore();
     drawMiddleLine();
   }
@@ -40,20 +28,13 @@ class Pong extends Game {
   void drawScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("Score:   $score", -60, -270);
-  }
-  
-  void getHighScore() {
-    ///highscore = Math.parseInt(html.window.localStorage.getItem("highscore"));
-    if (highscore == null) {
-      highscore = 0;
-    }
+    ctx.fillText("Score:   $score", -60, -(halfSurfaceHeight - 30));
   }
   
   void drawHighScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "16px cinnamoncake, Verdana";
-    ctx.fillText("Your highest score:   $highscore", -75, -250);
+    ctx.fillText("Your highest score:   $highscore  ${ball.momentum.xVel}", -75, -(halfSurfaceHeight - 50));
   }
   
   void drawMiddleLine() {
@@ -61,29 +42,30 @@ class Pong extends Game {
     ctx.lineWidth = 3;
     
     ctx.beginPath();
-    dashedLine(0, -240, 0, 300);
+    dashedLine(0, -(halfSurfaceHeight - 60), 0, halfSurfaceHeight);
     ctx.stroke();
   }
   
   void ballHit(){
     score++;
-    hit1.play();
-    hit2.play();
-    hit3.play();
-    sweep.play();
     subtleBgFade();
   }
   
-  void gameOver() {
-    bgFade();
-    ball.xVel = 5;
+  void newGame() {
     ball.x = 0;
     ball.y = 0;
-    if (score > highscore){
+    score = 0;
+    ball.momentum.xVel = 5;
+  }
+  
+  void gameOver() {
+    assetManager.playSound("sounds/sweep.ogg");
+    bgFade();
+    if (score > highscore) {
       highscore = score;
       ///html.window.localStorage.setItem("highscore", score.toString());
     }
-    score = 0;
+    newGame();
   }
   
   void subtleBgFade(){

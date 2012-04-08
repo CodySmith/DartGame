@@ -55,8 +55,8 @@ class Game {
     print('Starting input');
     
     Point getXandY(e) {
-        num x =  e.clientX - clientBoundingRect.x - (ctx.canvas.width/2);
-        num y = e.clientY - clientBoundingRect.y - (ctx.canvas.height/2);
+        num x =  e.clientX - clientBoundingRect.x - (ctx.canvas.width / 2);
+        num y = e.clientY - clientBoundingRect.y - (ctx.canvas.height / 2);
         return new Point(x, y);
     }
     
