@@ -80,10 +80,8 @@ class GameEntity {
   bool collidesWith(GameEntity entity) {
     // TODO: Check for radius to see if collision should be circular
     return !(
-        ((box.y + box.height) < (entity.box.y)) ||
-        (box.y > (entity.box.y + entity.box.height)) ||
-        ((box.x + box.width) < entity.box.x) ||
-        (box.x > (entity.box.x + entity.box.width))
+        ((box.y + box.height) < (entity.box.y)) || (box.y > (entity.box.y + entity.box.height)) ||
+        ((box.x + box.width) < entity.box.x) || (box.x > (entity.box.x + entity.box.width))
     );
   }
   

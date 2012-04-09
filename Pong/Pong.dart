@@ -15,26 +15,20 @@ class Pong extends Game {
     addEntity(ball);
     addEntity(player1);
     addEntity(player2);
+    player2.isAi = true;
     newGame();
     super.start();
   }
   
   void drawBeforeCtxRestore() {
-    drawScore();
-    drawHighScore();
     drawMiddleLine();
+    drawScore();
   }
   
   void drawScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("Score:   $score", -60, -(halfSurfaceHeight - 30));
-  }
-  
-  void drawHighScore() {
-    ctx.fillStyle = "rgba(255, 255, 255, 1)";
-    ctx.font = "16px cinnamoncake, Verdana";
-    ctx.fillText("Your highest score:   $highscore  ${ball.momentum.xVel}", -75, -(halfSurfaceHeight - 50));
+    ctx.fillText("${player1.score}              ${player2.score}", -60, -(halfSurfaceHeight - 30));
   }
   
   void drawMiddleLine() {
@@ -42,7 +36,7 @@ class Pong extends Game {
     ctx.lineWidth = 3;
     
     ctx.beginPath();
-    dashedLine(0, -(halfSurfaceHeight - 60), 0, halfSurfaceHeight);
+    dashedLine(0, -(halfSurfaceHeight), 0, halfSurfaceHeight);
     ctx.stroke();
   }
   

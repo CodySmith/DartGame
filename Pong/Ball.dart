@@ -12,7 +12,12 @@ class Ball extends GameEntity {
       g.ballHit();
       ballHit(g.player2);
       game.assetManager.playSound("sounds/hit2.ogg");
-    } else if (outsideScreen()) {
+    } else if (outsideScreen() && momentum.xVel > 0) {
+      g.player1.score += 1;
+      g.gameOver();
+    }
+      else if (outsideScreen() && momentum.xVel < 0) {
+      g.player2.score += 1;
       g.gameOver();
     }
     
