@@ -19,7 +19,8 @@ class Ball extends GameEntity {
     // check to see if the ball hit the top or bottom.
     if (y > game.halfSurfaceHeight - 4 || y < -(game.halfSurfaceHeight - 4)) {
       momentum.yVel *= -1;
-      game.assetManager.playSound("sounds/hit3.ogg");
+      double volume = momentum.yVel.abs() * .05;
+      game.assetManager.playSound("sounds/hit3.ogg", volume);
     }
     
     super.update();

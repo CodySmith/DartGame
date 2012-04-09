@@ -1,3 +1,14 @@
+#library("dgame");
+#import('dart:html', prefix:"html");
+
+#source('AssetManager.dart');
+#source('Animation.dart');
+#source('Timer.dart');
+#source('GameEntity.dart');
+#source('Point.dart');
+#source('Rectangle.dart');
+#source('Momentum.dart');
+
 class Game {
   
   List entities;

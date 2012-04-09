@@ -1,5 +1,5 @@
 var app = require('express').createServer()
-    , io = require('socket.io').listen(app);
+    , io = require('socket.io').listen(app, { origins: '*' });
 
 app.listen(8080);
 
@@ -10,6 +10,7 @@ app.get('/', function (req, res) {
 var usernames = {};
 
 io.sockets.on('connection', function (socket) {
+    var a = 1;
     // when the client emits 'sendchat', this listens and executes
     socket.on('sendchat', function (data) {
         // we tell the client to execute 'updatechat' with 2 parameters

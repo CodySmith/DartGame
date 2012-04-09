@@ -1,12 +1,5 @@
 #import('dart:html', prefix:"html");
-#source('../AssetManager.dart');
-#source('../Animation.dart');
-#source('../Timer.dart');
-#source('../GameEntity.dart');
-#source('../Game.dart');
-#source('../Point.dart');
-#source('../Rectangle.dart');
-#source('../Momentum.dart');
+#import('../dgame/game.dart');
 #source('Alien.dart');
 #source('AlienExplosion.dart');
 #source('Sentry.dart');
