@@ -10,7 +10,7 @@ class ComputerPaddle extends Paddle {
         y -= 4;
       else if (y < 0)
         y += 4;
-    } else if (g.ball.momentum.xVel > 0) {
+    } else {
       if (g.ball.y > y + 60)
         y += 4;
       else if (g.ball.y < y)
