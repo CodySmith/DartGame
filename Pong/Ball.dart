@@ -4,6 +4,13 @@ class Ball extends GameEntity {
   void update() {
     Pong g = game;
     
+    // check to see if the ball hit the top or bottom.
+    if (y > game.halfSurfaceHeight - 4 || y < -(game.halfSurfaceHeight - 4)) {
+      momentum.yVel *= -1;
+      double volume = momentum.yVel.abs() * .05;
+      game.assetManager.playSound("sounds/hit3.ogg", volume);
+    }
+    
     if (collidesWith(g.player1)) {
       g.ballHit();
       ballHit(g.player1);
@@ -12,20 +19,12 @@ class Ball extends GameEntity {
       g.ballHit();
       ballHit(g.player2);
       game.assetManager.playSound("sounds/hit2.ogg");
-    } else if (outsideScreen() && momentum.xVel > 0) {
-      g.player1.score += 1;
+    } else if (outsideScreen()) {
+      if (x > 0)
+        g.player1.score++;
+      else
+        g.player2.score++;
       g.gameOver();
-    }
-      else if (outsideScreen() && momentum.xVel < 0) {
-      g.player2.score += 1;
-      g.gameOver();
-    }
-    
-    // check to see if the ball hit the top or bottom.
-    if (y > game.halfSurfaceHeight - 4 || y < -(game.halfSurfaceHeight - 4)) {
-      momentum.yVel *= -1;
-      double volume = momentum.yVel.abs() * .05;
-      game.assetManager.playSound("sounds/hit3.ogg", volume);
     }
     
     super.update();

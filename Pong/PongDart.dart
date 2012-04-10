@@ -1,6 +1,7 @@
 #import('dart:html', prefix:"html");
 #import('../dgame/game.dart');
 #source('Paddle.dart');
+#source('ComputerPaddle.dart');
 #source('Pong.dart');
 #source('Ball.dart');
 

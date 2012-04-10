@@ -91,7 +91,7 @@ class Game {
     ctx.fillStyle = bgStyle;
     ctx.fillRect(0,0,this.ctx.canvas.width, this.ctx.canvas.height);
     ctx.save();
-    ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2);
+    ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
     for (final GameEntity entity in entities) {
       entity.draw(ctx);
     }
