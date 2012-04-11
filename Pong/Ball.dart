@@ -3,7 +3,7 @@ class Ball extends GameEntity {
   
   void update() {
     Pong g = game;
-    
+    momentum.xMax = 18;
     // check to see if the ball hit the top or bottom.
     if (y > game.halfSurfaceHeight - 4 || y < -(game.halfSurfaceHeight - 4)) {
       momentum.yVel *= -1;
@@ -19,7 +19,7 @@ class Ball extends GameEntity {
       g.ballHit();
       ballHit(g.player2);
       game.assetManager.playSound("sounds/hit2.ogg");
-    } else if (outsideScreen()) {
+    } else if (x > game.halfSurfaceWidth || x < -(game.halfSurfaceWidth)) {
       if (x > 0)
         g.player1.score++;
       else

@@ -11,7 +11,7 @@ class ComputerPaddle extends Paddle {
       else if (y < 0)
         y += 4;
     } else {
-      if (g.ball.y > y + 60)
+      if (g.ball.y > y)
         y += 4;
       else if (g.ball.y < y)
         y -= 4;

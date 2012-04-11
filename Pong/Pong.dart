@@ -27,7 +27,7 @@ class Pong extends Game {
   void drawScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("${player1.score}              ${player2.score}", -60, -(halfSurfaceHeight - 30));
+    ctx.fillText("${player1.score}              ${player2.score}           ${ball.momentum.xVel}", -60, -(halfSurfaceHeight - 30));
   }
   
   void drawMiddleLine() {
