@@ -23,6 +23,7 @@ class Game {
   num halfSurfaceHeight;
   Point clientBoundingRect;
   AssetManager assetManager;
+  bool debugMode = false;
   String bgStyle = "rgba(0, 0, 0, 0.85)";
 
   bool showOutlines = false;
@@ -36,8 +37,8 @@ class Game {
     ctx = context;
     surfaceWidth = ctx.canvas.width;
     surfaceHeight = ctx.canvas.height;
-    halfSurfaceWidth = surfaceWidth/2;
-    halfSurfaceHeight = surfaceHeight/2;
+    halfSurfaceWidth = surfaceWidth / 2;
+    halfSurfaceHeight = surfaceHeight / 2;
     
     Future<html.ElementRect> futureRect = ctx.canvas.rect;
     futureRect.then((html.ElementRect rect) {
@@ -51,7 +52,7 @@ class Game {
   
   void start() {
     print("starting game");
-    html.window.webkitRequestAnimationFrame(loop, ctx.canvas);
+    html.window.webkitRequestAnimationFrame(loop);//, ctx.canvas);
   }
   
   bool loop(int time) {
@@ -59,7 +60,7 @@ class Game {
     update();
     draw();
     click = null;
-    html.window.webkitRequestAnimationFrame(loop, ctx.canvas);
+    html.window.webkitRequestAnimationFrame(loop); //, ctx.canvas);
   }
   
   void startInput() {

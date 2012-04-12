@@ -22,12 +22,20 @@ class Pong extends Game {
   void drawBeforeCtxRestore() {
     drawMiddleLine();
     drawScore();
+    if (debugMode)
+      drawDebugInfo();
+  }
+  
+  void drawDebugInfo() {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+    ctx.font = "16px cinnamoncake, Verdana";
+    ctx.fillText("V: ${ball.momentum.xVel}", -(halfSurfaceWidth - 20), -(halfSurfaceHeight - 30));
   }
   
   void drawScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("${player1.score}              ${player2.score}           ${ball.momentum.xVel}", -60, -(halfSurfaceHeight - 30));
+    ctx.fillText("${player1.score}              ${player2.score}", -60, -(halfSurfaceHeight - 30));
   }
   
   void drawMiddleLine() {
@@ -48,7 +56,7 @@ class Pong extends Game {
     ball.x = 0;
     ball.y = 0;
     score = 0;
-    ball.momentum.xVel = 5;
+    ball.momentum.xVel = ball.startVel;
   }
   
   void gameOver() {
@@ -56,7 +64,7 @@ class Pong extends Game {
     bgFade();
     if (score > highscore) {
       highscore = score;
-      ///html.window.localStorage.setItem("highscore", score.toString());
+      html.window.localStorage["highscore"] = score.toString();
     }
     newGame();
   }
@@ -89,31 +97,30 @@ class Pong extends Game {
   
   void dashedLine(x, y, x2, y2, [da]) { 
     if (da == null)
-      da=[10,5];
+      da = [10,5];
     
     var dashCount = da.length;
     ctx.moveTo(x, y);
-    var dx = (x2-x), dy = (y2-y);
+    var dx = (x2 - x), dy = (y2 - y);
     var slope = dy;
     if (dx != 0)
-      slope = dy/dx;
-    var distRemaining = Math.sqrt( dx*dx + dy*dy );
-    var dashIndex=0, drawLine=true;
-    while (distRemaining>=0.1 && dashIndex<10000){
-      var dashLength = da[dashIndex++%dashCount];
+      slope = dy / dx;
+    var distRemaining = Math.sqrt(dx * dx + dy * dy);
+    var dashIndex = 0, drawLine = true;
+    while (distRemaining>=0.1 && dashIndex < 10000){
+      var dashLength = da[dashIndex++ % dashCount];
       if (dashLength > distRemaining) dashLength = distRemaining;
-      var xStep = Math.sqrt( dashLength*dashLength / (1 + slope*slope) );
+      var xStep = Math.sqrt(dashLength * dashLength / (1 + slope * slope));
       x += xStep;
-      y += slope*xStep;
-      if (drawLine){
-        ctx.lineTo(x,y);
-      } else {
-        ctx.moveTo(x,y);
-      }
+      y += slope * xStep;
+      if (drawLine)
+        ctx.lineTo(x, y);
+      else
+        ctx.moveTo(x, y);
       distRemaining -= dashLength;
       drawLine = !drawLine;
     }
     
-    ctx.moveTo(0,0);
+    ctx.moveTo(0, 0);
   }
 }

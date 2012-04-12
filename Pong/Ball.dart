@@ -1,9 +1,14 @@
 class Ball extends GameEntity {
-  Ball(Game game, num x, num y) : super.withPosition(game, x, y, 8, 8);
+  num startVel = 400;
+  
+  Ball(Game game, num x, num y) : super.withPosition(game, x, y, 8, 8) {
+    momentum.xMax = 1400;
+    momentum.xAccel = 50;
+  }
   
   void update() {
     Pong g = game;
-    momentum.xMax = 18;
+    
     // check to see if the ball hit the top or bottom.
     if (y > game.halfSurfaceHeight - 4 || y < -(game.halfSurfaceHeight - 4)) {
       momentum.yVel *= -1;
@@ -37,10 +42,8 @@ class Ball extends GameEntity {
     momentum.yVel = ((8 * (hitPlaceP / 100)) - 4) + 0.5;
     momentum.xVel *= -1;
     
-    // increase speed
-    if (momentum.xVel < 10)
-      momentum.xVel *= 1.05;
-    else
-      momentum.xVel *= 1.015;
+    // slow the acceleration after 600
+    if (momentum.xVel > 600)
+      momentum.xAccel = 5;
   }
 }

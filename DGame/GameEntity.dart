@@ -30,9 +30,9 @@ class GameEntity {
   }
   
   void update() {
-    momentum.update();
-    x += momentum.xVel;
-    y += momentum.yVel;
+    momentum.update(game.clockTick);
+    x += momentum.xVel * game.clockTick;
+    y += momentum.yVel * game.clockTick;
     updateBox();
   }
   
