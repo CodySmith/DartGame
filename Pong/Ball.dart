@@ -1,5 +1,6 @@
 class Ball extends GameEntity {
   num startVel = 400;
+  double angle;
   
   Ball(Game game, num x, num y) : super.withPosition(game, x, y, 8, 8) {
     momentum.xMax = 1400;
@@ -9,11 +10,15 @@ class Ball extends GameEntity {
   void update() {
     Pong g = game;
     
+    
+    angle = Math.atan2(momentum.xVel.abs(), momentum.yVel.abs()) / (Math.PI/180);
     // check to see if the ball hit the top or bottom.
     if (y > game.halfSurfaceHeight - 4 || y < -(game.halfSurfaceHeight - 4)) {
       momentum.yVel *= -1;
-      double volume = momentum.yVel.abs() * .05;
+      print(angle);
+      double volume = (90 - angle) / 50;
       game.assetManager.playSound("sounds/hit3.ogg", volume);
+      
     }
     
     if (collidesWith(g.player1)) {
@@ -37,9 +42,8 @@ class Ball extends GameEntity {
   
   void ballHit(Paddle paddle) {
     paddle.fade();
-    var hitPlace = (paddle.y - y) + 60;
-    var hitPlaceP = 100 - ((hitPlace / 120 * 100));
-    momentum.yVel = ((8 * (hitPlaceP / 100)) - 4) + 0.5;
+    var hitPlace = -(paddle.y - y);
+    momentum.yVel = hitPlace * 5;
     momentum.xVel *= -1;
     
     // slow the acceleration after 600
