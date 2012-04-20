@@ -53,7 +53,6 @@ class Pong extends Game {
   }
   
   void newGame() {
-    ball.x = 0;
     ball.y = 0;
     score = 0;
     ball.momentum.xVel = ball.startVel;

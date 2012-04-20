@@ -59,7 +59,6 @@ class AssetManager {
       return;
     
     html.AudioElement c = s.clone(true);
-    print(volume);
     c.volume = round(volume, 3);
     c.play();
   }

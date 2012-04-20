@@ -1,41 +1,58 @@
 class Ball extends GameEntity {
   num startVel = 400;
-  double angle;
+  num reflectX = 1;
   
   Ball(Game game, num x, num y) : super.withPosition(game, x, y, 8, 8) {
     momentum.xMax = 1400;
-    momentum.xAccel = 50;
+    momentum.xAccel = 15;
   }
   
   void update() {
     Pong g = game;
     
-    
-    angle = Math.atan2(momentum.xVel.abs(), momentum.yVel.abs()) / (Math.PI/180);
+    double angle = Math.atan2(momentum.xVel.abs(), momentum.yVel.abs()) / (Math.PI/180);
     // check to see if the ball hit the top or bottom.
-    if (y > game.halfSurfaceHeight - 4 || y < -(game.halfSurfaceHeight - 4)) {
+    if (y > game.halfSurfaceHeight - 4 || y < -(game.halfSurfaceHeight)) {
       momentum.yVel *= -1;
-      print(angle);
       double volume = (90 - angle) / 50;
+      volume = Math.min(volume, 1);
       game.assetManager.playSound("sounds/hit3.ogg", volume);
-      
     }
-    
-    if (collidesWith(g.player1)) {
+  
+    if (collidesWith(g.player1) && reflectX < 0) {
       g.ballHit();
       ballHit(g.player1);
+      reflectX = 1;
       game.assetManager.playSound("sounds/hit1.ogg");
-    } else if (collidesWith(g.player2)) {
+    } else if (collidesWith(g.player2) && reflectX > 0) {
       g.ballHit();
       ballHit(g.player2);
+      reflectX = -1;
       game.assetManager.playSound("sounds/hit2.ogg");
-    } else if (x > game.halfSurfaceWidth || x < -(game.halfSurfaceWidth)) {
-      if (x > 0)
-        g.player1.score++;
-      else
-        g.player2.score++;
-      g.gameOver();
-    }
+    } 
+    if (x > game.halfSurfaceWidth || x < -(game.halfSurfaceWidth)) {
+        if (x > 0) {
+          x = -200;
+          if (Math.random() > .5)
+            momentum.yVel = Math.random() * 200;
+          else
+            momentum.yVel = Math.random() * -200;
+          startVel = 400;
+          reflectX = 1;
+          g.player1.score++;
+        }
+        else {
+          x = 200;
+          if (Math.random() > .5)
+            momentum.yVel = Math.random() * 200;
+          else
+            momentum.yVel = Math.random() * -200;
+          startVel = -400;
+          reflectX = -1;
+          g.player2.score++;
+        }
+        g.gameOver();
+      }
     
     super.update();
   }
