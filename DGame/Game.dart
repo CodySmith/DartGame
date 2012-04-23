@@ -24,6 +24,7 @@ class Game {
   Point clientBoundingRect;
   AssetManager assetManager;
   bool debugMode = false;
+  bool enableSound = true;
   String bgStyle = "rgba(0, 0, 0, 0.85)";
 
   bool showOutlines = false;
@@ -46,13 +47,12 @@ class Game {
     });
     
     startInput();
-    
     print('game initialized');
   }
   
   void start() {
     print("starting game");
-    html.window.webkitRequestAnimationFrame(loop);//, ctx.canvas);
+    html.window.requestAnimationFrame(loop);
   }
   
   bool loop(int time) {
@@ -60,7 +60,7 @@ class Game {
     update();
     draw();
     click = null;
-    html.window.webkitRequestAnimationFrame(loop); //, ctx.canvas);
+    html.window.requestAnimationFrame(loop);
   }
   
   void startInput() {
@@ -101,7 +101,32 @@ class Game {
   }
   
   void drawBeforeCtxRestore() {
+    if (debugMode)
+      drawDebugInfo();
+  }
+  
+  void drawDebugInfo() {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+    ctx.font = "16px Verdana";
+    ctx.fillText("FPS: ${timer.fps.toStringAsFixed(1)}", (halfSurfaceWidth - 120), -(halfSurfaceHeight - 30));
+  }
+  
+  void playSound(String path, [double volume = 1.0]) {
+    if (!enableSound)
+      return;
     
+    var s = assetManager.getAsset(path);
+    if (s == null)
+      return;
+    
+    html.AudioElement c = s.clone(true);
+    c.volume = round(volume, 3);
+    c.play();
+  }
+  
+  double round(double value, [int decimals = 2]) { 
+    int o = Math.pow(10, decimals); 
+    return (value * o).round() / o;
   }
   
   void update() {

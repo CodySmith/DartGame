@@ -17,18 +17,18 @@ class Ball extends GameEntity {
       momentum.yVel *= -1;
       print(angle);
       double volume = (90 - angle) / 50;
-      game.assetManager.playSound("sounds/hit3.ogg", volume);
+      game.playSound("sounds/hit3.ogg", volume);
       
     }
     
     if (collidesWith(g.player1)) {
       g.ballHit();
       ballHit(g.player1);
-      game.assetManager.playSound("sounds/hit1.ogg");
+      game.playSound("sounds/hit1.ogg");
     } else if (collidesWith(g.player2)) {
       g.ballHit();
       ballHit(g.player2);
-      game.assetManager.playSound("sounds/hit2.ogg");
+      game.playSound("sounds/hit2.ogg");
     } else if (x > game.halfSurfaceWidth || x < -(game.halfSurfaceWidth)) {
       if (x > 0)
         g.player1.score++;

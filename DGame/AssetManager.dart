@@ -53,22 +53,6 @@ class AssetManager {
     return _cache[path];
   }
   
-  playSound(String path, [double volume = 1.0]) {
-    var s = getAsset(path);
-    if (s == null)
-      return;
-    
-    html.AudioElement c = s.clone(true);
-    print(volume);
-    c.volume = round(volume, 3);
-    c.play();
-  }
-  
-  double round(double value, [int decimals = 2]) { 
-    int o = Math.pow(10, decimals); 
-    return (value * o).round() / o;
-  }
-  
   bool isDone() {
     return (_downloadQueue.length == _successCount + _errorCount);
   }
