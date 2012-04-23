@@ -52,7 +52,7 @@ class Game {
   
   void start() {
     print("starting game");
-    html.window.requestAnimationFrame(loop);
+    html.window.webkitRequestAnimationFrame(loop);
   }
   
   bool loop(int time) {
@@ -60,7 +60,7 @@ class Game {
     update();
     draw();
     click = null;
-    html.window.requestAnimationFrame(loop);
+    html.window.webkitRequestAnimationFrame(loop);
   }
   
   void startInput() {
