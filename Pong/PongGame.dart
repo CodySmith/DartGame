@@ -1,4 +1,4 @@
-class Pong extends Game {
+class PongGame extends Game {
   num score = 0;
   num highscore = 0;
   
@@ -6,7 +6,7 @@ class Pong extends Game {
   Paddle player2;
   Ball ball;
   
-  Pong(AssetManager assetManager) : super(assetManager);
+  PongGame(AssetManager assetManager) : super(assetManager);
   
   void start() {
     player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);

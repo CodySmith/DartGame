@@ -3,18 +3,22 @@ class ComputerPaddle extends Paddle {
   
   void move()
   {
-    Pong g = game;
+    PongGame g = game;
     
     if (g.ball.momentum.xVel < 0) {
-      if (y > 0)
-        y -= 4;
+      if (y < 5 && y > -5)
+        y += 0;
+      else if (y > 0)
+        y -= 3;
       else if (y < 0)
-        y += 4;
+        y += 3;
     } else {
+      if (g.ball.y < (y + 10) && g.ball.y > (y - 10) || g.ball.y == y)
+        y += 0;
       if (g.ball.y > y)
-        y += 4;
+        y += 3;
       else if (g.ball.y < y)
-        y -= 4;
+        y -= 3;
     }
   }  
 }

@@ -252,6 +252,7 @@ $defProp(Object.prototype, '$typeNameOf', (function() {
     if (name == 'Window') return 'DOMWindow';
     if (name == 'Document') return 'HTMLDocument';
     if (name == 'XMLDocument') return 'Document';
+    if (name == 'WorkerMessageEvent') return 'MessageEvent';
     return name;
   }
 
@@ -262,6 +263,9 @@ $defProp(Object.prototype, '$typeNameOf', (function() {
     // xmlVersion property, which is the empty string on HTML documents.
     if (name == 'Document' && this.xmlVersion) return 'Document';
     if (name == 'Document') return 'HTMLDocument';
+    if (name == 'HTMLTableDataCellElement') return 'HTMLTableCellElement';
+    if (name == 'HTMLTableHeaderCellElement') return 'HTMLTableCellElement';
+    if (name == 'MSStyleCSSProperties') return 'CSSStyleDeclaration';
     return name;
   }
 
@@ -603,7 +607,7 @@ function _toDartException(e) {
 }
 //  ********** Library dart:coreimpl **************
 // ********** Code for ListFactory **************
-ListFactory = Array;
+var ListFactory = Array;
 $defProp(ListFactory.prototype, "is$List", function(){return true});
 $defProp(ListFactory.prototype, "is$Collection", function(){return true});
 $defProp(ListFactory.prototype, "get$length", function() { return this.length; });
@@ -685,7 +689,7 @@ JSSyntaxRegExp.prototype.hasMatch = function(str) {
   return this.re.test(str);
 }
 // ********** Code for NumImplementation **************
-NumImplementation = Number;
+var NumImplementation = Number;
 NumImplementation.prototype.$negate = function() {
   'use strict'; return -this;
 }
@@ -1231,7 +1235,7 @@ StringBase.concatAll = function(strings) {
   return StringBase.join(strings, "");
 }
 // ********** Code for StringImplementation **************
-StringImplementation = String;
+var StringImplementation = String;
 StringImplementation.prototype.get$length = function() { return this.length; };
 StringImplementation.prototype.endsWith = function(other) {
     'use strict';
@@ -1377,7 +1381,7 @@ _ArgumentMismatchException.prototype.toString = function() {
   return ("Closure argument mismatch: " + this._dart_coreimpl_message);
 }
 // ********** Code for _FunctionImplementation **************
-_FunctionImplementation = Function;
+var _FunctionImplementation = Function;
 _FunctionImplementation.prototype._genStub = function(argsLength, names) {
       // Fast path #1: if no named arguments and arg count matches.
       var thisLength = this.$length || this.length;
@@ -3048,19 +3052,6 @@ _WebSocketEventsImpl.prototype.get$error = function() {
 $dynamic("get$clientX").WheelEvent = function() { return this.clientX; };
 $dynamic("get$clientY").WheelEvent = function() { return this.clientY; };
 // ********** Code for _WindowImpl **************
-$dynamic("requestAnimationFrame$_").DOMWindow = function(callback) {
-      if (!window.requestAnimationFrame) {
-        window.requestAnimationFrame =
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame ||
-            window.msRequestAnimationFrame ||
-            window.oRequestAnimationFrame ||
-            function (callback) {
-              window.setTimeout(callback, 16 /* 16ms ~= 60fps */);
-            };
-      }
-      return window.requestAnimationFrame(callback);
-}
 $dynamic("get$on").DOMWindow = function() {
   return new _WindowEventsImpl(this);
 }
@@ -3330,14 +3321,14 @@ Game.prototype.init = function(context) {
 }
 Game.prototype.start = function() {
   print$("starting game");
-  get$$window().requestAnimationFrame$_(this.get$loop());
+  get$$window().webkitRequestAnimationFrame(this.get$loop());
 }
 Game.prototype.loop = function(time) {
   this.clockTick = this.timer.tick();
   this.update();
   this.draw();
   this.click = null;
-  get$$window().requestAnimationFrame$_(this.get$loop());
+  get$$window().webkitRequestAnimationFrame(this.get$loop());
 }
 Game.prototype.get$loop = function() {
   return this.loop.bind(this);
@@ -3629,22 +3620,24 @@ function ComputerPaddle(game, x, y) {
 ComputerPaddle.prototype.move = function() {
   var g = this.game;
   if (g.ball.momentum.xVel < (0)) {
-    if (this.y > (0)) this.y = this.y - (4);
-    else if (this.y < (0)) this.y = this.y + (4);
+    if (this.y < (5) && this.y > (-5)) this.y = this.y + (0);
+    else if (this.y > (0)) this.y = this.y - (3);
+    else if (this.y < (0)) this.y = this.y + (3);
   }
   else {
-    if (g.ball.y > this.y) this.y = this.y + (4);
-    else if (g.ball.y < this.y) this.y = this.y - (4);
+    if (g.ball.y < (this.y + (10)) && g.ball.y > (this.y - (10)) || g.ball.y == this.y) this.y = this.y + (0);
+    if (g.ball.y > this.y) this.y = this.y + (3);
+    else if (g.ball.y < this.y) this.y = this.y - (3);
   }
 }
-// ********** Code for Pong **************
-$inherits(Pong, Game);
-function Pong(assetManager) {
+// ********** Code for PongGame **************
+$inherits(PongGame, Game);
+function PongGame(assetManager) {
   this.score = (0);
   this.highscore = (0);
   Game.call(this, assetManager);
 }
-Pong.prototype.start = function() {
+PongGame.prototype.start = function() {
   this.player1 = new Paddle(this, -(this.halfSurfaceWidth - (10)), (10));
   this.player2 = new ComputerPaddle(this, this.halfSurfaceWidth - (10), (10));
   this.ball = new Ball(this, (0), (0));
@@ -3654,40 +3647,40 @@ Pong.prototype.start = function() {
   this.newGame();
   Game.prototype.start.call(this);
 }
-Pong.prototype.drawBeforeCtxRestore = function() {
+PongGame.prototype.drawBeforeCtxRestore = function() {
   this.drawMiddleLine();
   this.drawScore();
   Game.prototype.drawBeforeCtxRestore.call(this);
 }
-Pong.prototype.drawDebugInfo = function() {
+PongGame.prototype.drawDebugInfo = function() {
   this.ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
   this.ctx.font = "16px Verdana";
   this.ctx.fillText(("V: " + this.ball.momentum.xVel.toStringAsFixed((0))), -(this.halfSurfaceWidth - (20)), -(this.halfSurfaceHeight - (30)));
   Game.prototype.drawDebugInfo.call(this);
 }
-Pong.prototype.drawScore = function() {
+PongGame.prototype.drawScore = function() {
   this.ctx.fillStyle = "rgba(255, 255, 255, 1)";
   this.ctx.font = "26px cinnamoncake, Verdana";
   this.ctx.fillText(("" + this.player1.score + "              " + this.player2.score), (-60), -(this.halfSurfaceHeight - (30)));
 }
-Pong.prototype.drawMiddleLine = function() {
+PongGame.prototype.drawMiddleLine = function() {
   this.ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
   this.ctx.lineWidth = (3);
   this.ctx.beginPath();
   this.dashedLine((0), -(this.halfSurfaceHeight), (0), this.halfSurfaceHeight);
   this.ctx.stroke();
 }
-Pong.prototype.ballHit = function() {
+PongGame.prototype.ballHit = function() {
   this.score++;
   this.subtleBgFade();
 }
-Pong.prototype.newGame = function() {
+PongGame.prototype.newGame = function() {
   this.ball.x = (0);
   this.ball.y = (0);
   this.ball.momentum.yVel = (20);
   this.ball.momentum.xVel = this.ball.startVel;
 }
-Pong.prototype.gameOver = function() {
+PongGame.prototype.gameOver = function() {
   this.playSound("sounds/sweep.ogg", (1.0));
   this.bgFade();
   if (this.score > this.highscore) {
@@ -3696,7 +3689,7 @@ Pong.prototype.gameOver = function() {
   }
   this.newGame();
 }
-Pong.prototype.subtleBgFade = function() {
+PongGame.prototype.subtleBgFade = function() {
   var $this = this; // closure support
   this.bgStyle = "rgba(0, 0, 0, 0.84)";
   get$$window().setTimeout(function function_() {
@@ -3728,7 +3721,7 @@ Pong.prototype.subtleBgFade = function() {
   }
   , (175));
 }
-Pong.prototype.bgFade = function() {
+PongGame.prototype.bgFade = function() {
   var $this = this; // closure support
   this.bgStyle = "rgba(0, 0, 0, 0.8)";
   get$$window().setTimeout(function function_() {
@@ -3776,7 +3769,7 @@ Pong.prototype.bgFade = function() {
   }
   , (275));
 }
-Pong.prototype.dashedLine = function(x, y, x2, y2, da) {
+PongGame.prototype.dashedLine = function(x, y, x2, y2, da) {
   var $0;
   if ($eq$(da)) da = [(10), (5)];
   var dashCount = da.get$length();
@@ -3799,38 +3792,55 @@ Pong.prototype.dashedLine = function(x, y, x2, y2, da) {
   }
   this.ctx.moveTo((0), (0));
 }
-Pong.prototype.start$0 = Pong.prototype.start;
+PongGame.prototype.start$0 = PongGame.prototype.start;
 // ********** Code for Ball **************
 $inherits(Ball, GameEntity);
 function Ball(game, x, y) {
   this.startVel = (400);
+  this.reflectX = (1);
   GameEntity.withPosition$ctor.call(this, game, x, y, (8), (8));
   this.momentum.xMax = (1400);
-  this.momentum.xAccel = (50);
+  this.momentum.xAccel = (15);
 }
 Ball.prototype.update = function() {
   var $0, $1, $2;
   var g = this.game;
-  this.angle = Math.atan2(this.momentum.xVel.abs(), this.momentum.yVel.abs()) / (0.017453292519943295);
-  if (this.y > this.game.halfSurfaceHeight - (4) || this.y < -(this.game.halfSurfaceHeight - (4))) {
+  var angle = Math.atan2(this.momentum.xVel.abs(), this.momentum.yVel.abs()) / (0.017453292519943295);
+  if (this.y > this.game.halfSurfaceHeight - (4) || this.y < -(this.game.halfSurfaceHeight)) {
     ($0 = this.momentum).yVel = $0.yVel * (-1);
-    print$(this.angle);
-    var volume = ((90) - this.angle) / (50);
+    var volume = ((90) - angle) / (50);
+    volume = Math.min(volume, (1));
     this.game.playSound("sounds/hit3.ogg", volume);
   }
-  if (this.collidesWith(g.player1)) {
+  if (this.collidesWith(g.player1) && this.reflectX < (0)) {
     g.ballHit();
     this.ballHit(g.player1);
+    this.reflectX = (1);
     this.game.playSound("sounds/hit1.ogg", (1.0));
   }
-  else if (this.collidesWith(g.player2)) {
+  else if (this.collidesWith(g.player2) && this.reflectX > (0)) {
     g.ballHit();
     this.ballHit(g.player2);
+    this.reflectX = (-1);
     this.game.playSound("sounds/hit2.ogg", (1.0));
   }
-  else if (this.x > this.game.halfSurfaceWidth || this.x < -(this.game.halfSurfaceWidth)) {
-    if (this.x > (0)) ($1 = g.player1).score = $1.score + (1);
-    else ($2 = g.player2).score = $2.score + (1);
+  if (this.x > this.game.halfSurfaceWidth || this.x < -(this.game.halfSurfaceWidth)) {
+    if (this.x > (0)) {
+      this.x = (-200);
+      if (Math.random() > (0.5)) this.momentum.yVel = Math.random() * (200);
+      else this.momentum.yVel = Math.random() * (-200);
+      this.startVel = (400);
+      this.reflectX = (1);
+      ($1 = g.player1).score = $1.score + (1);
+    }
+    else {
+      this.x = (200);
+      if (Math.random() > (0.5)) this.momentum.yVel = Math.random() * (200);
+      else this.momentum.yVel = Math.random() * (-200);
+      this.startVel = (-400);
+      this.reflectX = (-1);
+      ($2 = g.player2).score = $2.score + (1);
+    }
     g.gameOver();
   }
   GameEntity.prototype.update.call(this);
@@ -3853,7 +3863,7 @@ function main() {
   assetManager.queueDownload("sounds/hit2.ogg");
   assetManager.queueDownload("sounds/hit3.ogg");
   assetManager.queueDownload("sounds/sweep.ogg");
-  var game = new Pong(assetManager);
+  var game = new PongGame(assetManager);
   game.set$enableSound(true);
   game.set$debugMode(true);
   assetManager.downloadAll((function () {

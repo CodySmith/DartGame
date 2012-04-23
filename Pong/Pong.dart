@@ -4,6 +4,7 @@
 #source('ComputerPaddle.dart');
 #source('PongGame.dart');
 #source('Ball.dart');
+#source('PowerUp.dart');
 
 void main() {
   var canvas = html.document.query('#surface');
@@ -34,7 +35,7 @@ void main() {
 //    print("whoa: $event");
 //  });
   
-  var game = new Pong(assetManager);
+  var game = new PongGame(assetManager);
   game.enableSound = true;
   game.debugMode = true;
   
