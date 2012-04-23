@@ -4,6 +4,7 @@
 #source('ComputerPaddle.dart');
 #source('Pong.dart');
 #source('Ball.dart');
+#source('PowerUp.dart');
 
 void main() {
   var canvas = html.document.query('#surface');

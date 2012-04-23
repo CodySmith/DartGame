@@ -5,6 +5,7 @@ class Pong extends Game {
   Paddle player1;
   Paddle player2;
   Ball ball;
+  PowerUp powerUp;
   
   Pong(AssetManager assetManager) : super(assetManager);
   
@@ -12,9 +13,11 @@ class Pong extends Game {
     player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
     player2 = new ComputerPaddle(this, halfSurfaceWidth - 10, 10);
     ball = new Ball(this, 0, 0);
+    powerUp = new PowerUp(this, 50, -30);
     addEntity(ball);
     addEntity(player1);
     addEntity(player2);
+    addEntity(powerUp);
     newGame();
     super.start();
   }
