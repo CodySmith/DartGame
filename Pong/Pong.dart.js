@@ -622,7 +622,6 @@ $defProp(ListFactory.prototype, "removeLast", function() {
   return this.pop();
 });
 $defProp(ListFactory.prototype, "removeRange", function(start, rangeLength) {
-  
       if (rangeLength == 0) return;
       if (rangeLength < 0) throw new IllegalArgumentException('length');
       if (start < 0 || start + rangeLength > this.length)
@@ -3052,6 +3051,19 @@ _WebSocketEventsImpl.prototype.get$error = function() {
 $dynamic("get$clientX").WheelEvent = function() { return this.clientX; };
 $dynamic("get$clientY").WheelEvent = function() { return this.clientY; };
 // ********** Code for _WindowImpl **************
+$dynamic("requestAnimationFrame$_").DOMWindow = function(callback) {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame =
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            function (callback) {
+              window.setTimeout(callback, 16 /* 16ms ~= 60fps */);
+            };
+      }
+      return window.requestAnimationFrame(callback);
+}
 $dynamic("get$on").DOMWindow = function() {
   return new _WindowEventsImpl(this);
 }
@@ -3321,14 +3333,14 @@ Game.prototype.init = function(context) {
 }
 Game.prototype.start = function() {
   print$("starting game");
-  get$$window().webkitRequestAnimationFrame(this.get$loop());
+  get$$window().requestAnimationFrame$_(this.get$loop());
 }
 Game.prototype.loop = function(time) {
   this.clockTick = this.timer.tick();
   this.update();
   this.draw();
   this.click = null;
-  get$$window().webkitRequestAnimationFrame(this.get$loop());
+  get$$window().requestAnimationFrame$_(this.get$loop());
 }
 Game.prototype.get$loop = function() {
   return this.loop.bind(this);
@@ -3580,7 +3592,7 @@ Momentum.prototype.update = function(clockTick) {
   if (this.yVel != null && this.yMax != null && this.yVel.abs() > this.yMax) this.yVel = this.yVel > (0) ? this.yMax : -(this.yMax);
 }
 // ********** Code for top level **************
-//  ********** Library D:\DartGame\Pong\Pong **************
+//  ********** Library Pong **************
 // ********** Code for Paddle **************
 $inherits(Paddle, GameEntity);
 function Paddle(game, x, y) {
@@ -3864,7 +3876,7 @@ function main() {
   assetManager.queueDownload("sounds/hit3.ogg");
   assetManager.queueDownload("sounds/sweep.ogg");
   var game = new PongGame(assetManager);
-  game.set$enableSound(true);
+  game.set$enableSound(false);
   game.set$debugMode(true);
   assetManager.downloadAll((function () {
     game.init(ctx);
