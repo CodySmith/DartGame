@@ -32,21 +32,13 @@ class Ball extends GameEntity {
     } 
     if (x > game.halfSurfaceWidth || x < -(game.halfSurfaceWidth)) {
         if (x > 0) {
-          x = -200;
-          if (Math.random() > .5)
-            momentum.yVel = Math.random() * 200;
-          else
-            momentum.yVel = Math.random() * -200;
+          x = -400;
           startVel = 400;
           reflectX = 1;
           g.player1.score++;
         }
         else {
-          x = 200;
-          if (Math.random() > .5)
-            momentum.yVel = Math.random() * 200;
-          else
-            momentum.yVel = Math.random() * -200;
+          x = 400;
           startVel = -400;
           reflectX = -1;
           g.player2.score++;

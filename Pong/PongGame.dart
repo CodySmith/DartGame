@@ -1,10 +1,12 @@
 class PongGame extends Game {
   num score = 0;
   num highscore = 0;
+  num lastPowerUp = 5;
   
   Paddle player1;
   Paddle player2;
   Ball ball;
+  PowerUp powerUp;
   
   PongGame(AssetManager assetManager) : super(assetManager);
   
@@ -19,10 +21,34 @@ class PongGame extends Game {
     super.start();
   }
   
+  void update() {
+    newPowerUp();
+    
+    super.update();
+  }
+  
   void drawBeforeCtxRestore() {
     drawMiddleLine();
     drawScore();
     super.drawBeforeCtxRestore();
+  }
+  
+  void newPowerUp() {
+    if (Math.random() >= .1)
+      return;
+    
+    if (entities.filter((e) => e is PowerUp).length >= 5)
+      return;
+    
+    if (timer.gameTime < 5)
+      return;
+    
+    if (lastPowerUp + 5 >= timer.gameTime)
+      return;
+    
+    lastPowerUp = timer.gameTime;
+    powerUp = new PowerUp(this, Math.random() * 200, Math.random() * 200);
+    addEntity(powerUp);
   }
   
   void drawDebugInfo() {
@@ -53,9 +79,18 @@ class PongGame extends Game {
   }
   
   void newGame() {
-    ball.x = 0;
     ball.y = 0;
-    ball.momentum.yVel = 20;
+    
+    if (powerUp != null)
+      powerUp.removeFromWorld = true;
+    
+    
+    
+    if (Math.random() > .5)
+      ball.momentum.yVel = Math.random() * 200;
+    else
+      ball.momentum.yVel = Math.random() * -200;
+    
     ball.momentum.xVel = ball.startVel;
   }
   

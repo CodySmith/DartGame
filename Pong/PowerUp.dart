@@ -11,6 +11,8 @@ class PowerUp extends GameEntity {
         g.ball.momentum.yVel = Math.random() * 200;
       else
         g.ball.momentum.yVel = Math.random() * -200;
+      
+      removeFromWorld = true;
     }
   }
 }
