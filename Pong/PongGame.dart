@@ -47,7 +47,7 @@ class PongGame extends Game {
       return;
     
     lastPowerUp = timer.gameTime;
-    powerUp = new PowerUp(this, Math.random() * 200, Math.random() * 200);
+    powerUp = new PowerUp(this, Math.random() * 200, Math.random() * 200, Math.random());
     addEntity(powerUp);
   }
   
@@ -84,13 +84,14 @@ class PongGame extends Game {
     if (powerUp != null)
       powerUp.removeFromWorld = true;
     
-    
-    
     if (Math.random() > .5)
       ball.momentum.yVel = Math.random() * 200;
     else
       ball.momentum.yVel = Math.random() * -200;
     
+    player1.height = 120;
+    player2.height = 120;
+    timer.gameTime = 0;
     ball.momentum.xVel = ball.startVel;
   }
   
