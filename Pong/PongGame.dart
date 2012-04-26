@@ -34,17 +34,18 @@ class PongGame extends Game {
   }
   
   void newPowerUp() {
-    if (Math.random() >= .1)
-      return;
+    
+    //if (Math.random() >= .1)
+     //return;
     
     if (entities.filter((e) => e is PowerUp).length >= 5)
       return;
     
-    if (timer.gameTime < 5)
-      return;
+    //if (timer.gameTime < 5)
+     // return;
     
-    if (lastPowerUp + 5 >= timer.gameTime)
-      return;
+    //if (lastPowerUp + 5 >= timer.gameTime)
+     // return;
     
     lastPowerUp = timer.gameTime;
     powerUp = new PowerUp(this, Math.random() * 200, Math.random() * 200, Math.random());
@@ -82,7 +83,7 @@ class PongGame extends Game {
     ball.y = 0;
     
     if (powerUp != null)
-      powerUp.removeFromWorld = true;
+      p.removeFromWorld = true;
     
     if (Math.random() > .5)
       ball.momentum.yVel = Math.random() * 200;

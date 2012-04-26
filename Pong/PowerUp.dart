@@ -26,8 +26,25 @@ class PowerUp extends GameEntity {
       
       removeFromWorld = true;
     }
-    
   }
+  
+  
+  void draw(html.CanvasRenderingContext2D ctx) {
+    super.draw(ctx);
+    
+    ctx.fillStyle = "rgba(0, 0, 0, .5)";
+    ctx.font = "24px Verdana";
+    
+    switch (type) {
+      case 'reflector':      
+        ctx.fillText("R", x - 8, y + 8);
+        break;
+      case 'extendor':
+        ctx.fillText("E", x - 8, y + 8);
+        break;
+    }
+  }
+  // Overide draw method to add a letter to the power up box.
   
   void reflectorUpdate() {
     PongGame g = game;
