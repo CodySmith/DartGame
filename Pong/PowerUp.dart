@@ -1,8 +1,14 @@
 class PowerUp extends GameEntity {
   String type;
+  num creationTime = 0;
   
-  PowerUp(Game game, num x, num y, num rand) : super.withPosition(game, x, y, 36, 36) {
-    if (rand > .5) {
+  PowerUp(Game game, num x, num y) : super.withPosition(game, x, y, 36, 36) {
+    PongGame g = game;
+    
+    num rType = Math.random();
+    creationTime = g.timer.gameTime;
+    
+    if (rType > .5) {
       color = "255, 255, 255";
       type = 'reflector';
     } else {
@@ -13,6 +19,9 @@ class PowerUp extends GameEntity {
   
   void update() {
     PongGame g = game;
+    
+    if (creationTime + 10 <= g.timer.gameTime)
+      removeFromWorld = true;
     
     if (collidesWith(g.ball)) {
       switch (type) {
@@ -26,6 +35,8 @@ class PowerUp extends GameEntity {
       
       removeFromWorld = true;
     }
+    
+    super.update();
   }
   
   
@@ -44,15 +55,14 @@ class PowerUp extends GameEntity {
         break;
     }
   }
-  // Overide draw method to add a letter to the power up box.
   
   void reflectorUpdate() {
     PongGame g = game;
     
     if (Math.random() > .5)
-      g.ball.momentum.yVel = Math.random() * 200;
+      g.ball.momentum.yVel = Math.random() * 300;
     else
-      g.ball.momentum.yVel = Math.random() * -200;
+      g.ball.momentum.yVel = Math.random() * -300;
   }
   
   void extendUpdate() {

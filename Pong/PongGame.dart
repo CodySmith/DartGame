@@ -6,7 +6,6 @@ class PongGame extends Game {
   Paddle player1;
   Paddle player2;
   Ball ball;
-  PowerUp powerUp;
   
   PongGame(AssetManager assetManager) : super(assetManager);
   
@@ -34,21 +33,27 @@ class PongGame extends Game {
   }
   
   void newPowerUp() {
-    
-    //if (Math.random() >= .1)
-     //return;
+    if (Math.random() >= .1)
+      return;
     
     if (entities.filter((e) => e is PowerUp).length >= 5)
       return;
     
-    //if (timer.gameTime < 5)
-     // return;
+    if (timer.gameTime < 5)
+      return;
     
-    //if (lastPowerUp + 5 >= timer.gameTime)
-     // return;
+    if (lastPowerUp + 5 >= timer.gameTime)
+      return;
+    
+    PowerUp powerUp = new PowerUp(this, 0, 0);
+    
+    do {
+      powerUp.x = randomXToY(-200, 200);
+      powerUp.y = randomXToY(-200, 200);
+      
+    } while(entities.filter((e) => e is PowerUp).some((e) => powerUp.collidesWith(e)));
     
     lastPowerUp = timer.gameTime;
-    powerUp = new PowerUp(this, Math.random() * 200, Math.random() * 200, Math.random());
     addEntity(powerUp);
   }
   
@@ -74,6 +79,12 @@ class PongGame extends Game {
     ctx.stroke();
   }
   
+  num randomXToY(minVal, maxVal)
+  {
+    var randVal = minVal+(Math.random()*(maxVal-minVal));
+    return randVal;
+  }
+  
   void ballHit(){
     score++;
     subtleBgFade();
@@ -82,8 +93,7 @@ class PongGame extends Game {
   void newGame() {
     ball.y = 0;
     
-    if (powerUp != null)
-      p.removeFromWorld = true;
+    entities.filter((e) => e is PowerUp).forEach((e) => e.removeFromWorld = true);
     
     if (Math.random() > .5)
       ball.momentum.yVel = Math.random() * 200;
