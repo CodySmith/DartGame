@@ -1,9 +1,9 @@
 class GameEntity {
   Game game;
-  num x = 0;
-  num y = 0;
-  num width = 1;
-  num height = 1;
+  num _x = 0;
+  num _y = 0;
+  num _width = 1;
+  num _height = 1;
   Rectangle box;
   
   bool removeFromWorld = false;
@@ -17,7 +17,6 @@ class GameEntity {
   
   GameEntity(Game this.game) {
     momentum = new Momentum();
-    box = new Rectangle(x, y, width, height);
   }
   
   GameEntity.withPosition(Game game, num x, num y, [num width = 1, num height = 1]) : this(game) {
@@ -25,8 +24,6 @@ class GameEntity {
     this.y = y;
     this.width = width;
     this.height = height;
-    box = new Rectangle(x, y, width, height);
-    updateBox();
   }
   
   void update() {
@@ -36,9 +33,36 @@ class GameEntity {
     updateBox();
   }
   
+  num get x() => _x;
+  void set x(num value) {
+    _x = value;
+    updateBox();
+  }
+  
+  num get y() => _y;
+  void set y(num value) {
+    _y = value;
+    updateBox();
+  }
+  
+  num get width() => _width;
+  void set width(num value) {
+    _width = value;
+    updateBox();
+  }
+  
+  num get height() => _height;
+  void set height(num value) {
+    _height = value;
+    updateBox();
+  }
+  
   void updateBox() {
     if (sprite != null)
       return;
+    
+    if (box == null)
+      box = new Rectangle(0, 0, 0, 0);
     
     box.x = x - (width / 2);
     box.y = y - (height / 2);

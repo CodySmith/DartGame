@@ -1,6 +1,7 @@
 class PongGame extends Game {
   num score = 0;
   num highscore = 0;
+  num lastPowerUp = 5;
   
   Paddle player1;
   Paddle player2;
@@ -19,10 +20,41 @@ class PongGame extends Game {
     super.start();
   }
   
+  void update() {
+    newPowerUp();
+    
+    super.update();
+  }
+  
   void drawBeforeCtxRestore() {
     drawMiddleLine();
     drawScore();
     super.drawBeforeCtxRestore();
+  }
+  
+  void newPowerUp() {
+    if (Math.random() >= .1)
+      return;
+    
+    if (entities.filter((e) => e is PowerUp).length >= 5)
+      return;
+    
+    if (timer.gameTime < 5)
+      return;
+    
+    if (lastPowerUp + 5 >= timer.gameTime)
+      return;
+    
+    PowerUp powerUp = new PowerUp(this, 0, 0);
+    
+    do {
+      powerUp.x = randomXToY(-200, 200);
+      powerUp.y = randomXToY(-200, 200);
+      
+    } while(entities.filter((e) => e is PowerUp).some((e) => powerUp.collidesWith(e)));
+    
+    lastPowerUp = timer.gameTime;
+    addEntity(powerUp);
   }
   
   void drawDebugInfo() {
@@ -47,15 +79,30 @@ class PongGame extends Game {
     ctx.stroke();
   }
   
+  num randomXToY(minVal, maxVal)
+  {
+    var randVal = minVal+(Math.random()*(maxVal-minVal));
+    return randVal;
+  }
+  
   void ballHit(){
     score++;
     subtleBgFade();
   }
   
   void newGame() {
-    ball.x = 0;
     ball.y = 0;
-    ball.momentum.yVel = 20;
+    
+    entities.filter((e) => e is PowerUp).forEach((e) => e.removeFromWorld = true);
+    
+    if (Math.random() > .5)
+      ball.momentum.yVel = Math.random() * 200;
+    else
+      ball.momentum.yVel = Math.random() * -200;
+    
+    player1.height = 120;
+    player2.height = 120;
+    timer.gameTime = 0;
     ball.momentum.xVel = ball.startVel;
   }
   
