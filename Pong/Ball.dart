@@ -16,19 +16,19 @@ class Ball extends GameEntity {
       momentum.yVel *= -1;
       double volume = (90 - angle) / 50;
       volume = Math.min(volume, 1);
-      game.playSound("sounds/hit3.ogg", volume);
+      game.playSound("sounds/hit3", volume);
     }
   
     if (collidesWith(g.player1) && reflectX < 0) {
       g.ballHit();
       ballHit(g.player1);
       reflectX = 1;
-      game.playSound("sounds/hit1.ogg");
+      game.playSound("sounds/hit1");
     } else if (collidesWith(g.player2) && reflectX > 0) {
       g.ballHit();
       ballHit(g.player2);
       reflectX = -1;
-      game.playSound("sounds/hit2.ogg");
+      game.playSound("sounds/hit2");
     } 
     if (x > game.halfSurfaceWidth || x < -(game.halfSurfaceWidth)) {
         if (x > 0) {

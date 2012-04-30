@@ -26,7 +26,7 @@ class Game {
   bool debugMode = false;
   bool enableSound = true;
   String bgStyle = "rgba(0, 0, 0, 0.85)";
-
+  bool _supportsMp3 = null;
   bool showOutlines = false;
   
   Game(AssetManager this.assetManager) {
@@ -114,6 +114,16 @@ class Game {
   void playSound(String path, [double volume = 1.0]) {
     if (!enableSound)
       return;
+    
+    if (_supportsMp3 == null) {
+      html.AudioElement audio = new html.Element.tag("audio");
+      _supportsMp3 = audio.canPlayType('audio/mpeg', '') != '';
+    }
+    
+    if (_supportsMp3 == true)
+      path += ".mp3";
+    else
+      path += ".ogg";
     
     var s = assetManager.getAsset(path);
     if (s == null)
