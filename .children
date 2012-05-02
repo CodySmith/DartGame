@@ -1,4 +1,4 @@
-DGame/Game.dart
-BadAliens/BadAliensDart.dart
+Content/DGame/Game.dart
+Content/Pong/Pong.dart
+Content/BadAliens/BadAliensDart.dart
 Server/app.dart
-Pong/Pong.dart

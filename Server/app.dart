@@ -6,7 +6,7 @@ void main() {
   Map clients = new Map<double, WebSocketConnection>();
   HttpServer httpServer = new HttpServer();
   WebSocketHandler webSocketHandler = new WebSocketHandler();
-  StaticFileHandler fileHandler = new StaticFileHandler("../pong");
+  StaticFileHandler fileHandler = new StaticFileHandler("../content");
   httpServer.addRequestHandler((HttpRequest req) => req.path == "/ws", webSocketHandler.onRequest);
   httpServer.addRequestHandler((req) => true, (req,res) => fileHandler.onRequest(req, res));
   
@@ -40,6 +40,8 @@ void main() {
       }
     };
   };
+  
+  new Timer.repeating(10, (t) => clients.forEach((k, v) => v.send('ping')));
   
   httpServer.listen('127.0.0.1', 8000);
   print('listening on: http://127.0.0.1:8000');

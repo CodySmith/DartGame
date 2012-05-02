@@ -22,26 +22,29 @@ void main() {
   assetManager.queueDownload("sounds/sweep.mp3");
 
   html.WebSocket ws = new html.WebSocket("ws://localhost:8000/ws");
-  ws.on.open.add((event) {
+  ws.on.open.add((e) {
     bool ret = ws.send("Hello");
-    print("Sent: $ret");
+    print("sent: $ret");
   });
   
-  ws.on.message.add((event) {
-    print("Got an event: $event");
-    print("The data in the event is: " + event.data);
+  ws.on.message.add((e) {
+    print("msg: " + e.data);
+    if (e.data == "ping") {
+      print("got ping");
+      ws.send("pong");
+    }
   });
   
-  ws.on.error.add((event) {
-    print("whoa: $event");
+  ws.on.error.add((e) {
+    print("whoa: $e");
   });
   
-  ws.on.close.add((event) {
-    print("whoa: $event");
+  ws.on.close.add((e) {
+    print("whoa: $e");
   });
   
   var game = new PongGame(assetManager);
-  game.enableSound = true;
+  game.enableSound = false;
   game.debugMode = true;
   
   assetManager.downloadAll(() {

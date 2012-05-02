@@ -4,8 +4,10 @@ class StaticFileHandler {
   StaticFileHandler(String this.basePath);
   
   void onRequest(HttpRequest req, HttpResponse res){
-    final int BUFFER_SIZE = 4096;
-    String fileName = "$basePath${req.path}";
+    String path = req.path;
+    if (path.endsWith('/'))
+      path += "index.html";
+    String fileName = "$basePath$path";
     
     File file = new File(fileName);
     if (file.existsSync()) {
