@@ -20,7 +20,8 @@ class GameEntity {
     momentum = new Momentum();
   }
   
-  GameEntity.withPosition(Game game, num x, num y, [num width = 1, num height = 1]) : this(game) {
+  GameEntity.withPosition(Game this.game, num x, num y, [num width = 1, num height = 1]) {
+    momentum = new Momentum();
     this.x = x;
     this.y = y;
     this.width = width;

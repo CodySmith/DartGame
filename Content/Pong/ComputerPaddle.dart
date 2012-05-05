@@ -12,11 +12,6 @@ class ComputerPaddle extends Paddle {
   
   int get skillLevel() => _skillLevel;
   
-  // TODO: Add code to check for attempting to hit at the top, middle or bottom of the paddle to add some variety to the way the computer plays
-  // TODO: Add some probability of moving toward the best spot based on skillLevel.
-  // TODO: Vary movement toward the right spot based on probability and skillLevel.
-  // TODO: Add code to figure out the target position including wall reflections. (this would be messed up from the redirect powerup)
-  
   void move()
   {
     PongGame g = game;
@@ -33,7 +28,7 @@ class ComputerPaddle extends Paddle {
     ballComing = newBallComing;
     
     num targetPosition = ballComing ?
-        g.ball.y + (targetOffset * 40)
+        g.ball.y + (targetOffset * 50)
         : 0;
     
     // if we are within 1 of our targetPosition, just stay there.

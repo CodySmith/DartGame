@@ -19,7 +19,7 @@ class PongGame extends Game {
   
   void start() {
     player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
-    player2 = new ComputerPaddle(this, halfSurfaceWidth - 10, 10);
+    player2 = new ComputerPaddle(this, halfSurfaceWidth - 10, 10, 3);
     ball = new Ball(this, 0, 0);
     addEntity(ball);
     addEntity(player1);

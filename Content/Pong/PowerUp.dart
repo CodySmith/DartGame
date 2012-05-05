@@ -60,9 +60,9 @@ class PowerUp extends GameEntity {
     PongGame g = game;
     
     if (Math.random() > .5)
-      g.ball.momentum.yVel = Math.random() * 300;
+      g.ball.momentum.yVel = Utils.random(200, 600);
     else
-      g.ball.momentum.yVel = Math.random() * -300;
+      g.ball.momentum.yVel = Utils.random(-200, -600);
   }
   
   void extendUpdate() {
