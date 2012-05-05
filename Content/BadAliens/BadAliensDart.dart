@@ -21,10 +21,10 @@ void main() {
   assetManager.queueDownload('img/sentry.png');
   assetManager.queueDownload('img/explosion.png');
   
-  var game = new EvilAliens(assetManager);
+  var game = new EvilAliens(assetManager, ctx);
   
   assetManager.downloadAll(() {
-    game.init(ctx);
+    game.init();
     game.start();
   });
 }

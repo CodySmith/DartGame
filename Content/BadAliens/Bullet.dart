@@ -13,11 +13,11 @@ class Bullet extends GameEntity {
   
   void update() {
     if (outsideScreen()) {
-      removeFromWorld = true;
+      removeFromGame();
     } else if (x.abs() >= explodesAt.x.abs() || y.abs() >= explodesAt.y.abs()) {
       // TODO play sound
       game.addEntity(new BulletExplosion(game, explodesAt.x, explodesAt.y));
-      removeFromWorld = true;
+      removeFromGame();
     } else {
       x = radialDistance * Math.cos(angle);
       y = radialDistance * Math.sin(angle);

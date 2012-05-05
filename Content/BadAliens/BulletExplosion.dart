@@ -10,7 +10,7 @@ class BulletExplosion extends GameEntity {
   
   void update() {
     if (animation.isDone()) {
-      removeFromWorld = true;
+      removeFromGame();
       return;
     }
     

@@ -8,9 +8,9 @@
 #source('Point.dart');
 #source('Rectangle.dart');
 #source('Momentum.dart');
+#source('Utils.dart');
 
 class Game {
-  
   List entities;
   html.CanvasRenderingContext2D ctx;
   Point click;
@@ -28,14 +28,20 @@ class Game {
   String bgStyle = "rgba(0, 0, 0, 0.85)";
   bool _supportsMp3 = null;
   bool showOutlines = false;
+  bool includeUI = true;
   
-  Game(AssetManager this.assetManager) {
+  Game(AssetManager this.assetManager, html.CanvasRenderingContext2D this.ctx) {
     timer = new Timer();
     entities = [];
   }
-
-  void init(html.CanvasRenderingContext2D context) {
-    ctx = context;
+  
+  Game.withoutUI() {
+    timer = new Timer();
+    entities = [];
+    includeUI = false;
+  }
+  
+  void init() {
     surfaceWidth = ctx.canvas.width;
     surfaceHeight = ctx.canvas.height;
     halfSurfaceWidth = surfaceWidth / 2;
@@ -130,28 +136,18 @@ class Game {
       return;
     
     html.AudioElement c = s.clone(true);
-    c.volume = round(volume, 3);
+    c.volume = Utils.round(volume, 3);
     c.play();
-  }
-  
-  double round(double value, [int decimals = 2]) { 
-    int o = Math.pow(10, decimals); 
-    return (value * o).round() / o;
   }
   
   void update() {
     num entitiesCount = entities.length;
     
-    for (var i = 0; i < entitiesCount; i++) {
-        var entity = entities[i];
-        
-        if (!entity.removeFromWorld) {
-            entity.update();
-        }
-    }
+    for (GameEntity entity in entities.filter((e) => !e._removeFromGame))
+      entity.update();
     
-    for (var i = entities.length-1; i >= 0; --i) {
-        if (entities[i].removeFromWorld) {
+    for (int i = entities.length - 1; i >= 0; --i) {
+        if (entities[i]._removeFromGame) {
             entities.removeRange(i, 1);
         }
     }

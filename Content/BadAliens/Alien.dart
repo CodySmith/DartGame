@@ -21,7 +21,7 @@ class Alien extends GameEntity {
     radialDistance -= speed * game.clockTick;
 
     if (hitPlanet()) {
-        removeFromWorld = true;
+        removeFromGame();
         EvilAliens eg = game;
         eg.lives -= 1;
     }
@@ -40,7 +40,7 @@ class Alien extends GameEntity {
   }
   
   void explode() {
-    removeFromWorld = true;
+    removeFromGame();
     game.addEntity(new AlienExplosion(game, x, y));
     // TODO play sound
   }

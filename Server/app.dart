@@ -1,9 +1,12 @@
 #import('dart:io');
+#import('dart:json');
+#import('../Content/Pong/PongGame.dart');
 #source('StaticFileHandler.dart');
 #source('NotFoundHandler.dart');
 
 void main() {
   Map clients = new Map<double, WebSocketConnection>();
+  
   HttpServer httpServer = new HttpServer();
   WebSocketHandler webSocketHandler = new WebSocketHandler();
   StaticFileHandler fileHandler = new StaticFileHandler("../content");
@@ -12,13 +15,12 @@ void main() {
   
   webSocketHandler.onOpen = (WebSocketConnection connection) {
     int killed = 0;
-    print('connected');
-    clients.forEach((k, v) => v.send('hello'));
     double identifier = Math.random();
+    print('player connected: $identifier');
+    clients.forEach((k, v) => v.send('hello'));
     clients[identifier] = connection;
     
     connection.onMessage = (message) {
-      print("message: $message");
       clients.forEach((k, v) => v.send(message));
     };
     
@@ -41,7 +43,7 @@ void main() {
     };
   };
   
-  new Timer.repeating(10, (t) => clients.forEach((k, v) => v.send('ping')));
+  new Timer.repeating(50, (t) => clients.forEach((k, v) => v.send('ping')));
   
   httpServer.listen('127.0.0.1', 8000);
   print('listening on: http://127.0.0.1:8000');

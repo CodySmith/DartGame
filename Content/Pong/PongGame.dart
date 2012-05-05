@@ -1,3 +1,11 @@
+#library("pong");
+#import('dart:html', prefix:"html");
+#import('../dgame/game.dart');
+#source('Paddle.dart');
+#source('ComputerPaddle.dart');
+#source('Ball.dart');
+#source('PowerUp.dart');
+
 class PongGame extends Game {
   num score = 0;
   num highscore = 0;
@@ -7,7 +15,7 @@ class PongGame extends Game {
   Paddle player2;
   Ball ball;
   
-  PongGame(AssetManager assetManager) : super(assetManager);
+  PongGame(AssetManager assetManager, html.CanvasRenderingContext2D ctx) : super(assetManager, ctx);
   
   void start() {
     player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
@@ -48,8 +56,8 @@ class PongGame extends Game {
     PowerUp powerUp = new PowerUp(this, 0, 0);
     
     do {
-      powerUp.x = randomXToY(-200, 200);
-      powerUp.y = randomXToY(-200, 200);
+      powerUp.x = Utils.random(-halfSurfaceWidth + 100, halfSurfaceWidth - 100);
+      powerUp.y = Utils.random(-halfSurfaceHeight + 50, halfSurfaceHeight - 50);
       
     } while(entities.filter((e) => e is PowerUp).some((e) => powerUp.collidesWith(e)));
     
@@ -75,14 +83,8 @@ class PongGame extends Game {
     ctx.lineWidth = 3;
     
     ctx.beginPath();
-    dashedLine(0, -(halfSurfaceHeight), 0, halfSurfaceHeight);
+    Utils.drawDashedLine(ctx, 0, -(halfSurfaceHeight), 0, halfSurfaceHeight);
     ctx.stroke();
-  }
-  
-  num randomXToY(minVal, maxVal)
-  {
-    var randVal = minVal+(Math.random()*(maxVal-minVal));
-    return randVal;
   }
   
   void ballHit(){
@@ -93,12 +95,12 @@ class PongGame extends Game {
   void newGame() {
     ball.y = 0;
     
-    entities.filter((e) => e is PowerUp).forEach((e) => e.removeFromWorld = true);
+    entities.filter((e) => e is PowerUp).forEach((e) => e.removeFromGame());
     
     if (Math.random() > .5)
-      ball.momentum.yVel = Math.random() * 200;
+      ball.momentum.yVel = Utils.random(0, 200);
     else
-      ball.momentum.yVel = Math.random() * -200;
+      ball.momentum.yVel = Utils.random(-200, 0);
     
     player1.height = 120;
     player2.height = 120;
@@ -109,10 +111,6 @@ class PongGame extends Game {
   void gameOver() {
     playSound("sounds/sweep.ogg");
     bgFade();
-    if (score > highscore) {
-      highscore = player1.score;
-      html.window.localStorage["highscore"] = player1.score.toString();
-    }
     newGame();
   }
   
@@ -140,34 +138,5 @@ class PongGame extends Game {
     html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 225);
     html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.80)"; }, 250);
     html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 275);
-  }
-  
-  void dashedLine(x, y, x2, y2, [da]) { 
-    if (da == null)
-      da = [10,5];
-    
-    var dashCount = da.length;
-    ctx.moveTo(x, y);
-    var dx = (x2 - x), dy = (y2 - y);
-    var slope = dy;
-    if (dx != 0)
-      slope = dy / dx;
-    var distRemaining = Math.sqrt(dx * dx + dy * dy);
-    var dashIndex = 0, drawLine = true;
-    while (distRemaining>=0.1 && dashIndex < 10000){
-      var dashLength = da[dashIndex++ % dashCount];
-      if (dashLength > distRemaining) dashLength = distRemaining;
-      var xStep = Math.sqrt(dashLength * dashLength / (1 + slope * slope));
-      x += xStep;
-      y += slope * xStep;
-      if (drawLine)
-        ctx.lineTo(x, y);
-      else
-        ctx.moveTo(x, y);
-      distRemaining -= dashLength;
-      drawLine = !drawLine;
-    }
-    
-    ctx.moveTo(0, 0);
   }
 }

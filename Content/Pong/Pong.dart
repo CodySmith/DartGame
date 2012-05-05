@@ -1,14 +1,11 @@
+#import('ponggame.dart');
 #import('dart:html', prefix:"html");
 #import('../dgame/game.dart');
-#source('Paddle.dart');
-#source('ComputerPaddle.dart');
-#source('PongGame.dart');
-#source('Ball.dart');
-#source('PowerUp.dart');
 
 void main() {
   var canvas = html.document.query('#surface');
   var ctx = canvas.getContext('2d');
+  num msgCount = 0;
   
   AssetManager assetManager = new AssetManager();
   assetManager.queueDownload("sounds/hit1.ogg");
@@ -28,27 +25,28 @@ void main() {
   });
   
   ws.on.message.add((e) {
-    print("msg: " + e.data);
+    msgCount++;
     if (e.data == "ping") {
-      print("got ping");
       ws.send("pong");
     }
   });
   
   ws.on.error.add((e) {
-    print("whoa: $e");
+    print("Error was : $e");
   });
   
   ws.on.close.add((e) {
-    print("whoa: $e");
+    print("Closed: $e");
   });
   
-  var game = new PongGame(assetManager);
+  //new Timer.repeating(1000, (t) => print('$msgCount');
+  
+  var game = new PongGame(assetManager, ctx);
   game.enableSound = false;
   game.debugMode = true;
   
   assetManager.downloadAll(() {
-    game.init(ctx);
+    game.init();
     game.start();
   });
 }

@@ -9,7 +9,7 @@ class AlienExplosion extends GameEntity {
   
   void update() {
     if (animation.isDone()) {
-      removeFromWorld = true;
+      removeFromGame();
     }
   }
   

@@ -21,7 +21,7 @@ class PowerUp extends GameEntity {
     PongGame g = game;
     
     if (creationTime + 10 <= g.timer.gameTime)
-      removeFromWorld = true;
+      removeFromGame();
     
     if (collidesWith(g.ball)) {
       switch (type) {
@@ -33,7 +33,7 @@ class PowerUp extends GameEntity {
           break;
       }
       
-      removeFromWorld = true;
+      removeFromGame();
     }
     
     super.update();

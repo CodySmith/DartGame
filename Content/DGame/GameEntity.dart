@@ -5,8 +5,9 @@ class GameEntity {
   num _width = 1;
   num _height = 1;
   Rectangle box;
+  Rectangle previousBox;
   
-  bool removeFromWorld = false;
+  bool _removeFromGame = false;
   var sprite;
   num radius;
   Momentum momentum;
@@ -27,6 +28,11 @@ class GameEntity {
   }
   
   void update() {
+    if (previousBox == null)
+      previousBox = new Rectangle.clone(box);
+    else
+      previousBox.updateFrom(box);
+    
     momentum.update(game.clockTick);
     x += momentum.xVel * game.clockTick;
     y += momentum.yVel * game.clockTick;
@@ -64,20 +70,20 @@ class GameEntity {
     if (box == null)
       box = new Rectangle(0, 0, 0, 0);
     
-    box.x = x - (width / 2);
-    box.y = y - (height / 2);
-    box.height = height;
-    box.width = width;
+    box.left = x - (width / 2);
+    box.top = y - (height / 2);
+    box.right = box.left + width;
+    box.bottom = box.top + height;
   }
   
   void draw(html.CanvasRenderingContext2D ctx) {
     if (color != null) {
       if (fill) {
         ctx.fillStyle = "rgba($color, $opacity)";
-        ctx.fillRect(box.x, box.y, box.width, box.height);
+        ctx.fillRect(box.left, box.top, box.width, box.height);
       } else {
         ctx.strokeStyle = "rgba($color, $opacity)";
-        ctx.strokeRect(box.x, box.y, box.width, box.height);
+        ctx.strokeRect(box.left, box.top, box.width, box.height);
       }
     }
     
@@ -96,6 +102,10 @@ class GameEntity {
     ctx.drawImage(sprite, cx, cy);
   }
   
+  void removeFromGame() {
+    _removeFromGame = true;
+  }
+  
   bool outsideScreen() {
     return (x > game.halfSurfaceWidth || x < -(game.halfSurfaceWidth) ||
         y > game.halfSurfaceHeight || y < -(game.halfSurfaceHeight));
@@ -103,10 +113,7 @@ class GameEntity {
   
   bool collidesWith(GameEntity entity) {
     // TODO: Check for radius to see if collision should be circular
-    return !(
-        ((box.y + box.height) < (entity.box.y)) || (box.y > (entity.box.y + entity.box.height)) ||
-        ((box.x + box.width) < entity.box.x) || (box.x > (entity.box.x + entity.box.width))
-    );
+    return entity.box.intersectsWith(box);
   }
   
   html.CanvasElement rotateAndCache(image, angle) {
