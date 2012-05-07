@@ -88,10 +88,12 @@ class Game {
     html.document.on.touchMove.add((e) {
       e.preventDefault();
       mouse = getXandY(e.touches[0]);
+      return false;
     });
     
     html.document.on.touchStart.add((e) {
       e.preventDefault();
+      return false;
     });
     
     print('Input started');
