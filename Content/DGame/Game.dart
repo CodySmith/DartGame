@@ -72,17 +72,22 @@ class Game {
     print('Starting input');
     
     Point getXandY(e) {
-        num x =  e.clientX - clientPoint.x - (ctx.canvas.width / 2);
-        num y = e.clientY - clientPoint.y - (ctx.canvas.height / 2);
-        return new Point(x, y);
+      num x =  e.clientX - clientPoint.x - (ctx.canvas.width / 2);
+      num y = e.clientY - clientPoint.y - (ctx.canvas.height / 2);
+      return new Point(x, y);
     }
     
     html.document.on.click.add((e) {
-        click = getXandY(e);
+      click = getXandY(e);
     });
     
     html.document.on.mouseMove.add((e) {
-        mouse = getXandY(e);
+      mouse = getXandY(e);
+    });
+    
+    html.document.on.touchMove.add((e) {
+      print("touchMove");
+      mouse = getXandY(e.touches[0]);
     });
     
     print('Input started');
