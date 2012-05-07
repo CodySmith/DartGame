@@ -86,8 +86,11 @@ class Game {
     });
     
     html.document.on.touchMove.add((e) {
-      print("touchMove");
+      e.preventDefault();
       mouse = getXandY(e.touches[0]);
+    });
+    
+    html.document.on.touchStart.add((e) {
       e.preventDefault();
     });
     
