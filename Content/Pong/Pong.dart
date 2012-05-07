@@ -8,15 +8,15 @@ void main() {
   num msgCount = 0;
   
   AssetManager assetManager = new AssetManager();
-  assetManager.queueDownload("sounds/hit1.ogg");
-  assetManager.queueDownload("sounds/hit2.ogg");
-  assetManager.queueDownload("sounds/hit3.ogg");
-  assetManager.queueDownload("sounds/sweep.ogg");
+  assetManager.queueDownload("Sounds/hit1.ogg");
+  assetManager.queueDownload("Sounds/hit2.ogg");
+  assetManager.queueDownload("Sounds/hit3.ogg");
+  assetManager.queueDownload("Sounds/sweep.ogg");
   // for browsers that don't support ogg
-  assetManager.queueDownload("sounds/hit1.mp3");
-  assetManager.queueDownload("sounds/hit2.mp3");
-  assetManager.queueDownload("sounds/hit3.mp3");
-  assetManager.queueDownload("sounds/sweep.mp3");
+  assetManager.queueDownload("Sounds/hit1.mp3");
+  assetManager.queueDownload("Sounds/hit2.mp3");
+  assetManager.queueDownload("Sounds/hit3.mp3");
+  assetManager.queueDownload("Sounds/sweep.mp3");
 
 //  html.WebSocket ws = new html.WebSocket("ws://localhost:8000/ws");
 //  ws.on.open.add((e) {
