@@ -1967,6 +1967,12 @@ _DocumentEventsImpl.prototype.get$load = function() {
 _DocumentEventsImpl.prototype.get$mouseMove = function() {
   return this._get("mousemove");
 }
+_DocumentEventsImpl.prototype.get$touchMove = function() {
+  return this._get("touchmove");
+}
+_DocumentEventsImpl.prototype.get$touchStart = function() {
+  return this._get("touchstart");
+}
 function FilteredElementList() {}
 FilteredElementList.prototype.is$List = function(){return true};
 FilteredElementList.prototype.is$Collection = function(){return true};
@@ -3409,6 +3415,7 @@ function _TextTrackListEventsImpl(_ptr) {
 $dynamic("get$length").TimeRanges = function() { return this.length; };
 $dynamic("get$clientX").Touch = function() { return this.clientX; };
 $dynamic("get$clientY").Touch = function() { return this.clientY; };
+$dynamic("get$touches").TouchEvent = function() { return this.touches; };
 $dynamic("is$List").TouchList = function(){return true};
 $dynamic("is$Collection").TouchList = function(){return true};
 $dynamic("get$length").TouchList = function() { return this.length; };
@@ -4011,15 +4018,19 @@ Game.prototype.init = function() {
   var $this = this;
   this.surfaceWidth = this.ctx.canvas.width;
   this.surfaceHeight = this.ctx.canvas.height;
-  this.halfSurfaceWidth = this.surfaceWidth / (2);
-  this.halfSurfaceHeight = this.surfaceHeight / (2);
   var futureRect = this.ctx.canvas.get$rect();
   futureRect.then((function (rect) {
-    $this.clientBoundingRect = new dgame_Point(rect.get$bounding().get$left(), rect.get$bounding().get$top());
+    $this.clientPoint = new dgame_Point(rect.get$bounding().get$left(), rect.get$bounding().get$top());
   })
   );
   this.startInput();
   print$("game initialized");
+}
+Game.prototype.get$halfSurfaceWidth = function() {
+  return this.surfaceWidth / (2);
+}
+Game.prototype.get$halfSurfaceHeight = function() {
+  return this.surfaceHeight / (2);
 }
 Game.prototype.start = function() {
   print$("starting game");
@@ -4039,8 +4050,8 @@ Game.prototype.startInput = function() {
   var $this = this;
   print$("Starting input");
   function getXandY(e) {
-    var x = e.get$clientX() - $this.clientBoundingRect.x - ($this.ctx.canvas.width / (2));
-    var y = e.get$clientY() - $this.clientBoundingRect.y - ($this.ctx.canvas.height / (2));
+    var x = e.get$clientX() - $this.clientPoint.x - ($this.ctx.canvas.width / (2));
+    var y = e.get$clientY() - $this.clientPoint.y - ($this.ctx.canvas.height / (2));
     return new dgame_Point(x, y);
   }
   get$$document().get$on().get$click().add($wrap_call$1((function (e) {
@@ -4049,6 +4060,17 @@ Game.prototype.startInput = function() {
   ), false);
   get$$document().get$on().get$mouseMove().add($wrap_call$1((function (e) {
     $this.mouse = getXandY(e);
+  })
+  ), false);
+  get$$document().get$on().get$touchMove().add($wrap_call$1((function (e) {
+    e.preventDefault();
+    $this.mouse = getXandY(e.get$touches().$index((0)));
+    return false;
+  })
+  ), false);
+  get$$document().get$on().get$touchStart().add($wrap_call$1((function (e) {
+    e.preventDefault();
+    return false;
   })
   ), false);
   print$("Input started");
@@ -4076,7 +4098,7 @@ Game.prototype.drawBeforeCtxRestore = function() {
 Game.prototype.drawDebugInfo = function() {
   this.ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
   this.ctx.font = "16px Verdana";
-  this.ctx.fillText(("FPS: " + this.timer.fps.toStringAsFixed((1))), (this.halfSurfaceWidth - (120)), -(this.halfSurfaceHeight - (30)));
+  this.ctx.fillText(("FPS: " + this.timer.fps.toStringAsFixed((1))), (this.get$halfSurfaceWidth() - (120)), -(this.get$halfSurfaceHeight() - (30)));
 }
 Game.prototype.playSound = function(path, volume) {
   if (!this.enableSound) return;
@@ -4364,8 +4386,8 @@ function PongGame(assetManager, ctx) {
   Game.call(this, assetManager, ctx);
 }
 PongGame.prototype.start = function() {
-  this.player1 = new Paddle(this, -(this.halfSurfaceWidth - (10)), (10));
-  this.player2 = new ComputerPaddle(this, this.halfSurfaceWidth - (10), (10), (3));
+  this.player1 = new Paddle(this, -(this.get$halfSurfaceWidth() - (10)), (10));
+  this.player2 = new ComputerPaddle(this, this.get$halfSurfaceWidth() - (10), (10), (3));
   this.ball = new Ball(this, (0), (0));
   this.addEntity(this.ball);
   this.addEntity(this.player1);
@@ -4392,8 +4414,8 @@ PongGame.prototype.newPowerUp = function() {
   if (this.lastPowerUp + (5) >= this.timer.gameTime) return;
   var powerUp = new PowerUp(this, (0), (0));
   do {
-    powerUp.set$x(Utils.random(-this.halfSurfaceWidth + (100), this.halfSurfaceWidth - (100), false));
-    powerUp.set$y(Utils.random(-this.halfSurfaceHeight + (50), this.halfSurfaceHeight - (50), false));
+    powerUp.set$x(Utils.random(-this.get$halfSurfaceWidth() + (100), this.get$halfSurfaceWidth() - (100), false));
+    powerUp.set$y(Utils.random(-this.get$halfSurfaceHeight() + (50), this.get$halfSurfaceHeight() - (50), false));
   }
   while (this.entities.filter$1((function (e) {
     return (e instanceof PowerUp);
@@ -4408,19 +4430,19 @@ PongGame.prototype.newPowerUp = function() {
 PongGame.prototype.drawDebugInfo = function() {
   this.ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
   this.ctx.font = "16px Verdana";
-  this.ctx.fillText(("V: " + this.ball.momentum.xVel.toStringAsFixed((0))), -(this.halfSurfaceWidth - (20)), -(this.halfSurfaceHeight - (30)));
+  this.ctx.fillText(("V: " + this.ball.momentum.xVel.toStringAsFixed((0))), -(this.get$halfSurfaceWidth() - (20)), -(this.get$halfSurfaceHeight() - (30)));
   Game.prototype.drawDebugInfo.call(this);
 }
 PongGame.prototype.drawScore = function() {
   this.ctx.fillStyle = "rgba(255, 255, 255, 1)";
   this.ctx.font = "26px cinnamoncake, Verdana";
-  this.ctx.fillText(("" + this.player1.score + "              " + this.player2.score), (-60), -(this.halfSurfaceHeight - (30)));
+  this.ctx.fillText(("" + this.player1.score + "              " + this.player2.score), (-60), -(this.get$halfSurfaceHeight() - (30)));
 }
 PongGame.prototype.drawMiddleLine = function() {
   this.ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
   this.ctx.lineWidth = (3);
   this.ctx.beginPath();
-  Utils.drawDashedLine(this.ctx, (0), -(this.halfSurfaceHeight), (0), this.halfSurfaceHeight);
+  Utils.drawDashedLine(this.ctx, (0), -(this.get$halfSurfaceHeight()), (0), this.get$halfSurfaceHeight());
   this.ctx.stroke();
 }
 PongGame.prototype.ballHit = function() {
@@ -4560,6 +4582,7 @@ Paddle.prototype.fade = function() {
 }
 $inherits(ComputerPaddle, Paddle);
 function ComputerPaddle(game, x, y, skillLevel) {
+  this.targetPaddleSide = (0);
   this.targetOffset = (0);
   this.amountToMove = (3);
   Paddle.call(this, game, x, y);
@@ -4570,11 +4593,12 @@ ComputerPaddle.prototype.move = function() {
   if (g.ball == null) return;
   var newBallComing = (this.get$x() > (0) && g.ball.momentum.xVel > (0)) || (this.get$x() < (0) && g.ball.momentum.xVel < (0));
   if (this.ballComing == null || $ne$(newBallComing, this.ballComing)) {
-    this.targetOffset = Utils.random((-1), (1), true);
+    this.targetPaddleSide = Utils.random((-1), (1), true);
+    this.targetOffset = this.getTargetOffset();
     this.amountToMove = this.getAmountToMove();
   }
   this.ballComing = newBallComing;
-  var targetPosition = this.ballComing ? g.ball.get$y() + (this.targetOffset * (40)) : (0);
+  var targetPosition = this.ballComing ? g.ball.get$y() + (this.targetPaddleSide * ((this.get$height() / (2)) - (5))) : (0);
   if ((this.get$y() - targetPosition).abs() <= (1)) return;
   if (this.get$y() > targetPosition) this.set$y(this.get$y() - this.amountToMove);
   else this.set$y(this.get$y() + this.amountToMove);
@@ -4612,6 +4636,32 @@ ComputerPaddle.prototype.getAmountToMove = function() {
   }
   return (3);
 }
+ComputerPaddle.prototype.getTargetOffset = function() {
+  switch (this._skillLevel) {
+    case (1):
+
+      {
+        return Utils.random((-20), (20), true);
+        break;
+      }
+
+    case (2):
+
+      {
+        return Utils.random((-10), (10), true);
+        break;
+      }
+
+    case (3):
+
+      {
+        return Utils.random((-5), (5), true);
+        break;
+      }
+
+  }
+  return (0);
+}
 $inherits(Ball, GameEntity);
 function Ball(game, x, y) {
   this.startVel = (400);
@@ -4625,9 +4675,9 @@ Ball.prototype.update = function() {
   var g = this.game;
   if (this.momentum.xVel > (0) && this.box.right > g.player2.box.left && g.player2.box.top < this.box.bottom && g.player2.box.bottom > this.box.top) this.set$x(g.player2.box.left - (this.get$width() / (2)));
   if (this.momentum.xVel < (0) && this.box.left < g.player1.box.right && g.player1.box.top < this.box.bottom && g.player1.box.bottom > this.box.top) this.set$x(g.player1.box.right + (this.get$width() / (2)));
-  if (this.momentum.yVel > (0) && this.box.bottom > this.game.halfSurfaceHeight) this.set$y(this.game.halfSurfaceHeight - (this.get$height() / (2)));
-  if (this.momentum.yVel < (0) && this.box.top < -this.game.halfSurfaceHeight) this.set$y(-this.game.halfSurfaceHeight + (this.get$height() / (2)));
-  if (this.box.bottom >= this.game.halfSurfaceHeight || this.box.top <= -this.game.halfSurfaceHeight) {
+  if (this.momentum.yVel > (0) && this.box.bottom > this.game.get$halfSurfaceHeight()) this.set$y(this.game.get$halfSurfaceHeight() - (this.get$height() / (2)));
+  if (this.momentum.yVel < (0) && this.box.top < -this.game.get$halfSurfaceHeight()) this.set$y(-this.game.get$halfSurfaceHeight() + (this.get$height() / (2)));
+  if (this.box.bottom >= this.game.get$halfSurfaceHeight() || this.box.top <= -this.game.get$halfSurfaceHeight()) {
     ($0 = this.momentum).yVel = $0.yVel * (-1);
     var angle = Math.atan2(this.momentum.xVel.abs(), this.momentum.yVel.abs()) / (0.017453292519943295);
     var volume = ((90) - angle) / (50);
@@ -4644,7 +4694,7 @@ Ball.prototype.update = function() {
     this.ballHit(g.player2);
     this.game.playSound("sounds/hit2", (1.0));
   }
-  if (this.get$x() > this.game.halfSurfaceWidth || this.get$x() < -this.game.halfSurfaceWidth) {
+  if (this.get$x() > this.game.get$halfSurfaceWidth() || this.get$x() < -this.game.get$halfSurfaceWidth()) {
     if (this.get$x() > (0)) {
       this.set$x((-400));
       this.startVel = (400);
@@ -4721,8 +4771,8 @@ PowerUp.prototype.draw = function(ctx) {
 }
 PowerUp.prototype.reflectorUpdate = function() {
   var g = this.game;
-  if (Math.random() > (0.5)) g.ball.momentum.yVel = Math.random() * (300);
-  else g.ball.momentum.yVel = Math.random() * (-300);
+  if (Math.random() > (0.5)) g.ball.momentum.yVel = Utils.random((200), (600), false);
+  else g.ball.momentum.yVel = Utils.random((-200), (-600), false);
 }
 PowerUp.prototype.extendUpdate = function() {
   var $0, $1;
@@ -4765,8 +4815,8 @@ function main() {
   })
   ), false);
   var game = new PongGame(assetManager, ctx);
-  game.set$enableSound(false);
-  game.set$debugMode(true);
+  game.set$enableSound(true);
+  game.set$debugMode(false);
   assetManager.downloadAll((function () {
     game.init();
     game.start$0();
