@@ -2,13 +2,9 @@ function Isolate() {}
 init();
 
 var $ = Isolate.$isolateProperties;
-Isolate.$defineClass("Closure58", "Closure59", ["box_0"], {
- $call$2: function(key, value) {
-  var t0 = this.box_0.list_1;
-  var t1 = this.box_0.i_2;
-  var i = $.add(t1, 1);
-  this.box_0.i_2 = i;
-  $.indexSet(t0, t1, key);
+Isolate.$defineClass("Closure7", "Closure54", ["box_0"], {
+ $call$0: function() {
+  return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
  },
 });
 
@@ -109,9 +105,9 @@ Isolate.$defineClass("Object", "", [], {
  },
 });
 
-Isolate.$defineClass("Closure26", "Closure59", ["this_10"], {
- $call$0: function() {
-  this.this_10.set$bgStyle('rgba(0, 0, 0, 0.85)');
+Isolate.$defineClass("Closure33", "Closure54", [], {
+ $call$1: function(e) {
+  return typeof e === 'object' && !!e.is$PowerUp;
  },
 });
 
@@ -131,15 +127,33 @@ Isolate.$defineClass("_AllMatchesIterable", "Object", ["_lib3_str", "_lib3_re"],
  get$_lib3_re: function() { return this._lib3_re; },
 });
 
-Isolate.$defineClass("Closure29", "Closure59", ["this_2"], {
- $call$0: function() {
-  this.this_2.set$opacity(0.2);
+Isolate.$defineClass("Closure35", "Closure54", [], {
+ $call$1: function(n) {
+  var absN = $.abs(n);
+  if ($.ltB(n, 0)) {
+    var sign = '-';
+  } else {
+    sign = '';
+  }
+  if ($.geB(absN, 1000)) {
+    return '' + $.stringToString(n);
+  }
+  if ($.geB(absN, 100)) {
+    return '' + $.stringToString(sign) + '0' + $.stringToString(absN);
+  }
+  if ($.geB(absN, 10)) {
+    return '' + $.stringToString(sign) + '00' + $.stringToString(absN);
+  }
+  if ($.geB(absN, 1)) {
+    return '' + $.stringToString(sign) + '000' + $.stringToString(absN);
+  }
+  throw $.captureStackTrace($.IllegalArgumentException$1(n));
  },
 });
 
-Isolate.$defineClass("Closure53", "Closure59", [], {
+Isolate.$defineClass("Closure27", "Closure54", ["this_2"], {
  $call$0: function() {
-  return $.CTC9;
+  this.this_2.set$bgStyle('rgba(0, 0, 0, 0.81)');
  },
 });
 
@@ -166,13 +180,10 @@ Isolate.$defineClass("EmptyQueueException", "Object", [], {
  },
 });
 
-Isolate.$defineClass("Closure7", "Closure59", ["this_5", "box_2"], {
- $call$1: function(event$) {
-  var t0 = this.this_5;
-  t0.set$_lib_errorCount($.add(t0.get$_lib_errorCount(), 1));
-  if (this.this_5.isDone$0() === true) {
-    this.box_2.downloadCallback_3.$call$0();
-  }
+Isolate.$defineClass("Closure8", "Closure54", ["box_0"], {
+ $call$1: function(element) {
+  var counter = $.add(this.box_0.counter_1, 1);
+  this.box_0.counter_1 = counter;
  },
 });
 
@@ -184,10 +195,9 @@ Isolate.$defineClass("IllegalJSRegExpException", "Object", ["_lib2_errmsg", "_li
  },
 });
 
-Isolate.$defineClass("Closure45", "Closure59", ["this_0"], {
- $call$1: function(rect) {
-  var t0 = $.Point$2(rect.get$bounding().get$left(), rect.get$bounding().get$top());
-  this.this_0.set$clientPoint(t0);
+Isolate.$defineClass("Closure49", "Closure54", ["box_0"], {
+ $call$2: function(key, value) {
+  this.box_0.f_1.$call$1(key);
  },
 });
 
@@ -221,11 +231,10 @@ Isolate.$defineClass("AssetManager", "Object", ["_lib_downloadQueue", "_lib_cach
     }
     t2.el_1 = $.Element$tag(t5);
     if (t4) {
-      $.add$1(t2.el_1.get$on().get$load(), new $.Closure6(this, t2, t0));
-      $.add$1(t2.el_1.get$on().get$error(), new $.Closure7(this, t0));
+      $.add$1(t2.el_1.get$on().get$load(), new $.Closure2(this, t2, t0));
+      $.add$1(t2.el_1.get$on().get$error(), new $.Closure3(this, t0));
     } else {
       $.print($.add(t3, ' is loaded'));
-      $.indexSet(t2.el_1.get$attributes(), 'preload', 'auto');
       t2.el_1.load$0();
       this.set$_lib_successCount($.add(this.get$_lib_successCount(), 1));
       if (this.isDone$0() === true) {
@@ -294,9 +303,9 @@ Isolate.$defineClass("DoubleLinkedQueueEntry", "Object", ["_lib3_element", "_lib
  },
 });
 
-Isolate.$defineClass("Closure33", "Closure59", ["this_3"], {
- $call$0: function() {
-  this.this_3.set$bgStyle('rgba(0, 0, 0, 0.82)');
+Isolate.$defineClass("Closure9", "Closure54", ["box_0"], {
+ $call$1: function(entry) {
+  this.box_0.f_1.$call$2(entry.get$key(), entry.get$value());
  },
 });
 
@@ -365,36 +374,36 @@ Isolate.$defineClass("JSSyntaxRegExp", "Object", ["ignoreCase", "multiLine", "pa
 Isolate.$defineClass("PongGame", "Game", ["ball", "player2", "player1", "lastPowerUp", "highscore", "score", "includeUI", "showOutlines", "_lib_supportsMp3", "bgStyle", "enableSound", "debugMode", "assetManager", "clientPoint", "surfaceHeight", "surfaceWidth", "clockTick", "timer", "mouse", "click", "ctx", "entities"], {
  bgFade$0: function() {
   this.set$bgStyle('rgba(0, 0, 0, 0.8)');
-  $.window().setTimeout$2(new $.Closure16(this), 25);
-  $.window().setTimeout$2(new $.Closure17(this), 50);
-  $.window().setTimeout$2(new $.Closure18(this), 75);
-  $.window().setTimeout$2(new $.Closure19(this), 100);
-  $.window().setTimeout$2(new $.Closure20(this), 125);
-  $.window().setTimeout$2(new $.Closure21(this), 150);
-  $.window().setTimeout$2(new $.Closure22(this), 175);
-  $.window().setTimeout$2(new $.Closure23(this), 200);
-  $.window().setTimeout$2(new $.Closure24(this), 225);
-  $.window().setTimeout$2(new $.Closure25(this), 250);
-  $.window().setTimeout$2(new $.Closure26(this), 275);
+  $.window().setTimeout$2(new $.Closure11(this), 25);
+  $.window().setTimeout$2(new $.Closure12(this), 50);
+  $.window().setTimeout$2(new $.Closure13(this), 75);
+  $.window().setTimeout$2(new $.Closure14(this), 100);
+  $.window().setTimeout$2(new $.Closure15(this), 125);
+  $.window().setTimeout$2(new $.Closure16(this), 150);
+  $.window().setTimeout$2(new $.Closure17(this), 175);
+  $.window().setTimeout$2(new $.Closure18(this), 200);
+  $.window().setTimeout$2(new $.Closure19(this), 225);
+  $.window().setTimeout$2(new $.Closure20(this), 250);
+  $.window().setTimeout$2(new $.Closure21(this), 275);
  },
  subtleBgFade$0: function() {
   this.set$bgStyle('rgba(0, 0, 0, 0.84)');
-  $.window().setTimeout$2(new $.Closure30(this), 25);
-  $.window().setTimeout$2(new $.Closure31(this), 50);
-  $.window().setTimeout$2(new $.Closure32(this), 75);
-  $.window().setTimeout$2(new $.Closure33(this), 100);
-  $.window().setTimeout$2(new $.Closure34(this), 125);
-  $.window().setTimeout$2(new $.Closure35(this), 150);
-  $.window().setTimeout$2(new $.Closure36(this), 175);
+  $.window().setTimeout$2(new $.Closure25(this), 25);
+  $.window().setTimeout$2(new $.Closure26(this), 50);
+  $.window().setTimeout$2(new $.Closure27(this), 75);
+  $.window().setTimeout$2(new $.Closure28(this), 100);
+  $.window().setTimeout$2(new $.Closure29(this), 125);
+  $.window().setTimeout$2(new $.Closure30(this), 150);
+  $.window().setTimeout$2(new $.Closure31(this), 175);
  },
  gameOver$0: function() {
-  this.playSound$1('sounds/sweep.ogg');
+  this.playSound$1('sounds/sweep');
   this.bgFade$0();
   this.newGame$0();
  },
  newGame$0: function() {
   this.get$ball().set$y(0);
-  $.forEach($.filter(this.get$entities(), new $.Closure43()), new $.Closure44());
+  $.forEach($.filter(this.get$entities(), new $.Closure38()), new $.Closure39());
   if ($.gtB($.random2(), 0.5)) {
     var t0 = $.random(0, 200, false);
     this.get$ball().get$momentum().set$yVel(t0);
@@ -435,7 +444,7 @@ Isolate.$defineClass("PongGame", "Game", ["ball", "player2", "player1", "lastPow
   if ($.geB($.random2(), 0.1)) {
     return;
   }
-  if ($.geB($.get$length($.filter(this.get$entities(), new $.Closure37())), 5)) {
+  if ($.geB($.get$length($.filter(this.get$entities(), new $.Closure32())), 5)) {
     return;
   }
   if ($.ltB(this.get$timer().get$gameTime(), 5)) {
@@ -450,7 +459,7 @@ Isolate.$defineClass("PongGame", "Game", ["ball", "player2", "player1", "lastPow
     t0.powerUp_1.set$x(t1);
     var t2 = $.random($.add($.neg(this.get$halfSurfaceHeight()), 50), $.sub(this.get$halfSurfaceHeight(), 50), false);
     t0.powerUp_1.set$y(t2);
-  } while ($.some($.filter(this.get$entities(), new $.Closure38()), new $.Closure39(t0)) === true);
+  } while ($.some($.filter(this.get$entities(), new $.Closure33()), new $.Closure34(t0)) === true);
   this.set$lastPowerUp(this.get$timer().get$gameTime());
   this.addEntity$1(t0.powerUp_1);
  },
@@ -485,10 +494,10 @@ Isolate.$defineClass("PongGame", "Game", ["ball", "player2", "player1", "lastPow
  get$score: function() { return this.score; },
 });
 
-Isolate.$defineClass("ComputerPaddle", "Paddle", ["_lib6_skillLevel", "ballComing", "amountToMove", "targetOffset", "targetPaddleSide", "score", "fill", "color", "opacity", "momentum", "radius", "sprite", "_lib_removeFromGame", "previousBox", "box", "_lib_height", "_lib_width", "_lib_y", "_lib_x", "game"], {
+Isolate.$defineClass("ComputerPaddle", "Paddle", ["_lib5_skillLevel", "ballComing", "amountToMove", "targetOffset", "targetPaddleSide", "score", "fill", "color", "opacity", "momentum", "radius", "sprite", "_lib_removeFromGame", "previousBox", "box", "_lib_height", "_lib_width", "_lib_y", "_lib_x", "game"], {
  getTargetOffset$0: function() {
   $0:{
-    var t0 = this.get$_lib6_skillLevel();
+    var t0 = this.get$_lib5_skillLevel();
     if (1 === t0) {
       return $.random(-20, 20, true);
     } else {
@@ -506,7 +515,7 @@ Isolate.$defineClass("ComputerPaddle", "Paddle", ["_lib6_skillLevel", "ballComin
  getAmountToMove$0: function() {
   var n = $.random(0, 100, false);
   $0:{
-    var t0 = this.get$_lib6_skillLevel();
+    var t0 = this.get$_lib5_skillLevel();
     if (1 === t0) {
       if ($.geB(n, 40)) {
         return 3;
@@ -568,8 +577,8 @@ Isolate.$defineClass("ComputerPaddle", "Paddle", ["_lib6_skillLevel", "ballComin
     this.set$y($.add(this.get$y(), this.get$amountToMove()));
   }
  },
- set$_lib6_skillLevel: function(v) { this._lib6_skillLevel = v; },
- get$_lib6_skillLevel: function() { return this._lib6_skillLevel; },
+ set$_lib5_skillLevel: function(v) { this._lib5_skillLevel = v; },
+ get$_lib5_skillLevel: function() { return this._lib5_skillLevel; },
  set$ballComing: function(v) { this.ballComing = v; },
  get$ballComing: function() { return this.ballComing; },
  set$amountToMove: function(v) { this.amountToMove = v; },
@@ -578,40 +587,22 @@ Isolate.$defineClass("ComputerPaddle", "Paddle", ["_lib6_skillLevel", "ballComin
  set$targetPaddleSide: function(v) { this.targetPaddleSide = v; },
  get$targetPaddleSide: function() { return this.targetPaddleSide; },
  ComputerPaddle$4: function(game, x, y, skillLevel) {
-  this.set$_lib6_skillLevel($.max($.min(skillLevel, 3), 1));
+  this.set$_lib5_skillLevel($.max($.min(skillLevel, 3), 1));
  },
 });
 
 Isolate.$defineClass("_InputElementEventsImpl", "_ElementEventsImpl", ["_lib4_ptr"], {
 });
 
-Isolate.$defineClass("Closure40", "Closure59", [], {
- $call$1: function(n) {
-  var absN = $.abs(n);
-  if ($.ltB(n, 0)) {
-    var sign = '-';
-  } else {
-    sign = '';
-  }
-  if ($.geB(absN, 1000)) {
-    return '' + $.stringToString(n);
-  }
-  if ($.geB(absN, 100)) {
-    return '' + $.stringToString(sign) + '0' + $.stringToString(absN);
-  }
-  if ($.geB(absN, 10)) {
-    return '' + $.stringToString(sign) + '00' + $.stringToString(absN);
-  }
-  if ($.geB(absN, 1)) {
-    return '' + $.stringToString(sign) + '000' + $.stringToString(absN);
-  }
-  throw $.captureStackTrace($.IllegalArgumentException$1(n));
+Isolate.$defineClass("Closure54", "Object", [], {
+ toString$0: function() {
+  return 'Closure';
  },
 });
 
-Isolate.$defineClass("Closure27", "Closure59", ["this_0"], {
+Isolate.$defineClass("Closure48", "Closure54", [], {
  $call$0: function() {
-  this.this_0.set$opacity(0.4);
+  return $.CTC7;
  },
 });
 
@@ -657,7 +648,7 @@ Isolate.$defineClass("LinkedHashMapImplementation", "Object", ["_lib3_map", "_li
  forEach$1: function(f) {
   var t0 = ({});
   t0.f_1 = f;
-  $.forEach(this.get$_lib3_list(), new $.Closure14(t0));
+  $.forEach(this.get$_lib3_list(), new $.Closure9(t0));
  },
  getKeys$0: function() {
   var t0 = ({});
@@ -665,7 +656,7 @@ Isolate.$defineClass("LinkedHashMapImplementation", "Object", ["_lib3_map", "_li
   $.setRuntimeTypeInfo(list, ({E: 'K'}));
   t0.list_1 = list;
   t0.index_2 = 0;
-  $.forEach(this.get$_lib3_list(), new $.Closure57(t0));
+  $.forEach(this.get$_lib3_list(), new $.Closure52(t0));
   $.assert($.eq(t0.index_2, $.get$length(this)));
   return t0.list_1;
  },
@@ -700,9 +691,9 @@ Isolate.$defineClass("LinkedHashMapImplementation", "Object", ["_lib3_map", "_li
 Isolate.$defineClass("Paddle", "GameEntity", ["score", "fill", "color", "opacity", "momentum", "radius", "sprite", "_lib_removeFromGame", "previousBox", "box", "_lib_height", "_lib_width", "_lib_y", "_lib_x", "game"], {
  fade$0: function() {
   this.set$opacity(0.5);
-  $.window().setTimeout$2(new $.Closure27(this), 50);
-  $.window().setTimeout$2(new $.Closure28(this), 100);
-  $.window().setTimeout$2(new $.Closure29(this), 150);
+  $.window().setTimeout$2(new $.Closure22(this), 50);
+  $.window().setTimeout$2(new $.Closure23(this), 100);
+  $.window().setTimeout$2(new $.Closure24(this), 150);
  },
  move$0: function() {
   if (!$.eqNullB(this.get$game().get$mouse())) {
@@ -721,9 +712,6 @@ Isolate.$defineClass("Paddle", "GameEntity", ["score", "fill", "color", "opacity
 });
 
 Isolate.$defineClass("_DeprecatedPeerConnectionEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
- get$open: function() {
-  return this._lib4_get$1('open');
- },
  get$message: function() {
   return this._lib4_get$1('message');
  },
@@ -782,9 +770,9 @@ Isolate.$defineClass("_EventListenerListImpl", "Object", ["_lib4_type", "_lib4_p
  get$_lib4_ptr: function() { return this._lib4_ptr; },
 });
 
-Isolate.$defineClass("StringMatch", "Object", ["pattern", "str", "_lib5_start"], {
+Isolate.$defineClass("StringMatch", "Object", ["pattern", "str", "_lib6_start"], {
  get$pattern: function() { return this.pattern; },
- get$_lib5_start: function() { return this._lib5_start; },
+ get$_lib6_start: function() { return this._lib6_start; },
  group$1: function(group_) {
   if (!$.eqB(group_, 0)) {
     throw $.captureStackTrace($.IndexOutOfRangeException$1(group_));
@@ -795,19 +783,13 @@ Isolate.$defineClass("StringMatch", "Object", ["pattern", "str", "_lib5_start"],
   return this.group$1(g);
  },
  start$0: function() {
-  return this.get$_lib5_start();
+  return this.get$_lib6_start();
  },
 });
 
-Isolate.$defineClass("Closure8", "Closure59", ["box_0"], {
- $call$2: function(k, v) {
-  if (!(this.box_0.first_3 === true)) {
-    $.add$1(this.box_0.result_1, ', ');
-  }
-  this.box_0.first_3 = false;
-  $._emitObject(k, this.box_0.result_1, this.box_0.visiting_2);
-  $.add$1(this.box_0.result_1, ': ');
-  $._emitObject(v, this.box_0.result_1, this.box_0.visiting_2);
+Isolate.$defineClass("Closure10", "Closure54", [], {
+ $call$1: function(e) {
+  return !(e.get$_lib_removeFromGame() === true);
  },
 });
 
@@ -916,7 +898,7 @@ Isolate.$defineClass("DoubleLinkedQueue", "Object", ["_lib3_sentinel"], {
  get$length: function() {
   var t0 = ({});
   t0.counter_1 = 0;
-  this.forEach$1(new $.Closure13(t0));
+  this.forEach$1(new $.Closure8(t0));
   return t0.counter_1;
  },
  lastEntry$0: function() {
@@ -941,19 +923,7 @@ Isolate.$defineClass("DoubleLinkedQueue", "Object", ["_lib3_sentinel"], {
  is$Collection: function() { return true; },
 });
 
-Isolate.$defineClass("Closure49", "Closure59", ["this_6", "getXandY_5"], {
- $call$1: function(e) {
-  e.preventDefault$0();
-  var t0 = this.getXandY_5.$call$1($.index(e.get$touches(), 0));
-  this.this_6.set$mouse(t0);
-  return false;
- },
-});
-
 Isolate.$defineClass("_EventSourceEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
- get$open: function() {
-  return this._lib4_get$1('open');
- },
  get$message: function() {
   return this._lib4_get$1('message');
  },
@@ -964,22 +934,22 @@ Isolate.$defineClass("_EventSourceEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
 
 Isolate.$defineClass("_DoubleLinkedQueueEntrySentinel", "DoubleLinkedQueueEntry", ["_lib3_element", "_lib3_next", "_lib3_previous"], {
  get$element: function() {
-  throw $.captureStackTrace($.CTC5);
+  throw $.captureStackTrace($.CTC3);
  },
  _lib3_asNonSentinelEntry$0: function() {
   return;
  },
  remove$0: function() {
-  throw $.captureStackTrace($.CTC5);
+  throw $.captureStackTrace($.CTC3);
  },
  _lib3_DoubleLinkedQueueEntrySentinel$0: function() {
   this._lib3_link$2(this, this);
  },
 });
 
-Isolate.$defineClass("Closure9", "Closure59", ["this_2", "box_0"], {
- $call$1: function(key) {
-  return this.box_0.f_1.$call$2(key, $.index(this.this_2, key));
+Isolate.$defineClass("Closure28", "Closure54", ["this_3"], {
+ $call$0: function() {
+  this.this_3.set$bgStyle('rgba(0, 0, 0, 0.82)');
  },
 });
 
@@ -987,143 +957,14 @@ Isolate.$defineClass("_NotificationEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
  get$error: function() {
   return this._lib4_get$1('error');
  },
- get$close: function() {
-  return this._lib4_get$1('close');
- },
  get$click: function() {
   return this._lib4_get$1('click');
  },
 });
 
-Isolate.$defineClass("_ElementAttributeMap", "Object", ["_lib4_element"], {
- isEmpty$0: function() {
-  return $.eq($.get$length(this), 0);
- },
- get$length: function() {
-  return $.get$length(this.get$_lib4_element().get$$dom_attributes());
- },
- getKeys$0: function() {
-  var attributes = this.get$_lib4_element().get$$dom_attributes();
-  if (typeof attributes !== 'string' && (typeof attributes !== 'object'||attributes.constructor !== Array)) return this.getKeys$0$bailout(1, attributes);
-  var keys = $.List(attributes.length);
-  $.setRuntimeTypeInfo(keys, ({E: 'String'}));
-  for (var len = attributes.length, i = 0; i < len; i = i + 1) {
-    var t0 = attributes.length;
-    if (i < 0 || i >= t0) throw $.ioore(i);
-    var t1 = attributes[i].get$name();
-    var t2 = keys.length;
-    if (i < 0 || i >= t2) throw $.ioore(i);
-    keys[i] = t1;
-  }
-  return keys;
- },
- getKeys$0$bailout: function(state, env0) {
-  switch (state) {
-    case 1:
-      attributes = env0;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var attributes = this.get$_lib4_element().get$$dom_attributes();
-    case 1:
-      state = 0;
-      var keys = $.List($.get$length(attributes));
-      $.setRuntimeTypeInfo(keys, ({E: 'String'}));
-      var len = $.get$length(attributes);
-      var i = 0;
-      L0: while (true) {
-        if (!$.ltB(i, len)) break L0;
-        var t0 = $.index(attributes, i).get$name();
-        var t1 = keys.length;
-        if (i < 0 || i >= t1) throw $.ioore(i);
-        keys[i] = t0;
-        i = i + 1;
-      }
-      return keys;
-  }
- },
- forEach$1: function(f) {
-  var attributes = this.get$_lib4_element().get$$dom_attributes();
-  if (typeof attributes !== 'string' && (typeof attributes !== 'object'||attributes.constructor !== Array)) return this.forEach$1$bailout(f, 1, attributes);
-  for (var len = attributes.length, i = 0; i < len; i = i + 1) {
-    var t0 = attributes.length;
-    if (i < 0 || i >= t0) throw $.ioore(i);
-    var t1 = attributes[i];
-    f.$call$2(t1.get$name(), t1.get$value());
-  }
- },
- forEach$1$bailout: function(f, state, env0) {
-  switch (state) {
-    case 1:
-      attributes = env0;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var attributes = this.get$_lib4_element().get$$dom_attributes();
-    case 1:
-      state = 0;
-      var len = $.get$length(attributes);
-      var i = 0;
-      L0: while (true) {
-        if (!$.ltB(i, len)) break L0;
-        var item = $.index(attributes, i);
-        f.$call$2(item.get$name(), item.get$value());
-        i = i + 1;
-      }
-  }
- },
- clear$0: function() {
-  var attributes = this.get$_lib4_element().get$$dom_attributes();
-  if (typeof attributes !== 'string' && (typeof attributes !== 'object'||attributes.constructor !== Array)) return this.clear$0$bailout(1, attributes);
-  for (var i = attributes.length - 1; i >= 0; i = i - 1) {
-    var t0 = attributes.length;
-    if (i < 0 || i >= t0) throw $.ioore(i);
-    this.remove$1(attributes[i].get$name());
-  }
- },
- clear$0$bailout: function(state, env0) {
-  switch (state) {
-    case 1:
-      attributes = env0;
-      break;
-  }
-  switch (state) {
-    case 0:
-      var attributes = this.get$_lib4_element().get$$dom_attributes();
-    case 1:
-      state = 0;
-      var i = $.sub($.get$length(attributes), 1);
-      L0: while (true) {
-        if (!$.geB(i, 0)) break L0;
-        this.remove$1($.index(attributes, i).get$name());
-        i = $.sub(i, 1);
-      }
-  }
- },
- remove$1: function(key) {
-  var value = this.get$_lib4_element().$dom_getAttribute$1(key);
-  this.get$_lib4_element().$dom_removeAttribute$1(key);
-  return value;
- },
- operator$indexSet$2: function(key, value) {
-  this.get$_lib4_element().$dom_setAttribute$2(key, '' + $.stringToString(value));
- },
- operator$index$1: function(key) {
-  return this.get$_lib4_element().$dom_getAttribute$1(key);
- },
- containsKey$1: function(key) {
-  return this.get$_lib4_element().$dom_hasAttribute$1(key);
- },
- get$_lib4_element: function() { return this._lib4_element; },
- is$Map: function() { return true; },
-});
-
-Isolate.$defineClass("Closure48", "Closure59", ["this_4", "getXandY_3"], {
- $call$1: function(e) {
-  var t0 = this.getXandY_3.$call$1(e);
-  this.this_4.set$mouse(t0);
+Isolate.$defineClass("Closure11", "Closure54", ["this_0"], {
+ $call$0: function() {
+  this.this_0.set$bgStyle('rgba(0, 0, 0, 0.75)');
  },
 });
 
@@ -1178,27 +1019,12 @@ Isolate.$defineClass("_ListWrapper", "Object", [], {
  is$Collection: function() { return true; },
 });
 
-Isolate.$defineClass("Closure59", "Object", [], {
- toString$0: function() {
-  return 'Closure';
- },
-});
-
 Isolate.$defineClass("_PeerConnection00EventsImpl", "_EventsImpl", ["_lib4_ptr"], {
- get$open: function() {
-  return this._lib4_get$1('open');
- },
 });
 
 Isolate.$defineClass("_WorkerContextEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
  get$error: function() {
   return this._lib4_get$1('error');
- },
-});
-
-Isolate.$defineClass("Closure17", "Closure59", ["this_1"], {
- $call$0: function() {
-  this.this_1.set$bgStyle('rgba(0, 0, 0, 0.70)');
  },
 });
 
@@ -1231,21 +1057,22 @@ Isolate.$defineClass("IndexOutOfRangeException", "Object", ["_lib2_index"], {
  },
 });
 
-Isolate.$defineClass("Closure31", "Closure59", ["this_1"], {
- $call$0: function() {
-  this.this_1.set$bgStyle('rgba(0, 0, 0, 0.82)');
+Isolate.$defineClass("Closure42", "Closure54", ["this_2", "getXandY_1"], {
+ $call$1: function(e) {
+  var t0 = this.getXandY_1.$call$1(e);
+  this.this_2.set$click(t0);
  },
 });
 
-Isolate.$defineClass("Closure23", "Closure59", ["this_7"], {
+Isolate.$defineClass("Closure23", "Closure54", ["this_1"], {
+ $call$0: function() {
+  this.this_1.set$opacity(0.3);
+ },
+});
+
+Isolate.$defineClass("Closure18", "Closure54", ["this_7"], {
  $call$0: function() {
   this.this_7.set$bgStyle('rgba(0, 0, 0, 0.70)');
- },
-});
-
-Isolate.$defineClass("Closure18", "Closure59", ["this_2"], {
- $call$0: function() {
-  this.this_2.set$bgStyle('rgba(0, 0, 0, 0.65)');
  },
 });
 
@@ -1259,9 +1086,9 @@ Isolate.$defineClass("_EventsImpl", "Object", ["_lib4_ptr"], {
  get$_lib4_ptr: function() { return this._lib4_ptr; },
 });
 
-Isolate.$defineClass("Closure56", "Closure59", ["keys_0"], {
- $call$2: function(k, v) {
-  return $.add$1(this.keys_0, k);
+Isolate.$defineClass("Closure19", "Closure54", ["this_8"], {
+ $call$0: function() {
+  this.this_8.set$bgStyle('rgba(0, 0, 0, 0.75)');
  },
 });
 
@@ -1272,12 +1099,9 @@ Isolate.$defineClass("_ElementRectImpl", "Object", ["_lib4_clientRects", "_lib4_
  get$_lib4_boundingClientRect: function() { return this._lib4_boundingClientRect; },
 });
 
-Isolate.$defineClass("Closure42", "Closure59", [], {
- $call$1: function(n) {
-  if ($.geB(n, 10)) {
-    return '' + $.stringToString(n);
-  }
-  return '0' + $.stringToString(n);
+Isolate.$defineClass("Closure39", "Closure54", [], {
+ $call$1: function(e) {
+  return e.removeFromGame$0();
  },
 });
 
@@ -1329,9 +1153,15 @@ Isolate.$defineClass("Momentum", "Object", ["yMax", "xMax", "yAccel", "xAccel", 
  get$xVel: function() { return this.xVel; },
 });
 
-Isolate.$defineClass("Closure19", "Closure59", ["this_3"], {
- $call$0: function() {
-  this.this_3.set$bgStyle('rgba(0, 0, 0, 0.60)');
+Isolate.$defineClass("Closure36", "Closure54", [], {
+ $call$1: function(n) {
+  if ($.geB(n, 100)) {
+    return '' + $.stringToString(n);
+  }
+  if ($.gtB(n, 10)) {
+    return '0' + $.stringToString(n);
+  }
+  return '00' + $.stringToString(n);
  },
 });
 
@@ -1361,13 +1191,13 @@ Isolate.$defineClass("HashSetImplementation", "Object", ["_lib3_backingMap"], {
   var result = $.HashSetImplementation$0();
   $.setRuntimeTypeInfo(result, ({E: 'E'}));
   t0.result_2 = result;
-  $.forEach(this.get$_lib3_backingMap(), new $.Closure55(t0));
+  $.forEach(this.get$_lib3_backingMap(), new $.Closure50(t0));
   return t0.result_2;
  },
  forEach$1: function(f) {
   var t0 = ({});
   t0.f_1 = f;
-  $.forEach(this.get$_lib3_backingMap(), new $.Closure54(t0));
+  $.forEach(this.get$_lib3_backingMap(), new $.Closure49(t0));
  },
  contains$1: function(value) {
   return this.get$_lib3_backingMap().containsKey$1(value);
@@ -1393,21 +1223,21 @@ Isolate.$defineClass("_IDBRequestEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
  },
 });
 
-Isolate.$defineClass("Closure51", "Closure59", ["this_0"], {
- $call$0: function() {
-  return $._lib4_ElementRectImpl$1(this.this_0);
+Isolate.$defineClass("Closure51", "Closure54", ["keys_0"], {
+ $call$2: function(k, v) {
+  return $.add$1(this.keys_0, k);
  },
 });
 
-Isolate.$defineClass("Closure36", "Closure59", ["this_6"], {
+Isolate.$defineClass("Closure20", "Closure54", ["this_9"], {
  $call$0: function() {
-  this.this_6.set$bgStyle('rgba(0, 0, 0, 0.85)');
+  this.this_9.set$bgStyle('rgba(0, 0, 0, 0.80)');
  },
 });
 
-Isolate.$defineClass("Closure14", "Closure59", ["box_0"], {
- $call$1: function(entry) {
-  this.box_0.f_1.$call$2(entry.get$key(), entry.get$value());
+Isolate.$defineClass("Closure29", "Closure54", ["this_4"], {
+ $call$0: function() {
+  this.this_4.set$bgStyle('rgba(0, 0, 0, 0.83)');
  },
 });
 
@@ -1421,9 +1251,9 @@ Isolate.$defineClass("_SpeechRecognitionEventsImpl", "_EventsImpl", ["_lib4_ptr"
  },
 });
 
-Isolate.$defineClass("Closure20", "Closure59", ["this_4"], {
+Isolate.$defineClass("Closure21", "Closure54", ["this_10"], {
  $call$0: function() {
-  this.this_4.set$bgStyle('rgba(0, 0, 0, 0.55)');
+  this.this_10.set$bgStyle('rgba(0, 0, 0, 0.85)');
  },
 });
 
@@ -1443,24 +1273,19 @@ Isolate.$defineClass("_SVGElementInstanceEventsImpl", "_EventsImpl", ["_lib4_ptr
  },
 });
 
-Isolate.$defineClass("Closure39", "Closure59", ["box_0"], {
- $call$1: function(e) {
-  return this.box_0.powerUp_1.collidesWith$1(e);
+Isolate.$defineClass("Closure", "Closure54", ["box_0"], {
+ $call$0: function() {
+  this.box_0.game_1.init$0();
+  this.box_0.game_1.start$0();
  },
 });
 
 Isolate.$defineClass("_WebSocketEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
- get$open: function() {
-  return this._lib4_get$1('open');
- },
  get$message: function() {
   return this._lib4_get$1('message');
  },
  get$error: function() {
   return this._lib4_get$1('error');
- },
- get$close: function() {
-  return this._lib4_get$1('close');
  },
 });
 
@@ -1495,39 +1320,34 @@ Isolate.$defineClass("_VariableSizeListIterator", "Object", [], {
  },
 });
 
-Isolate.$defineClass("Closure21", "Closure59", ["this_5"], {
- $call$0: function() {
-  this.this_5.set$bgStyle('rgba(0, 0, 0, 0.60)');
+Isolate.$defineClass("Closure37", "Closure54", [], {
+ $call$1: function(n) {
+  if ($.geB(n, 10)) {
+    return '' + $.stringToString(n);
+  }
+  return '0' + $.stringToString(n);
  },
 });
 
 Isolate.$defineClass("_MediaStreamEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
 });
 
-Isolate.$defineClass("Closure6", "Closure59", ["this_4", "box_0", "box_2"], {
- $call$1: function(event$) {
-  $.print($.add(this.box_0.el_1.get$src(), ' is loaded'));
-  var t0 = this.this_4;
-  t0.set$_lib_successCount($.add(t0.get$_lib_successCount(), 1));
-  if (this.this_4.isDone$0() === true) {
-    this.box_2.downloadCallback_3.$call$0();
-  }
- },
-});
-
-Isolate.$defineClass("Closure57", "Closure59", ["box_0"], {
- $call$1: function(entry) {
-  var t0 = this.box_0.list_1;
-  var t1 = this.box_0.index_2;
-  var index = $.add(t1, 1);
-  this.box_0.index_2 = index;
-  $.indexSet(t0, t1, entry.get$key());
- },
-});
-
-Isolate.$defineClass("Closure44", "Closure59", [], {
+Isolate.$defineClass("Closure32", "Closure54", [], {
  $call$1: function(e) {
-  return e.removeFromGame$0();
+  return typeof e === 'object' && !!e.is$PowerUp;
+ },
+});
+
+Isolate.$defineClass("Closure46", "Closure54", ["this_0"], {
+ $call$0: function() {
+  return $._lib4_ElementRectImpl$1(this.this_0);
+ },
+});
+
+Isolate.$defineClass("Closure45", "Closure54", [], {
+ $call$1: function(e) {
+  e.preventDefault$0();
+  return false;
  },
 });
 
@@ -1540,9 +1360,9 @@ Isolate.$defineClass("DateImplementation", "Object", ["timeZone", "value"], {
   return $.DateImplementation$fromEpoch$2($.add(this.get$value(), duration.get$inMilliseconds()), this.get$timeZone());
  },
  toString$0: function() {
-  var t0 = new $.Closure40();
-  var t1 = new $.Closure41();
-  var t2 = new $.Closure42();
+  var t0 = new $.Closure35();
+  var t1 = new $.Closure36();
+  var t2 = new $.Closure37();
   var y = t0.$call$1(this.get$year());
   var m = t2.$call$1(this.get$month());
   var d = t2.$call$1(this.get$day());
@@ -1559,7 +1379,7 @@ Isolate.$defineClass("DateImplementation", "Object", ["timeZone", "value"], {
  isUtc$0: function() {
   return this.get$timeZone().get$isUtc();
  },
- get$isUtc: function() { return new $.Closure71(this); },
+ get$isUtc: function() { return new $.Closure57(this); },
  get$milliseconds: function() {
   return $.getMilliseconds(this);
  },
@@ -1600,28 +1420,35 @@ Isolate.$defineClass("DateImplementation", "Object", ["timeZone", "value"], {
  is$DateImplementation: true,
 });
 
-Isolate.$defineClass("Closure10", "Closure59", ["box_0"], {
- $call$0: function() {
-  return this.box_0.closure_1.$call$0();
+Isolate.$defineClass("Closure34", "Closure54", ["box_0"], {
+ $call$1: function(e) {
+  return this.box_0.powerUp_1.collidesWith$1(e);
  },
 });
 
-Isolate.$defineClass("Closure", "Closure59", ["box_0"], {
- $call$1: function(e) {
-  $.print('sent: ' + $.stringToString(this.box_0.ws_2.send$1('Hello')));
+Isolate.$defineClass("Closure2", "Closure54", ["this_4", "box_0", "box_2"], {
+ $call$1: function(event$) {
+  $.print($.add(this.box_0.el_1.get$src(), ' is loaded'));
+  var t0 = this.this_4;
+  t0.set$_lib_successCount($.add(t0.get$_lib_successCount(), 1));
+  if (this.this_4.isDone$0() === true) {
+    this.box_2.downloadCallback_3.$call$0();
+  }
  },
 });
 
-Isolate.$defineClass("Closure37", "Closure59", [], {
- $call$1: function(e) {
-  return typeof e === 'object' && !!e.is$PowerUp;
+Isolate.$defineClass("Closure50", "Closure54", ["box_0"], {
+ $call$2: function(key, value) {
+  if (this.box_0.f_1.$call$1(key) === true) {
+    $.add$1(this.box_0.result_2, key);
+  }
  },
 });
 
 Isolate.$defineClass("Game", "Object", [], {
  update$0: function() {
   $.get$length(this.get$entities());
-  for (var t0 = $.iterator($.filter(this.get$entities(), new $.Closure15())); t0.hasNext$0() === true; ) {
+  for (var t0 = $.iterator($.filter(this.get$entities(), new $.Closure10())); t0.hasNext$0() === true; ) {
     t0.next$0().update$0();
   }
   var i = $.sub($.get$length(this.get$entities()), 1);
@@ -1642,7 +1469,7 @@ Isolate.$defineClass("Game", "Object", [], {
   switch (state) {
     case 0:
       $.get$length(this.get$entities());
-      var t0 = $.iterator($.filter(this.get$entities(), new $.Closure15()));
+      var t0 = $.iterator($.filter(this.get$entities(), new $.Closure10()));
       L0: while (true) {
         if (!(t0.hasNext$0() === true)) break L0;
         t0.next$0().update$0();
@@ -1711,11 +1538,11 @@ Isolate.$defineClass("Game", "Object", [], {
  },
  startInput$0: function() {
   $.print('Starting input');
-  var t0 = new $.Closure46(this);
-  $.add$1($.document().get$on().get$click(), new $.Closure47(this, t0));
-  $.add$1($.document().get$on().get$mouseMove(), new $.Closure48(this, t0));
-  $.add$1($.document().get$on().get$touchMove(), new $.Closure49(this, t0));
-  $.add$1($.document().get$on().get$touchStart(), new $.Closure50());
+  var t0 = new $.Closure41(this);
+  $.add$1($.document().get$on().get$click(), new $.Closure42(this, t0));
+  $.add$1($.document().get$on().get$mouseMove(), new $.Closure43(this, t0));
+  $.add$1($.document().get$on().get$touchMove(), new $.Closure44(this, t0));
+  $.add$1($.document().get$on().get$touchStart(), new $.Closure45());
   $.print('Input started');
  },
  loop$1: function(time) {
@@ -1725,7 +1552,7 @@ Isolate.$defineClass("Game", "Object", [], {
   this.set$click((void 0));
   $.window().requestAnimationFrame$1(this.get$loop());
  },
- get$loop: function() { return new $.Closure72(this); },
+ get$loop: function() { return new $.Closure58(this); },
  start$0: function() {
   $.print('starting game');
   $.window().requestAnimationFrame$1(this.get$loop());
@@ -1739,7 +1566,7 @@ Isolate.$defineClass("Game", "Object", [], {
  init$0: function() {
   this.set$surfaceWidth(this.get$ctx().get$canvas().get$width());
   this.set$surfaceHeight(this.get$ctx().get$canvas().get$height());
-  this.get$ctx().get$canvas().get$rect().then$1(new $.Closure45(this));
+  this.get$ctx().get$canvas().get$rect().then$1(new $.Closure40(this));
   this.startInput$0();
   $.print('game initialized');
  },
@@ -1782,10 +1609,13 @@ Isolate.$defineClass("ObjectNotClosureException", "Object", [], {
  },
 });
 
-Isolate.$defineClass("Closure47", "Closure59", ["this_2", "getXandY_1"], {
- $call$1: function(e) {
-  var t0 = this.getXandY_1.$call$1(e);
-  this.this_2.set$click(t0);
+Isolate.$defineClass("Closure3", "Closure54", ["this_5", "box_2"], {
+ $call$1: function(event$) {
+  var t0 = this.this_5;
+  t0.set$_lib_errorCount($.add(t0.get$_lib_errorCount(), 1));
+  if (this.this_5.isDone$0() === true) {
+    this.box_2.downloadCallback_3.$call$0();
+  }
  },
 });
 
@@ -1793,54 +1623,53 @@ Isolate.$defineClass("EmptyElementRect", "Object", ["clientRects", "bounding", "
  get$bounding: function() { return this.bounding; },
 });
 
-Isolate.$defineClass("Closure28", "Closure59", ["this_1"], {
+Isolate.$defineClass("Closure12", "Closure54", ["this_1"], {
  $call$0: function() {
-  this.this_1.set$opacity(0.3);
+  this.this_1.set$bgStyle('rgba(0, 0, 0, 0.70)');
  },
 });
 
-Isolate.$defineClass("Closure46", "Closure59", ["this_0"], {
- $call$1: function(e) {
-  return $.Point$2($.sub($.sub(e.get$clientX(), this.this_0.get$clientPoint().get$x()), $.div(this.this_0.get$ctx().get$canvas().get$width(), 2)), $.sub($.sub(e.get$clientY(), this.this_0.get$clientPoint().get$y()), $.div(this.this_0.get$ctx().get$canvas().get$height(), 2)));
+Isolate.$defineClass("Closure22", "Closure54", ["this_0"], {
+ $call$0: function() {
+  this.this_0.set$opacity(0.4);
  },
 });
 
-Isolate.$defineClass("Closure55", "Closure59", ["box_0"], {
- $call$2: function(key, value) {
-  if (this.box_0.f_1.$call$1(key) === true) {
-    $.add$1(this.box_0.result_2, key);
+Isolate.$defineClass("Closure40", "Closure54", ["this_0"], {
+ $call$1: function(rect) {
+  var t0 = $.Point$2(rect.get$bounding().get$left(), rect.get$bounding().get$top());
+  this.this_0.set$clientPoint(t0);
+ },
+});
+
+Isolate.$defineClass("Closure30", "Closure54", ["this_5"], {
+ $call$0: function() {
+  this.this_5.set$bgStyle('rgba(0, 0, 0, 0.84)');
+ },
+});
+
+Isolate.$defineClass("Closure4", "Closure54", ["box_0"], {
+ $call$2: function(k, v) {
+  if (!(this.box_0.first_3 === true)) {
+    $.add$1(this.box_0.result_1, ', ');
   }
+  this.box_0.first_3 = false;
+  $._emitObject(k, this.box_0.result_1, this.box_0.visiting_2);
+  $.add$1(this.box_0.result_1, ': ');
+  $._emitObject(v, this.box_0.result_1, this.box_0.visiting_2);
  },
 });
 
-Isolate.$defineClass("Closure50", "Closure59", [], {
+Isolate.$defineClass("Closure43", "Closure54", ["this_4", "getXandY_3"], {
  $call$1: function(e) {
-  e.preventDefault$0();
-  return false;
+  var t0 = this.getXandY_3.$call$1(e);
+  this.this_4.set$mouse(t0);
  },
 });
 
-Isolate.$defineClass("IllegalAccessException", "Object", [], {
- toString$0: function() {
-  return 'Attempt to modify an immutable object';
- },
-});
-
-Isolate.$defineClass("Closure22", "Closure59", ["this_6"], {
- $call$0: function() {
-  this.this_6.set$bgStyle('rgba(0, 0, 0, 0.65)');
- },
-});
-
-Isolate.$defineClass("Closure11", "Closure59", ["box_0"], {
- $call$0: function() {
-  return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
- },
-});
-
-Isolate.$defineClass("Closure32", "Closure59", ["this_2"], {
- $call$0: function() {
-  this.this_2.set$bgStyle('rgba(0, 0, 0, 0.81)');
+Isolate.$defineClass("Closure38", "Closure54", [], {
+ $call$1: function(e) {
+  return typeof e === 'object' && !!e.is$PowerUp;
  },
 });
 
@@ -1927,9 +1756,9 @@ Isolate.$defineClass("PowerUp", "GameEntity", ["creationTime", "type", "fill", "
  is$PowerUp: true,
 });
 
-Isolate.$defineClass("Closure30", "Closure59", ["this_0"], {
+Isolate.$defineClass("Closure5", "Closure54", ["box_0"], {
  $call$0: function() {
-  this.this_0.set$bgStyle('rgba(0, 0, 0, 0.83)');
+  return this.box_0.closure_1.$call$0();
  },
 });
 
@@ -1958,19 +1787,15 @@ Isolate.$defineClass("TimeZoneImplementation", "Object", ["isUtc"], {
  is$TimeZoneImplementation: true,
 });
 
-Isolate.$defineClass("Closure34", "Closure59", ["this_4"], {
+Isolate.$defineClass("Closure13", "Closure54", ["this_2"], {
  $call$0: function() {
-  this.this_4.set$bgStyle('rgba(0, 0, 0, 0.83)');
+  this.this_2.set$bgStyle('rgba(0, 0, 0, 0.65)');
  },
 });
 
-Isolate.$defineClass("Closure2", "Closure59", ["box_0"], {
- $call$1: function(e) {
-  var msgCount = $.add(this.box_0.msgCount_1, 1);
-  this.box_0.msgCount_1 = msgCount;
-  if ($.eqB(e.get$data(), 'ping')) {
-    this.box_0.ws_2.send$1('pong');
-  }
+Isolate.$defineClass("Closure24", "Closure54", ["this_2"], {
+ $call$0: function() {
+  this.this_2.set$opacity(0.2);
  },
 });
 
@@ -1980,9 +1805,9 @@ Isolate.$defineClass("_IDBDatabaseEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
  },
 });
 
-Isolate.$defineClass("Closure38", "Closure59", [], {
- $call$1: function(e) {
-  return typeof e === 'object' && !!e.is$PowerUp;
+Isolate.$defineClass("Closure6", "Closure54", ["box_0"], {
+ $call$0: function() {
+  return this.box_0.closure_1.$call$1(this.box_0.arg1_2);
  },
 });
 
@@ -2114,60 +1939,18 @@ Isolate.$defineClass("GameEntity", "Object", [], {
  },
 });
 
-Isolate.$defineClass("ConstantMap", "Object", ["_lib5_keys", "_lib5_jsObject", "length"], {
- clear$0: function() {
-  return this._lib5_throwImmutable$0();
- },
- operator$indexSet$2: function(key, val) {
-  return this._lib5_throwImmutable$0();
- },
- _lib5_throwImmutable$0: function() {
-  throw $.captureStackTrace($.CTC4);
- },
- toString$0: function() {
-  return $.mapToString(this);
- },
- isEmpty$0: function() {
-  return $.eq($.get$length(this), 0);
- },
- getKeys$0: function() {
-  return this.get$_lib5_keys();
- },
- forEach$1: function(f) {
-  var t0 = ({});
-  t0.f_1 = f;
-  $.forEach(this.get$_lib5_keys(), new $.Closure9(this, t0));
- },
- operator$index$1: function(key) {
-  if (!(this.containsKey$1(key) === true)) {
-    return;
-  }
-  return $.jsPropertyAccess(this.get$_lib5_jsObject(), key);
- },
- containsKey$1: function(key) {
-  if ($.eqB(key, '__proto__')) {
-    return false;
-  }
-  return $.jsHasOwnProperty(this.get$_lib5_jsObject(), key);
- },
- get$_lib5_keys: function() { return this._lib5_keys; },
- get$_lib5_jsObject: function() { return this._lib5_jsObject; },
- get$length: function() { return this.length; },
- is$Map: function() { return true; },
-});
-
 Isolate.$defineClass("_TextTrackCueEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
 });
 
-Isolate.$defineClass("Closure3", "Closure59", [], {
+Isolate.$defineClass("Closure41", "Closure54", ["this_0"], {
  $call$1: function(e) {
-  $.print('Error was : ' + $.stringToString(e));
+  return $.Point$2($.sub($.sub(e.get$clientX(), this.this_0.get$clientPoint().get$x()), $.div(this.this_0.get$ctx().get$canvas().get$width(), 2)), $.sub($.sub(e.get$clientY(), this.this_0.get$clientPoint().get$y()), $.div(this.this_0.get$ctx().get$canvas().get$height(), 2)));
  },
 });
 
-Isolate.$defineClass("Closure12", "Closure59", ["box_0"], {
+Isolate.$defineClass("Closure14", "Closure54", ["this_3"], {
  $call$0: function() {
-  return this.box_0.closure_1.$call$2(this.box_0.arg1_2, this.box_0.arg2_3);
+  this.this_3.set$bgStyle('rgba(0, 0, 0, 0.60)');
  },
 });
 
@@ -2193,9 +1976,9 @@ Isolate.$defineClass("_ElementEventsImpl", "_EventsImpl", ["_lib4_ptr"], {
  },
 });
 
-Isolate.$defineClass("Closure24", "Closure59", ["this_8"], {
+Isolate.$defineClass("Closure25", "Closure54", ["this_0"], {
  $call$0: function() {
-  this.this_8.set$bgStyle('rgba(0, 0, 0, 0.75)');
+  this.this_0.set$bgStyle('rgba(0, 0, 0, 0.83)');
  },
 });
 
@@ -2243,15 +2026,18 @@ Isolate.$defineClass("_XMLHttpRequestUploadEventsImpl", "_EventsImpl", ["_lib4_p
  },
 });
 
-Isolate.$defineClass("Closure4", "Closure59", [], {
+Isolate.$defineClass("Closure47", "Closure54", [], {
  $call$1: function(e) {
-  $.print('Closed: ' + $.stringToString(e));
+  return $._completeMeasurementFutures();
  },
 });
 
-Isolate.$defineClass("Closure43", "Closure59", [], {
+Isolate.$defineClass("Closure44", "Closure54", ["this_6", "getXandY_5"], {
  $call$1: function(e) {
-  return typeof e === 'object' && !!e.is$PowerUp;
+  e.preventDefault$0();
+  var t0 = this.getXandY_5.$call$1($.index(e.get$touches(), 0));
+  this.this_6.set$mouse(t0);
+  return false;
  },
 });
 
@@ -2262,27 +2048,19 @@ Isolate.$defineClass("UnsupportedOperationException", "Object", ["_lib2_message"
  },
 });
 
-Isolate.$defineClass("Closure15", "Closure59", [], {
- $call$1: function(e) {
-  return !(e.get$_lib_removeFromGame() === true);
- },
-});
-
 Isolate.$defineClass("_DedicatedWorkerContextEventsImpl", "_WorkerContextEventsImpl", ["_lib4_ptr"], {
  get$message: function() {
   return this._lib4_get$1('message');
  },
 });
 
-Isolate.$defineClass("Closure41", "Closure59", [], {
- $call$1: function(n) {
-  if ($.geB(n, 100)) {
-    return '' + $.stringToString(n);
-  }
-  if ($.gtB(n, 10)) {
-    return '0' + $.stringToString(n);
-  }
-  return '00' + $.stringToString(n);
+Isolate.$defineClass("Closure52", "Closure54", ["box_0"], {
+ $call$1: function(entry) {
+  var t0 = this.box_0.list_1;
+  var t1 = this.box_0.index_2;
+  var index = $.add(t1, 1);
+  this.box_0.index_2 = index;
+  $.indexSet(t0, t1, entry.get$key());
  },
 });
 
@@ -2350,7 +2128,7 @@ Isolate.$defineClass("HashMapImplementation", "Object", ["_lib3_numberOfDeleted"
   $.setRuntimeTypeInfo(list, ({E: 'K'}));
   t0.list_1 = list;
   t0.i_2 = 0;
-  this.forEach$1(new $.Closure58(t0));
+  this.forEach$1(new $.Closure53(t0));
   return t0.list_1;
  },
  forEach$1: function(f) {
@@ -2358,7 +2136,7 @@ Isolate.$defineClass("HashMapImplementation", "Object", ["_lib3_numberOfDeleted"
   if (typeof length$ !== 'number') return this.forEach$1$bailout(f, 1, length$);
   for (var i = 0; i < length$; i = i + 1) {
     var key = $.index(this.get$_lib3_keys(), i);
-    if (!(key === (void 0)) && !(key === $.CTC6)) {
+    if (!(key === (void 0)) && !(key === $.CTC4)) {
       f.$call$2(key, $.index(this.get$_lib3_values(), i));
     }
   }
@@ -2378,7 +2156,7 @@ Isolate.$defineClass("HashMapImplementation", "Object", ["_lib3_numberOfDeleted"
       L0: while (true) {
         if (!$.ltB(i, length$)) break L0;
         var key = $.index(this.get$_lib3_keys(), i);
-        if (!(key === (void 0)) && !(key === $.CTC6)) {
+        if (!(key === (void 0)) && !(key === $.CTC4)) {
           f.$call$2(key, $.index(this.get$_lib3_values(), i));
         }
         i = i + 1;
@@ -2401,7 +2179,7 @@ Isolate.$defineClass("HashMapImplementation", "Object", ["_lib3_numberOfDeleted"
  operator$indexSet$2: function(key, value) {
   this._lib3_ensureCapacity$0();
   var index = this._lib3_probeForAdding$1(key);
-  if ($.index(this.get$_lib3_keys(), index) === (void 0) || $.index(this.get$_lib3_keys(), index) === $.CTC6) {
+  if ($.index(this.get$_lib3_keys(), index) === (void 0) || $.index(this.get$_lib3_keys(), index) === $.CTC4) {
     this.set$_lib3_numberOfEntries($.add(this.get$_lib3_numberOfEntries(), 1));
   }
   $.indexSet(this.get$_lib3_keys(), index, key);
@@ -2456,7 +2234,7 @@ Isolate.$defineClass("HashMapImplementation", "Object", ["_lib3_numberOfDeleted"
     var t1 = oldKeys.length;
     if (i < 0 || i >= t1) throw $.ioore(i);
     var t2 = oldKeys[i];
-    if (t2 === (void 0) || t2 === $.CTC6) {
+    if (t2 === (void 0) || t2 === $.CTC4) {
       continue;
     }
     var t3 = oldValues.length;
@@ -2505,7 +2283,7 @@ Isolate.$defineClass("HashMapImplementation", "Object", ["_lib3_numberOfDeleted"
         if (!$.ltB(i, capacity)) break L0;
         c$0:{
           var key = $.index(oldKeys, i);
-          if (key === (void 0) || key === $.CTC6) {
+          if (key === (void 0) || key === $.CTC4) {
             break c$0;
           }
           var value = $.index(oldValues, i);
@@ -2558,7 +2336,7 @@ Isolate.$defineClass("HashMapImplementation", "Object", ["_lib3_numberOfDeleted"
       if ($.eqB(existingKey, key)) {
         return hash0;
       } else {
-        if ($.ltB(insertionIndex, 0) && $.CTC6 === existingKey) {
+        if ($.ltB(insertionIndex, 0) && $.CTC4 === existingKey) {
           insertionIndex = hash0;
         }
         var numberOfProbes0 = numberOfProbes + 1;
@@ -2595,7 +2373,7 @@ Isolate.$defineClass("HashMapImplementation", "Object", ["_lib3_numberOfDeleted"
           if ($.eqB(existingKey, key)) {
             return hash0;
           } else {
-            if ($.ltB(insertionIndex, 0) && $.CTC6 === existingKey) {
+            if ($.ltB(insertionIndex, 0) && $.CTC4 === existingKey) {
               insertionIndex = hash0;
             }
             var numberOfProbes0 = numberOfProbes + 1;
@@ -2659,25 +2437,19 @@ Isolate.$defineClass("Timer", "Object", ["fpsSampleRate", "fps", "wallLastTimest
  get$gameTime: function() { return this.gameTime; },
 });
 
-Isolate.$defineClass("Closure25", "Closure59", ["this_9"], {
+Isolate.$defineClass("Closure26", "Closure54", ["this_1"], {
  $call$0: function() {
-  this.this_9.set$bgStyle('rgba(0, 0, 0, 0.80)');
+  this.this_1.set$bgStyle('rgba(0, 0, 0, 0.82)');
  },
 });
 
-Isolate.$defineClass("Closure54", "Closure59", ["box_0"], {
- $call$2: function(key, value) {
-  this.box_0.f_1.$call$1(key);
+Isolate.$defineClass("Closure15", "Closure54", ["this_4"], {
+ $call$0: function() {
+  this.this_4.set$bgStyle('rgba(0, 0, 0, 0.55)');
  },
 });
 
 Isolate.$defineClass("_SharedWorkerContextEventsImpl", "_WorkerContextEventsImpl", ["_lib4_ptr"], {
-});
-
-Isolate.$defineClass("Closure35", "Closure59", ["this_5"], {
- $call$0: function() {
-  this.this_5.set$bgStyle('rgba(0, 0, 0, 0.84)');
- },
 });
 
 Isolate.$defineClass("_IDBVersionChangeRequestEventsImpl", "_IDBRequestEventsImpl", ["_lib4_ptr"], {
@@ -2689,10 +2461,9 @@ Isolate.$defineClass("NoMoreElementsException", "Object", [], {
  },
 });
 
-Isolate.$defineClass("Closure5", "Closure59", ["box_0"], {
+Isolate.$defineClass("Closure31", "Closure54", ["this_6"], {
  $call$0: function() {
-  this.box_0.game_3.init$0();
-  this.box_0.game_3.start$0();
+  this.this_6.set$bgStyle('rgba(0, 0, 0, 0.85)');
  },
 });
 
@@ -2709,9 +2480,9 @@ Isolate.$defineClass("_FrameSetElementEventsImpl", "_ElementEventsImpl", ["_lib4
  },
 });
 
-Isolate.$defineClass("Closure16", "Closure59", ["this_0"], {
+Isolate.$defineClass("Closure17", "Closure54", ["this_6"], {
  $call$0: function() {
-  this.this_0.set$bgStyle('rgba(0, 0, 0, 0.75)');
+  this.this_6.set$bgStyle('rgba(0, 0, 0, 0.65)');
  },
 });
 
@@ -2757,16 +2528,19 @@ Isolate.$defineClass("_AbstractWorkerEventsImpl", "_EventsImpl", ["_lib4_ptr"], 
  },
 });
 
-Isolate.$defineClass("Closure13", "Closure59", ["box_0"], {
- $call$1: function(element) {
-  var counter = $.add(this.box_0.counter_1, 1);
-  this.box_0.counter_1 = counter;
+Isolate.$defineClass("Closure16", "Closure54", ["this_5"], {
+ $call$0: function() {
+  this.this_5.set$bgStyle('rgba(0, 0, 0, 0.60)');
  },
 });
 
-Isolate.$defineClass("Closure52", "Closure59", [], {
- $call$1: function(e) {
-  return $._completeMeasurementFutures();
+Isolate.$defineClass("Closure53", "Closure54", ["box_0"], {
+ $call$2: function(key, value) {
+  var t0 = this.box_0.list_1;
+  var t1 = this.box_0.i_2;
+  var i = $.add(t1, 1);
+  this.box_0.i_2 = i;
+  $.indexSet(t0, t1, key);
  },
 });
 
@@ -2785,7 +2559,7 @@ Isolate.$defineClass("HashSetIterator", "Object", ["_lib3_nextValidIndex", "_lib
       break;
     }
     entry = $.index(this.get$_lib3_entries(), this.get$_lib3_nextValidIndex());
-  } while (entry === (void 0) || entry === $.CTC6);
+  } while (entry === (void 0) || entry === $.CTC4);
  },
  _lib3_advance$0$bailout: function(state, env0) {
   switch (state) {
@@ -2806,7 +2580,7 @@ Isolate.$defineClass("HashSetIterator", "Object", ["_lib3_nextValidIndex", "_lib
           break;
         }
         entry = $.index(this.get$_lib3_entries(), this.get$_lib3_nextValidIndex());
-        if (!(entry === (void 0) || entry === $.CTC6)) break L0;
+        if (!(entry === (void 0) || entry === $.CTC4)) break L0;
       }
   }
  },
@@ -2822,7 +2596,7 @@ Isolate.$defineClass("HashSetIterator", "Object", ["_lib3_nextValidIndex", "_lib
   if ($.geB(this.get$_lib3_nextValidIndex(), $.get$length(this.get$_lib3_entries()))) {
     return false;
   }
-  if ($.index(this.get$_lib3_entries(), this.get$_lib3_nextValidIndex()) === $.CTC6) {
+  if ($.index(this.get$_lib3_entries(), this.get$_lib3_nextValidIndex()) === $.CTC4) {
     this._lib3_advance$0();
   }
   return $.lt(this.get$_lib3_nextValidIndex(), $.get$length(this.get$_lib3_entries()));
@@ -2972,117 +2746,45 @@ Isolate.$defineClass("_AllMatchesIterator", "Object", ["_lib3_done", "_lib3_next
  get$_lib3_re: function() { return this._lib3_re; },
 });
 
-Isolate.$defineClass("Closure59", "Object", [], {
+Isolate.$defineClass("Closure54", "Object", [], {
  toString$0: function() {
   return 'Closure';
  },
 });
 
-Isolate.$defineClass('Closure60', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$2: function(arg0, arg1) {
-  return this.self.close$2(arg0, arg1);
-},
-$call$0: function() {
-  return this.$call$2((void 0),(void 0))
-},
-$call$1: function(code) {
-  return this.$call$2(code,(void 0))
-},
-});
-Isolate.$defineClass('Closure61', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$0: function() {
-  return this.self.close$0();
-},
-});
-Isolate.$defineClass('Closure62', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$0: function() {
-  return this.self.close$0();
-},
-});
-Isolate.$defineClass('Closure63', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$0: function() {
-  return this.self.close$0();
-},
-});
-Isolate.$defineClass('Closure64', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$1: function(arg0) {
-  return this.self.open$1(arg0);
-},
-});
-Isolate.$defineClass('Closure65', 'Closure59', function BoundClosure(self) { this.self = self; }, {
+Isolate.$defineClass('Closure55', 'Closure54', function BoundClosure(self) { this.self = self; }, {
 $call$0: function() {
   return this.self.click$0();
 },
 });
-Isolate.$defineClass('Closure66', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$5: function(arg0, arg1, arg2, arg3, arg4) {
-  return this.self.open$5(arg0, arg1, arg2, arg3, arg4);
-},
-$call$2: function(method,url) {
-  return this.$call$5(method,url,(void 0),(void 0),(void 0))
-},
-});
-Isolate.$defineClass('Closure67', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$0: function() {
-  return this.self.close$0();
-},
-});
-Isolate.$defineClass('Closure68', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$3: function(arg0, arg1, arg2) {
-  return this.self.open$3(arg0, arg1, arg2);
-},
-$call$2: function(url,name$) {
-  return this.$call$3(url,name$,(void 0))
-},
-});
-Isolate.$defineClass('Closure69', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$0: function() {
-  return this.self.close$0();
-},
-});
-Isolate.$defineClass('Closure70', 'Closure59', function BoundClosure(self) { this.self = self; }, {
+Isolate.$defineClass('Closure56', 'Closure54', function BoundClosure(self) { this.self = self; }, {
 $call$4: function(arg0, arg1, arg2, arg3) {
   return this.self.rect$4(arg0, arg1, arg2, arg3);
 },
 });
-Isolate.$defineClass('Closure71', 'Closure59', function BoundClosure(self) { this.self = self; }, {
+Isolate.$defineClass('Closure57', 'Closure54', function BoundClosure(self) { this.self = self; }, {
 $call$0: function() {
   return this.self.isUtc$0();
 },
 });
-Isolate.$defineClass('Closure72', 'Closure59', function BoundClosure(self) { this.self = self; }, {
+Isolate.$defineClass('Closure58', 'Closure54', function BoundClosure(self) { this.self = self; }, {
 $call$1: function(arg0) {
   return this.self.loop$1(arg0);
 },
 });
-Isolate.$defineClass('Closure73', 'Closure59', function BoundClosure(self) { this.self = self; }, {
+Isolate.$defineClass('Closure59', 'Closure54', function BoundClosure(self) { this.self = self; }, {
 $call$0: function() {
   return this.self.click$0();
 },
 });
-Isolate.$defineClass('Closure74', 'Closure59', function BoundClosure(self) { this.self = self; }, {
+Isolate.$defineClass('Closure60', 'Closure54', function BoundClosure(self) { this.self = self; }, {
 $call$0: function() {
   return this.self.load$0();
 },
 });
-Isolate.$defineClass('Closure75', 'Closure59', function BoundClosure(self) { this.self = self; }, {
+Isolate.$defineClass('Closure61', 'Closure54', function BoundClosure(self) { this.self = self; }, {
 $call$1: function(arg0) {
   return this.self.error$1(arg0);
-},
-});
-Isolate.$defineClass('Closure76', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$0: function() {
-  return this.self.close$0();
-},
-});
-Isolate.$defineClass('Closure77', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$0: function() {
-  return this.self.close$0();
-},
-});
-Isolate.$defineClass('Closure78', 'Closure59', function BoundClosure(self) { this.self = self; }, {
-$call$0: function() {
-  return this.self.close$0();
 },
 });
 $._lib4_AudioContextEventsImpl$1 = function(_ptr) {
@@ -3155,10 +2857,6 @@ $._lib4_NodeListWrapper$1 = function(list) {
   return new $._NodeListWrapper(list);
 };
 
-$.jsHasOwnProperty = function(jsObject, property) {
-  return jsObject.hasOwnProperty(property);
-};
-
 $.isJsArray = function(value) {
   return !(value === (void 0)) && (value.constructor === Array);
 };
@@ -3178,26 +2876,6 @@ $.allMatches = function(receiver, str) {
 
 $.substringUnchecked = function(receiver, startIndex, endIndex) {
   return receiver.substring(startIndex, endIndex);
-};
-
-$.toString = function(value) {
-  if (typeof value == "object") {
-    if ($.isJsArray(value) === true) {
-      return $.collectionToString(value);
-    } else {
-      return value.toString$0();
-    }
-  }
-  if (value === 0 && (1 / value) < 0) {
-    return '-0.0';
-  }
-  if (value === (void 0)) {
-    return 'null';
-  }
-  if (typeof value == "function") {
-    return 'Closure';
-  }
-  return String(value);
 };
 
 $.DateImplementation$now$0 = function() {
@@ -3288,13 +2966,6 @@ $.JSSyntaxRegExp$_globalVersionOf$1 = function(other) {
   return t2;
 };
 
-$.tdiv = function(a, b) {
-  if ($.checkNumbers(a, b) === true) {
-    return $.truncate($.div(a, b));
-  }
-  return a.operator$tdiv$1(b);
-};
-
 $.removeRange = function(receiver, start, length$) {
   if (!($.isJsArray(receiver) === true)) {
     return receiver.removeRange$2(start, length$);
@@ -3326,6 +2997,13 @@ $.removeRange = function(receiver, start, length$) {
   }
   $.copy(receiver, $.add(start, length$), receiver, start, $.sub($.sub(receiverLength, length$), start));
   $.set$length(receiver, $.sub(receiverLength, length$));
+};
+
+$.tdiv = function(a, b) {
+  if ($.checkNumbers(a, b) === true) {
+    return $.truncate($.div(a, b));
+  }
+  return a.operator$tdiv$1(b);
 };
 
 $.PongGame$2 = function(assetManager, ctx) {
@@ -3456,13 +3134,13 @@ $.invokeClosure = function(closure, isolate, numberOfArguments, arg1, arg2) {
   t0.arg1_2 = arg1;
   t0.closure_1 = closure;
   if ($.eqB(numberOfArguments, 0)) {
-    return new $.Closure10(t0).$call$0();
+    return new $.Closure5(t0).$call$0();
   } else {
     if ($.eqB(numberOfArguments, 1)) {
-      return new $.Closure11(t0).$call$0();
+      return new $.Closure6(t0).$call$0();
     } else {
       if ($.eqB(numberOfArguments, 2)) {
-        return new $.Closure12(t0).$call$0();
+        return new $.Closure7(t0).$call$0();
       } else {
         throw $.captureStackTrace($.ExceptionImplementation$1('Unsupported number of arguments for wrapped closure'));
       }
@@ -3499,7 +3177,7 @@ $._maybeScheduleMeasurementFrame = function() {
   }
   $._nextMeasurementFrameScheduled = true;
   if ($._firstMeasurementRequest === true) {
-    $.add$1($.window().get$on().get$message(), new $.Closure52());
+    $.add$1($.window().get$on().get$message(), new $.Closure47());
     $._firstMeasurementRequest = false;
   }
   $.window().postMessage$2('DART-MEASURE', '*');
@@ -3559,6 +3237,13 @@ $._lib4_EventSourceEventsImpl$1 = function(_ptr) {
   return new $._EventSourceEventsImpl(_ptr);
 };
 
+$.mul = function(a, b) {
+  if ($.checkNumbers(a, b) === true) {
+    return a * b;
+  }
+  return a.operator$mul$1(b);
+};
+
 $.filter3 = function(source, destination, f) {
   for (var t0 = $.iterator(source); t0.hasNext$0() === true; ) {
     var t1 = t0.next$0();
@@ -3567,13 +3252,6 @@ $.filter3 = function(source, destination, f) {
     }
   }
   return destination;
-};
-
-$.mul = function(a, b) {
-  if ($.checkNumbers(a, b) === true) {
-    return a * b;
-  }
-  return a.operator$mul$1(b);
 };
 
 $._lib4_NotificationEventsImpl$1 = function(_ptr) {
@@ -3678,6 +3356,12 @@ $.checkMutable = function(list, reason) {
   }
 };
 
+$.DoubleLinkedQueueEntry$1 = function(e) {
+  var t0 = new $.DoubleLinkedQueueEntry((void 0), (void 0), (void 0));
+  t0.DoubleLinkedQueueEntry$1(e);
+  return t0;
+};
+
 $.toStringWrapper = function() {
   return $.toString((this.dartException));
 };
@@ -3690,12 +3374,6 @@ $._lib4_WorkerContextEventsImpl$1 = function(_ptr) {
   return new $._WorkerContextEventsImpl(_ptr);
 };
 
-$.DoubleLinkedQueueEntry$1 = function(e) {
-  var t0 = new $.DoubleLinkedQueueEntry((void 0), (void 0), (void 0));
-  t0.DoubleLinkedQueueEntry$1(e);
-  return t0;
-};
-
 $.intersect = function(r1, r2) {
   return !($.gtB(r1.get$left(), r2.get$right()) || $.ltB(r1.get$right(), r2.get$left()) || $.gtB(r1.get$top(), r2.get$bottom()) || $.ltB(r1.get$bottom(), r2.get$top()));
 };
@@ -3706,10 +3384,6 @@ $._lib4_DocumentEventsImpl$1 = function(_ptr) {
 
 $.regExpTest = function(regExp, str) {
   return $.regExpGetNative(regExp).test(str);
-};
-
-$.WebSocket = function(url) {
-  return new WebSocket(url);;
 };
 
 $.getDay = function(receiver) {
@@ -3735,13 +3409,6 @@ $.HashSetImplementation$0 = function() {
   return t0;
 };
 
-$.isEmpty = function(receiver) {
-  if (typeof receiver === 'string' || $.isJsArray(receiver) === true) {
-    return receiver.length === 0;
-  }
-  return receiver.isEmpty$0();
-};
-
 $._lib4_IDBRequestEventsImpl$1 = function(_ptr) {
   return new $._IDBRequestEventsImpl(_ptr);
 };
@@ -3762,6 +3429,13 @@ $.stringSplitUnchecked = function(receiver, pattern) {
       throw $.captureStackTrace('StringImplementation.split(Pattern) UNIMPLEMENTED');
     }
   }
+};
+
+$.isEmpty = function(receiver) {
+  if (typeof receiver === 'string' || $.isJsArray(receiver) === true) {
+    return receiver.length === 0;
+  }
+  return receiver.isEmpty$0();
 };
 
 $.checkGrowable = function(list, reason) {
@@ -3818,19 +3492,6 @@ $.getMinutes = function(receiver) {
   return t0;
 };
 
-$.geB = function(a, b) {
-  return $.ge(a, b) === true;
-};
-
-$.getMonth = function(receiver) {
-  if (receiver.get$timeZone().get$isUtc() === true) {
-    var t0 = ($.lazyAsJsDate(receiver).getUTCMonth()) + 1;
-  } else {
-    t0 = ($.lazyAsJsDate(receiver).getMonth()) + 1;
-  }
-  return t0;
-};
-
 $.add = function(a, b) {
   if ($.checkNumbers(a, b) === true) {
     return a + b;
@@ -3847,6 +3508,19 @@ $.add = function(a, b) {
     }
   }
   return a.operator$add$1(b);
+};
+
+$.geB = function(a, b) {
+  return $.ge(a, b) === true;
+};
+
+$.getMonth = function(receiver) {
+  if (receiver.get$timeZone().get$isUtc() === true) {
+    var t0 = ($.lazyAsJsDate(receiver).getUTCMonth()) + 1;
+  } else {
+    t0 = ($.lazyAsJsDate(receiver).getMonth()) + 1;
+  }
+  return t0;
 };
 
 $.atan2 = function(a, b) {
@@ -4018,7 +3692,7 @@ $._emitMap = function(m, result, visiting) {
   $.add$1(t0.visiting_2, m);
   $.add$1(t0.result_1, '{');
   t0.first_3 = true;
-  $.forEach(m, new $.Closure8(t0));
+  $.forEach(m, new $.Closure4(t0));
   $.add$1(t0.result_1, '}');
   $.removeLast(t0.visiting_2);
 };
@@ -4207,25 +3881,15 @@ $.newList = function(length$) {
 $.main = function() {
   var t0 = ({});
   var ctx = $.document().query$1('#surface').getContext$1('2d');
-  t0.msgCount_1 = 0;
   var assetManager = $.AssetManager$0();
-  assetManager.queueDownload$1('sounds/hit1.ogg');
-  assetManager.queueDownload$1('sounds/hit2.ogg');
-  assetManager.queueDownload$1('sounds/hit3.ogg');
-  assetManager.queueDownload$1('sounds/sweep.ogg');
   assetManager.queueDownload$1('sounds/hit1.mp3');
   assetManager.queueDownload$1('sounds/hit2.mp3');
   assetManager.queueDownload$1('sounds/hit3.mp3');
   assetManager.queueDownload$1('sounds/sweep.mp3');
-  t0.ws_2 = $.WebSocket('ws://localhost:8000/ws');
-  $.add$1(t0.ws_2.get$on().get$open(), new $.Closure(t0));
-  $.add$1(t0.ws_2.get$on().get$message(), new $.Closure2(t0));
-  $.add$1(t0.ws_2.get$on().get$error(), new $.Closure3());
-  $.add$1(t0.ws_2.get$on().get$close(), new $.Closure4());
-  t0.game_3 = $.PongGame$2(assetManager, ctx);
-  t0.game_3.set$enableSound(true);
-  t0.game_3.set$debugMode(false);
-  assetManager.downloadAll$1(new $.Closure5(t0));
+  t0.game_1 = $.PongGame$2(assetManager, ctx);
+  t0.game_1.set$enableSound(true);
+  t0.game_1.set$debugMode(false);
+  assetManager.downloadAll$1(new $.Closure(t0));
 };
 
 $._lib4_AbstractWorkerEventsImpl$1 = function(_ptr) {
@@ -4543,10 +4207,6 @@ $.pow2 = function(value, exponent) {
   return Math.pow(value, exponent);
 };
 
-$.jsPropertyAccess = function(jsObject, property) {
-  return jsObject[property];
-};
-
 $._lib4_TextTrackListEventsImpl$1 = function(_ptr) {
   return new $._TextTrackListEventsImpl(_ptr);
 };
@@ -4596,14 +4256,14 @@ $.checkNull = function(object) {
   return object;
 };
 
+$.throwNoSuchMethod = function(obj, name$, arguments$) {
+  throw $.captureStackTrace($.NoSuchMethodException$4(obj, name$, arguments$, (void 0)));
+};
+
 $.CompleterImpl$0 = function() {
   var t0 = new $.CompleterImpl($.FutureImpl$0());
   t0.CompleterImpl$0();
   return t0;
-};
-
-$.throwNoSuchMethod = function(obj, name$, arguments$) {
-  throw $.captureStackTrace($.NoSuchMethodException$4(obj, name$, arguments$, (void 0)));
 };
 
 $._lib4_EventListenerListImpl$2 = function(_ptr, _type) {
@@ -4682,10 +4342,6 @@ $.stringToString = function(value) {
   }
   var res0 = res;
   return res0;
-};
-
-$._lib4_ElementAttributeMap$1 = function(_element) {
-  return new $._ElementAttributeMap(_element);
 };
 
 $.contains$2 = function(receiver, other, startIndex) {
@@ -4771,7 +4427,7 @@ $.dynamicFunction = function(name$) {
     return f.methods;
   }
   var methods = ({});
-  var dartMethod = (Object.getPrototypeOf($.CTC11)[name$]);
+  var dartMethod = (Object.getPrototypeOf($.CTC9)[name$]);
   if (!(dartMethod === (void 0))) {
     methods['Object'] = dartMethod;
   }
@@ -4825,10 +4481,6 @@ $.objectToString = function(object) {
   return 'Instance of \'' + $.stringToString(name0) + '\'';
 };
 
-$._firstProbe = function(hashCode, length$) {
-  return $.and(hashCode, $.sub(length$, 1));
-};
-
 $.indexOf = function(a, element, startIndex, endIndex) {
   if (typeof a !== 'string' && (typeof a !== 'object'||a.constructor !== Array)) return $.indexOf$bailout(a, element, startIndex, endIndex,  0);
   if (typeof endIndex !== 'number') return $.indexOf$bailout(a, element, startIndex, endIndex,  0);
@@ -4851,8 +4503,8 @@ $.indexOf = function(a, element, startIndex, endIndex) {
   return -1;
 };
 
-$.ioore = function(index) {
-  throw $.captureStackTrace($.IndexOutOfRangeException$1(index));
+$._firstProbe = function(hashCode, length$) {
+  return $.and(hashCode, $.sub(length$, 1));
 };
 
 $.set$length = function(receiver, newLength) {
@@ -4871,6 +4523,23 @@ $.set$length = function(receiver, newLength) {
     receiver.set$length(newLength);
   }
   return newLength;
+};
+
+$.typeNameInFirefox = function(obj) {
+  var name$ = $.constructorNameFallback(obj);
+  if ($.eqB(name$, 'Window')) {
+    return 'DOMWindow';
+  }
+  if ($.eqB(name$, 'Document')) {
+    return 'HTMLDocument';
+  }
+  if ($.eqB(name$, 'XMLDocument')) {
+    return 'Document';
+  }
+  if ($.eqB(name$, 'WorkerMessageEvent')) {
+    return 'MessageEvent';
+  }
+  return name$;
 };
 
 $.indexOf2 = function(a, element, startIndex, endIndex) {
@@ -4895,21 +4564,16 @@ $.indexOf2 = function(a, element, startIndex, endIndex) {
   return -1;
 };
 
-$.typeNameInFirefox = function(obj) {
-  var name$ = $.constructorNameFallback(obj);
-  if ($.eqB(name$, 'Window')) {
-    return 'DOMWindow';
+$.ioore = function(index) {
+  throw $.captureStackTrace($.IndexOutOfRangeException$1(index));
+};
+
+$.forEach = function(receiver, f) {
+  if (!($.isJsArray(receiver) === true)) {
+    return receiver.forEach$1(f);
+  } else {
+    return $.forEach2(receiver, f);
   }
-  if ($.eqB(name$, 'Document')) {
-    return 'HTMLDocument';
-  }
-  if ($.eqB(name$, 'XMLDocument')) {
-    return 'Document';
-  }
-  if ($.eqB(name$, 'WorkerMessageEvent')) {
-    return 'MessageEvent';
-  }
-  return name$;
 };
 
 $.hashCode = function(receiver) {
@@ -4971,6 +4635,12 @@ $.min = function(a, b) {
   return b;
 };
 
+$.forEach2 = function(iterable, f) {
+  for (var t0 = $.iterator(iterable); t0.hasNext$0() === true; ) {
+    f.$call$1(t0.next$0());
+  }
+};
+
 $.startsWith = function(receiver, other) {
   if (!(typeof receiver === 'string')) {
     return receiver.startsWith$1(other);
@@ -4995,22 +4665,14 @@ $.toStringForNativeObject = function(obj) {
   return 'Instance of ' + $.stringToString($.getTypeNameOf(obj));
 };
 
-$.forEach = function(receiver, f) {
-  if (!($.isJsArray(receiver) === true)) {
-    return receiver.forEach$1(f);
-  } else {
-    return $.forEach2(receiver, f);
+$.forEach3 = function(iterable, f) {
+  for (var t0 = $.iterator(iterable); t0.hasNext$0() === true; ) {
+    f.$call$1(t0.next$0());
   }
 };
 
 $.TimeZoneImplementation$local$0 = function() {
   return new $.TimeZoneImplementation(false);
-};
-
-$.forEach2 = function(iterable, f) {
-  for (var t0 = $.iterator(iterable); t0.hasNext$0() === true; ) {
-    f.$call$1(t0.next$0());
-  }
 };
 
 $.dynamicBind = function(obj, name$, methods, arguments$) {
@@ -5056,7 +4718,7 @@ $.getFunctionForTypeNameOf = function() {
     return $.typeNameInChrome;
   }
   var userAgent = (navigator.userAgent);
-  if ($.contains$1(userAgent, $.CTC10) === true) {
+  if ($.contains$1(userAgent, $.CTC8) === true) {
     return $.typeNameInChrome;
   } else {
     if ($.contains$1(userAgent, 'Firefox') === true) {
@@ -5092,12 +4754,6 @@ $.index = function(a, index) {
 
 $._lib4_ElementEventsImpl$1 = function(_ptr) {
   return new $._ElementEventsImpl(_ptr);
-};
-
-$.forEach3 = function(iterable, f) {
-  for (var t0 = $.iterator(iterable); t0.hasNext$0() === true; ) {
-    f.$call$1(t0.next$0());
-  }
 };
 
 $.toLowerCase = function(receiver) {
@@ -5142,15 +4798,15 @@ $.eq = function(a, b) {
   return a === b;
 };
 
-$.StringBufferImpl$1 = function(content$) {
-  var t0 = new $.StringBufferImpl((void 0), (void 0));
-  t0.StringBufferImpl$1(content$);
-  return t0;
-};
-
 $.HashMapImplementation$0 = function() {
   var t0 = new $.HashMapImplementation((void 0), (void 0), (void 0), (void 0), (void 0));
   t0.HashMapImplementation$0();
+  return t0;
+};
+
+$.StringBufferImpl$1 = function(content$) {
+  var t0 = new $.StringBufferImpl((void 0), (void 0));
+  t0.StringBufferImpl$1(content$);
   return t0;
 };
 
@@ -5160,14 +4816,6 @@ $.substring$1 = function(receiver, startIndex) {
   }
   var t0 = receiver;
   return $.substring$2(t0, startIndex, (void 0));
-};
-
-$.some = function(receiver, f) {
-  if (!($.isJsArray(receiver) === true)) {
-    return receiver.some$1(f);
-  } else {
-    return $.some2(receiver, f);
-  }
 };
 
 $.some2 = function(iterable, f) {
@@ -5194,6 +4842,14 @@ $._lib4_SharedWorkerContextEventsImpl$1 = function(_ptr) {
 
 $._lib4_IDBVersionChangeRequestEventsImpl$1 = function(_ptr) {
   return new $._IDBVersionChangeRequestEventsImpl(_ptr);
+};
+
+$.some = function(receiver, f) {
+  if (!($.isJsArray(receiver) === true)) {
+    return receiver.some$1(f);
+  } else {
+    return $.some2(receiver, f);
+  }
 };
 
 $.gtB = function(a, b) {
@@ -5283,6 +4939,26 @@ $.getTypeNameOf = function(obj) {
     $._getTypeNameOf = $.getFunctionForTypeNameOf();
   }
   return $._getTypeNameOf.$call$1(obj);
+};
+
+$.toString = function(value) {
+  if (typeof value == "object") {
+    if ($.isJsArray(value) === true) {
+      return $.collectionToString(value);
+    } else {
+      return value.toString$0();
+    }
+  }
+  if (value === 0 && (1 / value) < 0) {
+    return '-0.0';
+  }
+  if (value === (void 0)) {
+    return 'null';
+  }
+  if (typeof value == "function") {
+    return 'Closure';
+  }
+  return String(value);
 };
 
 $.sub = function(a, b) {
@@ -5640,16 +5316,14 @@ Isolate.makeConstantList = function(list) {
   return list;
 };
 $.CTC = Isolate.makeConstantList([]);
-$.CTC3 = new Isolate.$isolateProperties.ConstantMap(Isolate.$isolateProperties.CTC, {}, 0);
-$.CTC7 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '^#[_a-zA-Z]\\w*$');
-$.CTC8 = new Isolate.$isolateProperties._SimpleClientRect(0, 0, 0, 0);
-$.CTC6 = new Isolate.$isolateProperties._DeletedKeySentinel();
-$.CTC9 = new Isolate.$isolateProperties.EmptyElementRect(Isolate.$isolateProperties.CTC, Isolate.$isolateProperties.CTC8, Isolate.$isolateProperties.CTC8, Isolate.$isolateProperties.CTC8, Isolate.$isolateProperties.CTC8);
+$.CTC6 = new Isolate.$isolateProperties._SimpleClientRect(0, 0, 0, 0);
+$.CTC7 = new Isolate.$isolateProperties.EmptyElementRect(Isolate.$isolateProperties.CTC, Isolate.$isolateProperties.CTC6, Isolate.$isolateProperties.CTC6, Isolate.$isolateProperties.CTC6, Isolate.$isolateProperties.CTC6);
+$.CTC4 = new Isolate.$isolateProperties._DeletedKeySentinel();
+$.CTC8 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
 $.CTC2 = new Isolate.$isolateProperties.NoMoreElementsException();
-$.CTC11 = new Isolate.$isolateProperties.Object();
-$.CTC10 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
-$.CTC4 = new Isolate.$isolateProperties.IllegalAccessException();
-$.CTC5 = new Isolate.$isolateProperties.EmptyQueueException();
+$.CTC9 = new Isolate.$isolateProperties.Object();
+$.CTC3 = new Isolate.$isolateProperties.EmptyQueueException();
+$.CTC5 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '^#[_a-zA-Z]\\w*$');
 $._pendingRequests = (void 0);
 $._cachedBrowserPrefix = (void 0);
 $._nextMeasurementFrameScheduled = false;
@@ -5667,15 +5341,6 @@ $.defineProperty(Object.prototype, 'is$Map', function() { return false; });
 $.defineProperty(Object.prototype, 'toString$0', function() { return $.toStringForNativeObject(this); });
 $.dynamicFunction('get$width').ImageData = function() { return this.width; };
 $.dynamicFunction('get$height').ImageData = function() { return this.height; };
-$.dynamicFunction('get$data').ImageData = function() { return this.data; };
-$.dynamicFunction('get$name').DocumentType = function() { return this.name; };
-$.dynamicFunction('send$1').WebSocket = function(data) {
-  return this.send(data);
- };
-$.dynamicFunction('close$2').WebSocket = function(code, reason) {
-  return this.close(code,reason);
- };
-$.dynamicFunction('get$close').WebSocket = function() { return new $.Closure60(this); };
 $.dynamicFunction('$dom_addEventListener$3').WebSocket = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
@@ -5692,7 +5357,6 @@ $.dynamicFunction('get$width').SVGFETileElement = function() { return this.width
 $.dynamicFunction('get$height').SVGFETileElement = function() { return this.height; };
 $.dynamicFunction('set$value').HTMLOutputElement = function(v) { this.value = v; };
 $.dynamicFunction('get$value').HTMLOutputElement = function() { return this.value; };
-$.dynamicFunction('get$name').HTMLOutputElement = function() { return this.name; };
 $.dynamicFunction('set$value').SVGNumber = function(v) { this.value = v; };
 $.dynamicFunction('get$value').SVGNumber = function() { return this.value; };
 $.dynamicFunction('removeRange$2').Int8Array = function(start, rangeLength) {
@@ -5738,7 +5402,6 @@ $.dynamicFunction('is$List2').Int8Array = function() { return true; };
 $.dynamicFunction('is$Collection').Int8Array = function() { return true; };
 $.dynamicFunction('get$userAgent').WorkerNavigator = function() { return this.userAgent; };
 $.dynamicFunction('get$width').HTMLAppletElement = function() { return this.width; };
-$.dynamicFunction('get$name').HTMLAppletElement = function() { return this.name; };
 $.dynamicFunction('set$height').HTMLAppletElement = function(v) { this.height = v; };
 $.dynamicFunction('get$height').HTMLAppletElement = function() { return this.height; };
 $.dynamicFunction('get$y').SVGFEBlendElement = function() { return this.y; };
@@ -5854,7 +5517,6 @@ $.dynamicFunction('get$x').SVGRect = function() { return this.x; };
 $.dynamicFunction('get$width').SVGRect = function() { return this.width; };
 $.dynamicFunction('set$height').SVGRect = function(v) { this.height = v; };
 $.dynamicFunction('get$height').SVGRect = function() { return this.height; };
-$.dynamicFunction('get$name').DOMFileSystem = function() { return this.name; };
 $.dynamicFunction('set$x').SVGPathSegLinetoHorizontalAbs = function(v) { this.x = v; };
 $.dynamicFunction('get$x').SVGPathSegLinetoHorizontalAbs = function() { return this.x; };
 $.dynamicFunction('get$length').CSSValueList = function() { return this.length; };
@@ -5866,8 +5528,6 @@ $.dynamicFunction('get$y').SVGFEGaussianBlurElement = function() { return this.y
 $.dynamicFunction('get$x').SVGFEGaussianBlurElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGFEGaussianBlurElement = function() { return this.width; };
 $.dynamicFunction('get$height').SVGFEGaussianBlurElement = function() { return this.height; };
-$.dynamicFunction('get$data').ProcessingInstruction = function() { return this.data; };
-$.dynamicFunction('get$name').DOMPlugin = function() { return this.name; };
 $.dynamicFunction('get$length').DOMPlugin = function() { return this.length; };
 $.dynamicFunction('$dom_addEventListener$3').MediaStream = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
@@ -5878,7 +5538,6 @@ $.dynamicFunction('get$on').MediaStream = function() {
 $.dynamicFunction('play$0').WebKitAnimation = function() {
   return this.play();
  };
-$.dynamicFunction('get$name').WebKitAnimation = function() { return this.name; };
 $.dynamicFunction('get$length').SpeechRecognitionResult = function() { return this.length; };
 $.dynamicFunction('start$0').SpeechRecognition = function() {
   return this.start();
@@ -5897,10 +5556,6 @@ $.dynamicFunction('start$0').MessagePort = function() {
 $.dynamicFunction('postMessage$2').MessagePort = function(message, messagePorts) {
   return this.postMessage(message,messagePorts);
  };
-$.dynamicFunction('close$0').MessagePort = function() {
-  return this.close();
- };
-$.dynamicFunction('get$close').MessagePort = function() { return new $.Closure61(this); };
 $.dynamicFunction('$dom_addEventListener$3').MessagePort = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
@@ -5912,16 +5567,11 @@ $.dynamicFunction('get$canvas').CanvasRenderingContext = function() { return thi
 $.dynamicFunction('toString$0').IDBDatabaseException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').IDBDatabaseException = function() { return this.name; };
 $.dynamicFunction('get$message').IDBDatabaseException = function() { return this.message; };
 $.dynamicFunction('get$y').SVGImageElement = function() { return this.y; };
 $.dynamicFunction('get$x').SVGImageElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGImageElement = function() { return this.width; };
 $.dynamicFunction('get$height').SVGImageElement = function() { return this.height; };
-$.dynamicFunction('close$0').Notification = function() {
-  return this.close();
- };
-$.dynamicFunction('get$close').Notification = function() { return new $.Closure62(this); };
 $.dynamicFunction('get$tag').Notification = function() { return this.tag; };
 $.dynamicFunction('get$on').Notification = function() {
   return $._lib4_NotificationEventsImpl$1(this);
@@ -5929,10 +5579,6 @@ $.dynamicFunction('get$on').Notification = function() {
 $.dynamicFunction('setTimeout$2').WorkerContext = function(handler, timeout) {
   return this.setTimeout($.convertDartClosureToJS(handler),timeout);
  };
-$.dynamicFunction('close$0').WorkerContext = function() {
-  return this.close();
- };
-$.dynamicFunction('get$close').WorkerContext = function() { return new $.Closure63(this); };
 $.dynamicFunction('$dom_addEventListener$3').WorkerContext = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
@@ -5952,12 +5598,10 @@ $.dynamicFunction('get$value').HTMLInputElement = function() { return this.value
 $.dynamicFunction('set$src').HTMLInputElement = function(v) { this.src = v; };
 $.dynamicFunction('get$src').HTMLInputElement = function() { return this.src; };
 $.dynamicFunction('get$pattern').HTMLInputElement = function() { return this.pattern; };
-$.dynamicFunction('get$name').HTMLInputElement = function() { return this.name; };
 $.dynamicFunction('get$on').HTMLInputElement = function() {
   return $._lib4_InputElementEventsImpl$1(this);
  };
 $.dynamicFunction('get$length').TextTrackCueList = function() { return this.length; };
-$.dynamicFunction('get$name').HTMLFieldSetElement = function() { return this.name; };
 $.dynamicFunction('get$y').SVGFEDropShadowElement = function() { return this.y; };
 $.dynamicFunction('get$x').SVGFEDropShadowElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGFEDropShadowElement = function() { return this.width; };
@@ -6072,7 +5716,6 @@ $.dynamicFunction('get$width').SVGMaskElement = function() { return this.width; 
 $.dynamicFunction('get$height').SVGMaskElement = function() { return this.height; };
 $.dynamicFunction('set$value').HTMLButtonElement = function(v) { this.value = v; };
 $.dynamicFunction('get$value').HTMLButtonElement = function() { return this.value; };
-$.dynamicFunction('get$name').HTMLButtonElement = function() { return this.name; };
 $.dynamicFunction('filter$1').TreeWalker = function(arg0) { return this.filter.$call$1(arg0); };
 $.dynamicFunction('get$y').SVGFEPointLightElement = function() { return this.y; };
 $.dynamicFunction('get$x').SVGFEPointLightElement = function() { return this.x; };
@@ -6186,7 +5829,6 @@ $.dynamicFunction('is$Collection').MediaList = function() { return true; };
 $.dynamicFunction('toString$0').SVGException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').SVGException = function() { return this.name; };
 $.dynamicFunction('get$message').SVGException = function() { return this.message; };
 $.dynamicFunction('set$y').SVGPathSegCurvetoQuadraticSmoothRel = function(v) { this.y = v; };
 $.dynamicFunction('get$y').SVGPathSegCurvetoQuadraticSmoothRel = function() { return this.y; };
@@ -6196,7 +5838,6 @@ $.dynamicFunction('set$y').SVGPathSegMovetoAbs = function(v) { this.y = v; };
 $.dynamicFunction('get$y').SVGPathSegMovetoAbs = function() { return this.y; };
 $.dynamicFunction('set$x').SVGPathSegMovetoAbs = function(v) { this.x = v; };
 $.dynamicFunction('get$x').SVGPathSegMovetoAbs = function() { return this.x; };
-$.dynamicFunction('get$data').MessageEvent = function() { return this.data; };
 $.dynamicFunction('toString$0').DOMSelection = function() {
   return this.toString();
  };
@@ -6204,10 +5845,6 @@ $.dynamicFunction('get$y').SVGFEMergeElement = function() { return this.y; };
 $.dynamicFunction('get$x').SVGFEMergeElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGFEMergeElement = function() { return this.width; };
 $.dynamicFunction('get$height').SVGFEMergeElement = function() { return this.height; };
-$.dynamicFunction('open$1').IDBFactory = function(name) {
-  return this.open(name);
- };
-$.dynamicFunction('get$open').IDBFactory = function() { return new $.Closure64(this); };
 $.dynamicFunction('set$src').HTMLScriptElement = function(v) { this.src = v; };
 $.dynamicFunction('get$src').HTMLScriptElement = function() { return this.src; };
 $.dynamicFunction('$dom_replaceChild$2').Node = function(newChild, oldChild) {
@@ -6235,22 +5872,17 @@ $.dynamicFunction('get$parent').Node = function() {
     return Object.prototype.get$parent.call(this);
   }
  };
-$.dynamicFunction('get$$dom_attributes').Node = function() {
-  return this.attributes;;
- };
 $.dynamicFunction('remove$0').Node = function() {
   if (!$.eqNullB(this.get$parent())) {
     this.get$parent().$dom_removeChild$1(this);
   }
   return this;
  };
-$.dynamicFunction('get$name').IDBIndex = function() { return this.name; };
 $.dynamicFunction('get$y').SVGTextPositioningElement = function() { return this.y; };
 $.dynamicFunction('get$x').SVGTextPositioningElement = function() { return this.x; };
 $.dynamicFunction('toString$0').OperationNotAllowedException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').OperationNotAllowedException = function() { return this.name; };
 $.dynamicFunction('get$message').OperationNotAllowedException = function() { return this.message; };
 $.dynamicFunction('set$y').SVGPathSegCurvetoQuadraticAbs = function(v) { this.y = v; };
 $.dynamicFunction('get$y').SVGPathSegCurvetoQuadraticAbs = function() { return this.y; };
@@ -6265,10 +5897,7 @@ $.dynamicFunction('get$on').DocumentFragment = function() {
  };
 $.dynamicFunction('click$0').DocumentFragment = function() {
  };
-$.dynamicFunction('get$click').DocumentFragment = function() { return new $.Closure65(this); };
-$.dynamicFunction('get$attributes').DocumentFragment = function() {
-  return $.CTC3;
- };
+$.dynamicFunction('get$click').DocumentFragment = function() { return new $.Closure55(this); };
 $.dynamicFunction('get$parent').DocumentFragment = function() {
   return;
  };
@@ -6277,7 +5906,7 @@ $.dynamicFunction('get$translate').DocumentFragment = function() {
  };
 $.dynamicFunction('translate$2').DocumentFragment = function(arg0, arg1) { return this.get$translate().$call$2(arg0, arg1); };
 $.dynamicFunction('get$rect').DocumentFragment = function() {
-  var t0 = new $.Closure53();
+  var t0 = new $.Closure48();
   var t1 = $.CompleterImpl$0();
   $.setRuntimeTypeInfo(t1, ({T: 'ElementRect'}));
   return $._createMeasurementFuture(t0, t1);
@@ -6317,13 +5946,10 @@ $.dynamicFunction('get$on').IDBRequest = function() {
     return Object.prototype.get$on.call(this);
   }
  };
-$.dynamicFunction('get$name').WebKitCSSKeyframesRule = function() { return this.name; };
 $.dynamicFunction('set$value').AudioParam = function(v) { this.value = v; };
 $.dynamicFunction('get$value').AudioParam = function() { return this.value; };
-$.dynamicFunction('get$name').AudioParam = function() { return this.name; };
 $.dynamicFunction('set$value').Attr = function(v) { this.value = v; };
 $.dynamicFunction('get$value').Attr = function() { return this.value; };
-$.dynamicFunction('get$name').Attr = function() { return this.name; };
 $.dynamicFunction('get$length').History = function() { return this.length; };
 $.dynamicFunction('set$y').SVGPathSegArcRel = function(v) { this.y = v; };
 $.dynamicFunction('get$y').SVGPathSegArcRel = function() { return this.y; };
@@ -6347,7 +5973,6 @@ $.dynamicFunction('get$x').SVGPathSegCurvetoQuadraticRel = function() { return t
 $.dynamicFunction('toString$0').XMLHttpRequestException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').XMLHttpRequestException = function() { return this.name; };
 $.dynamicFunction('get$message').XMLHttpRequestException = function() { return this.message; };
 $.dynamicFunction('clear$0').SVGNumberList = function() {
   return this.clear();
@@ -6359,14 +5984,6 @@ $.dynamicFunction('get$y').SVGFEColorMatrixElement = function() { return this.y;
 $.dynamicFunction('get$x').SVGFEColorMatrixElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGFEColorMatrixElement = function() { return this.width; };
 $.dynamicFunction('get$height').SVGFEColorMatrixElement = function() { return this.height; };
-$.dynamicFunction('get$name').HTMLMapElement = function() { return this.name; };
-$.dynamicFunction('send$1').XMLHttpRequest = function(data) {
-  return this.send(data);
- };
-$.dynamicFunction('open$5').XMLHttpRequest = function(method, url, async, user, password) {
-  return this.open(method,url,async,user,password);
- };
-$.dynamicFunction('get$open').XMLHttpRequest = function() { return new $.Closure66(this); };
 $.dynamicFunction('$dom_addEventListener$3').XMLHttpRequest = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
@@ -6377,7 +5994,6 @@ $.dynamicFunction('get$length').SpeechGrammarList = function() { return this.len
 $.dynamicFunction('clear$0').SVGPathSegList = function() {
   return this.clear();
  };
-$.dynamicFunction('get$data').CompositionEvent = function() { return this.data; };
 $.dynamicFunction('get$y').SVGForeignObjectElement = function() { return this.y; };
 $.dynamicFunction('get$x').SVGForeignObjectElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGForeignObjectElement = function() { return this.width; };
@@ -6430,7 +6046,6 @@ $.dynamicFunction('get$x').SVGPathSegCurvetoCubicSmoothAbs = function() { return
 $.dynamicFunction('get$width').HTMLEmbedElement = function() { return this.width; };
 $.dynamicFunction('set$src').HTMLEmbedElement = function(v) { this.src = v; };
 $.dynamicFunction('get$src').HTMLEmbedElement = function() { return this.src; };
-$.dynamicFunction('get$name').HTMLEmbedElement = function() { return this.name; };
 $.dynamicFunction('set$height').HTMLEmbedElement = function(v) { this.height = v; };
 $.dynamicFunction('get$height').HTMLEmbedElement = function() { return this.height; };
 $.dynamicFunction('get$y').SVGFEMorphologyElement = function() { return this.y; };
@@ -6444,12 +6059,10 @@ $.dynamicFunction('getContext$1').HTMLCanvasElement = function(contextId) {
 $.dynamicFunction('get$width').HTMLCanvasElement = function() { return this.width; };
 $.dynamicFunction('set$height').HTMLCanvasElement = function(v) { this.height = v; };
 $.dynamicFunction('get$height').HTMLCanvasElement = function() { return this.height; };
-$.dynamicFunction('get$name').HTMLFormElement = function() { return this.name; };
 $.dynamicFunction('get$length').HTMLFormElement = function() { return this.length; };
 $.dynamicFunction('toString$0').EventException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').EventException = function() { return this.name; };
 $.dynamicFunction('get$message').EventException = function() { return this.message; };
 $.dynamicFunction('update$0').DOMApplicationCache = function() {
   return this.update();
@@ -6461,10 +6074,8 @@ $.dynamicFunction('get$on').DOMApplicationCache = function() {
   return $._lib4_DOMApplicationCacheEventsImpl$1(this);
  };
 $.dynamicFunction('get$width').HTMLObjectElement = function() { return this.width; };
-$.dynamicFunction('get$name').HTMLObjectElement = function() { return this.name; };
 $.dynamicFunction('set$height').HTMLObjectElement = function(v) { this.height = v; };
 $.dynamicFunction('get$height').HTMLObjectElement = function() { return this.height; };
-$.dynamicFunction('get$data').HTMLObjectElement = function() { return this.data; };
 $.dynamicFunction('get$y').MouseEvent = function() { return this.y; };
 $.dynamicFunction('get$x').MouseEvent = function() { return this.x; };
 $.dynamicFunction('get$clientY').MouseEvent = function() { return this.clientY; };
@@ -6475,10 +6086,6 @@ $.dynamicFunction('$dom_addEventListener$3').IDBTransaction = function(type, lis
 $.dynamicFunction('get$on').IDBTransaction = function() {
   return $._lib4_IDBTransactionEventsImpl$1(this);
  };
-$.dynamicFunction('close$0').EventSource = function() {
-  return this.close();
- };
-$.dynamicFunction('get$close').EventSource = function() { return new $.Closure67(this); };
 $.dynamicFunction('$dom_addEventListener$3').EventSource = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
@@ -6499,23 +6106,14 @@ $.dynamicFunction('postMessage$3').DOMWindow = function(message, targetOrigin, m
 $.dynamicFunction('postMessage$2').DOMWindow = function(message,targetOrigin) {
   return this.postMessage(message,targetOrigin);
 };
-$.dynamicFunction('open$3').DOMWindow = function(url, name, options) {
-  return this.open(url,name,options);
- };
-$.dynamicFunction('get$open').DOMWindow = function() { return new $.Closure68(this); };
 $.dynamicFunction('moveTo$2').DOMWindow = function(x, y) {
   return this.moveTo(x,y);
  };
-$.dynamicFunction('close$0').DOMWindow = function() {
-  return this.close();
- };
-$.dynamicFunction('get$close').DOMWindow = function() { return new $.Closure69(this); };
 $.dynamicFunction('$dom_addEventListener$3').DOMWindow = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
 $.dynamicFunction('get$top').DOMWindow = function() { return this.top; };
 $.dynamicFunction('get$navigator').DOMWindow = function() { return this.navigator; };
-$.dynamicFunction('get$name').DOMWindow = function() { return this.name; };
 $.dynamicFunction('get$length').DOMWindow = function() { return this.length; };
 $.dynamicFunction('get$on').DOMWindow = function() {
   return $._lib4_WindowEventsImpl$1(this);
@@ -6549,12 +6147,10 @@ $.dynamicFunction('remove$0').EntrySync = function() {
 $.dynamicFunction('moveTo$2').EntrySync = function(parent, name) {
   return this.moveTo(parent,name);
  };
-$.dynamicFunction('get$name').EntrySync = function() { return this.name; };
 $.dynamicFunction('get$y').SVGUseElement = function() { return this.y; };
 $.dynamicFunction('get$x').SVGUseElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGUseElement = function() { return this.width; };
 $.dynamicFunction('get$height').SVGUseElement = function() { return this.height; };
-$.dynamicFunction('get$name').HTMLMetaElement = function() { return this.name; };
 $.dynamicFunction('$dom_addEventListener$3').JavaScriptAudioNode = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
@@ -6606,7 +6202,6 @@ $.dynamicFunction('is$Collection').Uint32Array = function() { return true; };
 $.dynamicFunction('toString$0').RangeException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').RangeException = function() { return this.name; };
 $.dynamicFunction('get$message').RangeException = function() { return this.message; };
 $.dynamicFunction('set$value').HTMLProgressElement = function(v) { this.value = v; };
 $.dynamicFunction('get$value').HTMLProgressElement = function() { return this.value; };
@@ -6678,7 +6273,7 @@ $.dynamicFunction('$dom_querySelector$1').HTMLDocument = function(selectors) {
   return this.querySelector(selectors);;
  };
 $.dynamicFunction('query$1').HTMLDocument = function(selectors) {
-  if ($.CTC7.hasMatch$1(selectors) === true) {
+  if ($.CTC5.hasMatch$1(selectors) === true) {
     return this.$dom_getElementById$1($.substring$1(selectors, 1));
   }
   return this.$dom_querySelector$1(selectors);
@@ -6703,7 +6298,6 @@ $.dynamicFunction('get$length').DOMPluginArray = function() { return this.length
 $.dynamicFunction('start$0').HTMLOListElement = function() { return this.start.$call$0(); };
 $.dynamicFunction('set$value').HTMLTextAreaElement = function(v) { this.value = v; };
 $.dynamicFunction('get$value').HTMLTextAreaElement = function() { return this.value; };
-$.dynamicFunction('get$name').HTMLTextAreaElement = function() { return this.name; };
 $.dynamicFunction('removeRange$2').Int32Array = function(start, rangeLength) {
   throw $.captureStackTrace($.UnsupportedOperationException$1('Cannot removeRange on immutable List.'));
  };
@@ -6874,7 +6468,6 @@ $.dynamicFunction('is$List2').DOMStringList = function() { return true; };
 $.dynamicFunction('is$Collection').DOMStringList = function() { return true; };
 $.dynamicFunction('set$value').HTMLParamElement = function(v) { this.value = v; };
 $.dynamicFunction('get$value').HTMLParamElement = function() { return this.value; };
-$.dynamicFunction('get$name').HTMLParamElement = function() { return this.name; };
 $.dynamicFunction('translate$2').CanvasRenderingContext2D = function(tx, ty) {
   return this.translate(tx,ty);
  };
@@ -6896,7 +6489,7 @@ $.dynamicFunction('restore$0').CanvasRenderingContext2D = function() {
 $.dynamicFunction('rect$4').CanvasRenderingContext2D = function(x, y, width, height) {
   return this.rect(x,y,width,height);
  };
-$.dynamicFunction('get$rect').CanvasRenderingContext2D = function() { return new $.Closure70(this); };
+$.dynamicFunction('get$rect').CanvasRenderingContext2D = function() { return new $.Closure56(this); };
 $.dynamicFunction('moveTo$2').CanvasRenderingContext2D = function(x, y) {
   return this.moveTo(x,y);
  };
@@ -6931,13 +6524,11 @@ $.dynamicFunction('set$fillStyle').CanvasRenderingContext2D = function(v) { this
 $.dynamicFunction('toString$0').XPathException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').XPathException = function() { return this.name; };
 $.dynamicFunction('get$message').XPathException = function() { return this.message; };
 $.dynamicFunction('get$length').MediaStreamTrackList = function() { return this.length; };
 $.dynamicFunction('toString$0').HTMLAnchorElement = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').HTMLAnchorElement = function() { return this.name; };
 $.dynamicFunction('get$y').SVGFEFloodElement = function() { return this.y; };
 $.dynamicFunction('get$x').SVGFEFloodElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGFEFloodElement = function() { return this.width; };
@@ -6953,7 +6544,6 @@ $.dynamicFunction('get$x').SVGFECompositeElement = function() { return this.x; }
 $.dynamicFunction('get$width').SVGFECompositeElement = function() { return this.width; };
 $.dynamicFunction('get$height').SVGFECompositeElement = function() { return this.height; };
 $.dynamicFunction('get$value').IDBCursorWithValue = function() { return this.value; };
-$.dynamicFunction('get$name').HTMLKeygenElement = function() { return this.name; };
 $.dynamicFunction('get$message').ErrorEvent = function() { return this.message; };
 $.dynamicFunction('set$y').SVGPathSegLinetoRel = function(v) { this.y = v; };
 $.dynamicFunction('get$y').SVGPathSegLinetoRel = function() { return this.y; };
@@ -6977,7 +6567,6 @@ $.dynamicFunction('moveTo$2').Entry = function(parent$,name$) {
   errorCallback = $.convertDartClosureToJS(errorCallback);
   return this.moveTo(parent$,name$);
 };
-$.dynamicFunction('get$name').Entry = function() { return this.name; };
 $.dynamicFunction('clear$0').SVGStringList = function() {
   return this.clear();
  };
@@ -6992,17 +6581,8 @@ $.dynamicFunction('get$height').SVGFESpecularLightingElement = function() { retu
 $.dynamicFunction('translate$2').SVGMatrix = function(x, y) {
   return this.translate(x,y);
  };
-$.dynamicFunction('$dom_setAttribute$2').Element = function(name, value) {
-  return this.setAttribute(name,value);
- };
-$.dynamicFunction('$dom_removeAttribute$1').Element = function(name) {
-  return this.removeAttribute(name);
- };
 $.dynamicFunction('query$1').Element = function(selectors) {
   return this.querySelector(selectors);
- };
-$.dynamicFunction('$dom_hasAttribute$1').Element = function(name) {
-  return this.hasAttribute(name);
  };
 $.dynamicFunction('$dom_getClientRects$0').Element = function() {
   return this.getClientRects();
@@ -7010,13 +6590,10 @@ $.dynamicFunction('$dom_getClientRects$0').Element = function() {
 $.dynamicFunction('$dom_getBoundingClientRect$0').Element = function() {
   return this.getBoundingClientRect();
  };
-$.dynamicFunction('$dom_getAttribute$1').Element = function(name) {
-  return this.getAttribute(name);
- };
 $.dynamicFunction('click$0').Element = function() {
   return this.click();
  };
-$.dynamicFunction('get$click').Element = function() { return new $.Closure73(this); };
+$.dynamicFunction('get$click').Element = function() { return new $.Closure59(this); };
 $.dynamicFunction('translate$2').Element = function(arg0, arg1) { return this.translate.$call$2(arg0, arg1); };
 $.dynamicFunction('get$$dom_scrollWidth').Element = function() {
   return this.scrollWidth;;
@@ -7062,13 +6639,10 @@ $.dynamicFunction('get$on').Element = function() {
   }
  };
 $.dynamicFunction('get$rect').Element = function() {
-  var t0 = new $.Closure51(this);
+  var t0 = new $.Closure46(this);
   var t1 = $.CompleterImpl$0();
   $.setRuntimeTypeInfo(t1, ({T: 'ElementRect'}));
   return $._createMeasurementFuture(t0, t1);
- };
-$.dynamicFunction('get$attributes').Element = function() {
-  return $._lib4_ElementAttributeMap$1(this);
  };
 $.dynamicFunction('get$length').FileList = function() { return this.length; };
 $.dynamicFunction('set$value').DOMSettableTokenList = function(v) { this.value = v; };
@@ -7165,7 +6739,7 @@ $.dynamicFunction('get$length').Storage = function() {
  };
 $.dynamicFunction('getKeys$0').Storage = function() {
   var keys = [];
-  this.forEach$1(new $.Closure56(keys));
+  this.forEach$1(new $.Closure51(keys));
   return keys;
  };
 $.dynamicFunction('forEach$1').Storage = function(f) {
@@ -7225,7 +6799,6 @@ $.dynamicFunction('get$height').HTMLMarqueeElement = function() { return this.he
 $.dynamicFunction('clear$0').SVGLengthList = function() {
   return this.clear();
  };
-$.dynamicFunction('get$name').DOMFileSystemSync = function() { return this.name; };
 $.dynamicFunction('query$1').NodeSelector = function(selectors) {
   return this.querySelector(selectors);
  };
@@ -7291,7 +6864,6 @@ $.dynamicFunction('get$on').HTMLFrameSetElement = function() {
 $.dynamicFunction('get$on').SVGElementInstance = function() {
   return $._lib4_SVGElementInstanceEventsImpl$1(this);
  };
-$.dynamicFunction('get$name').SharedWorkerContext = function() { return this.name; };
 $.dynamicFunction('get$on').SharedWorkerContext = function() {
   return $._lib4_SharedWorkerContextEventsImpl$1(this);
  };
@@ -7311,7 +6883,6 @@ $.dynamicFunction('toString$0').Location = function() {
 $.dynamicFunction('get$width').HTMLFrameElement = function() { return this.width; };
 $.dynamicFunction('set$src').HTMLFrameElement = function(v) { this.src = v; };
 $.dynamicFunction('get$src').HTMLFrameElement = function() { return this.src; };
-$.dynamicFunction('get$name').HTMLFrameElement = function() { return this.name; };
 $.dynamicFunction('get$height').HTMLFrameElement = function() { return this.height; };
 $.dynamicFunction('preventDefault$0').Event = function() {
   return this.preventDefault();
@@ -7322,11 +6893,9 @@ $.dynamicFunction('get$height').HTMLVideoElement = function() { return this.heig
 $.dynamicFunction('toString$0').FileException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').FileException = function() { return this.name; };
 $.dynamicFunction('get$message').FileException = function() { return this.message; };
 $.dynamicFunction('set$value').HTMLSelectElement = function(v) { this.value = v; };
 $.dynamicFunction('get$value').HTMLSelectElement = function() { return this.value; };
-$.dynamicFunction('get$name').HTMLSelectElement = function() { return this.name; };
 $.dynamicFunction('set$length').HTMLSelectElement = function(v) { this.length = v; };
 $.dynamicFunction('get$length').HTMLSelectElement = function() { return this.length; };
 $.dynamicFunction('$dom_addEventListener$3').TextTrackCue = function(type, listener, useCapture) {
@@ -7340,7 +6909,6 @@ $.dynamicFunction('set$y').WebKitPoint = function(v) { this.y = v; };
 $.dynamicFunction('get$y').WebKitPoint = function() { return this.y; };
 $.dynamicFunction('set$x').WebKitPoint = function(v) { this.x = v; };
 $.dynamicFunction('get$x').WebKitPoint = function() { return this.x; };
-$.dynamicFunction('get$name').File = function() { return this.name; };
 $.dynamicFunction('$dom_addEventListener$3').XMLHttpRequestUpload = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
@@ -7352,7 +6920,6 @@ $.dynamicFunction('get$x').SVGPatternElement = function() { return this.x; };
 $.dynamicFunction('get$width').SVGPatternElement = function() { return this.width; };
 $.dynamicFunction('get$height').SVGPatternElement = function() { return this.height; };
 $.dynamicFunction('get$length').CharacterData = function() { return this.length; };
-$.dynamicFunction('get$data').CharacterData = function() { return this.data; };
 $.dynamicFunction('set$y').SVGPathSegLinetoAbs = function(v) { this.y = v; };
 $.dynamicFunction('get$y').SVGPathSegLinetoAbs = function() { return this.y; };
 $.dynamicFunction('set$x').SVGPathSegLinetoAbs = function(v) { this.x = v; };
@@ -7367,7 +6934,7 @@ $.dynamicFunction('play$0').HTMLMediaElement = function() {
 $.dynamicFunction('load$0').HTMLMediaElement = function() {
   return this.load();
  };
-$.dynamicFunction('get$load').HTMLMediaElement = function() { return new $.Closure74(this); };
+$.dynamicFunction('get$load').HTMLMediaElement = function() { return new $.Closure60(this); };
 $.dynamicFunction('canPlayType$2').HTMLMediaElement = function(type, keySystem) {
   return this.canPlayType(type,keySystem);
  };
@@ -7384,9 +6951,7 @@ $.dynamicFunction('set$y').SVGPathSegCurvetoCubicRel = function(v) { this.y = v;
 $.dynamicFunction('get$y').SVGPathSegCurvetoCubicRel = function() { return this.y; };
 $.dynamicFunction('set$x').SVGPathSegCurvetoCubicRel = function(v) { this.x = v; };
 $.dynamicFunction('get$x').SVGPathSegCurvetoCubicRel = function() { return this.x; };
-$.dynamicFunction('get$name').WebGLActiveInfo = function() { return this.name; };
 $.dynamicFunction('get$length').EntryArray = function() { return this.length; };
-$.dynamicFunction('get$open').HTMLDetailsElement = function() { return this.open; };
 $.dynamicFunction('clear$0').DataTransferItemList = function() {
   return this.clear();
  };
@@ -7401,30 +6966,21 @@ _ConsoleImpl = (typeof console == 'undefined' ? {} : console);
 _ConsoleImpl.error$1 = function(arg) {
   return this.error(arg);
  };
-_ConsoleImpl.get$error = function() { return new $.Closure75(this); };
+_ConsoleImpl.get$error = function() { return new $.Closure61(this); };
 $.dynamicFunction('get$y').HTMLImageElement = function() { return this.y; };
 $.dynamicFunction('get$x').HTMLImageElement = function() { return this.x; };
 $.dynamicFunction('get$width').HTMLImageElement = function() { return this.width; };
 $.dynamicFunction('set$src').HTMLImageElement = function(v) { this.src = v; };
 $.dynamicFunction('get$src').HTMLImageElement = function() { return this.src; };
-$.dynamicFunction('get$name').HTMLImageElement = function() { return this.name; };
 $.dynamicFunction('set$height').HTMLImageElement = function(v) { this.height = v; };
 $.dynamicFunction('get$height').HTMLImageElement = function() { return this.height; };
 $.dynamicFunction('complete$1').HTMLImageElement = function(arg0) { return this.complete.$call$1(arg0); };
-$.dynamicFunction('send$1').DeprecatedPeerConnection = function(text) {
-  return this.send(text);
- };
-$.dynamicFunction('close$0').DeprecatedPeerConnection = function() {
-  return this.close();
- };
-$.dynamicFunction('get$close').DeprecatedPeerConnection = function() { return new $.Closure76(this); };
 $.dynamicFunction('$dom_addEventListener$3').DeprecatedPeerConnection = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
 $.dynamicFunction('get$on').DeprecatedPeerConnection = function() {
   return $._lib4_DeprecatedPeerConnectionEventsImpl$1(this);
  };
-$.dynamicFunction('get$data').TextEvent = function() { return this.data; };
 $.dynamicFunction('set$y').SVGPathSegLinetoVerticalRel = function(v) { this.y = v; };
 $.dynamicFunction('get$y').SVGPathSegLinetoVerticalRel = function() { return this.y; };
 $.dynamicFunction('$dom_addEventListener$3').IDBVersionChangeRequest = function(type, listener, useCapture) {
@@ -7436,19 +6992,13 @@ $.dynamicFunction('get$on').IDBVersionChangeRequest = function() {
 $.dynamicFunction('get$width').HTMLIFrameElement = function() { return this.width; };
 $.dynamicFunction('set$src').HTMLIFrameElement = function(v) { this.src = v; };
 $.dynamicFunction('get$src').HTMLIFrameElement = function() { return this.src; };
-$.dynamicFunction('get$name').HTMLIFrameElement = function() { return this.name; };
 $.dynamicFunction('set$height').HTMLIFrameElement = function(v) { this.height = v; };
 $.dynamicFunction('get$height').HTMLIFrameElement = function() { return this.height; };
 $.dynamicFunction('toString$0').DOMException = function() {
   return this.toString();
  };
-$.dynamicFunction('get$name').DOMException = function() { return this.name; };
 $.dynamicFunction('get$message').DOMException = function() { return this.message; };
 $.dynamicFunction('get$length').TimeRanges = function() { return this.length; };
-$.dynamicFunction('close$0').PeerConnection00 = function() {
-  return this.close();
- };
-$.dynamicFunction('get$close').PeerConnection00 = function() { return new $.Closure77(this); };
 $.dynamicFunction('$dom_addEventListener$3').PeerConnection00 = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
@@ -7457,14 +7007,9 @@ $.dynamicFunction('get$on').PeerConnection00 = function() {
  };
 $.dynamicFunction('set$src').HTMLSourceElement = function(v) { this.src = v; };
 $.dynamicFunction('get$src').HTMLSourceElement = function() { return this.src; };
-$.dynamicFunction('close$0').IDBDatabase = function() {
-  return this.close();
- };
-$.dynamicFunction('get$close').IDBDatabase = function() { return new $.Closure78(this); };
 $.dynamicFunction('$dom_addEventListener$3').IDBDatabase = function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener),useCapture);
  };
-$.dynamicFunction('get$name').IDBDatabase = function() { return this.name; };
 $.dynamicFunction('get$on').IDBDatabase = function() {
   return $._lib4_IDBDatabaseEventsImpl$1(this);
  };
@@ -7480,7 +7025,6 @@ $.dynamicFunction('add$2').IDBObjectStore = function(value, key) {
 $.dynamicFunction('add$1').IDBObjectStore = function(value) {
   return this.add(value);
 };
-$.dynamicFunction('get$name').IDBObjectStore = function() { return this.name; };
 $.dynamicFunction('operator$index$1').NodeList = function(index) {
   return this[index];;
  };
@@ -7592,8 +7136,8 @@ $.dynamicFunction('operator$index$1').Uint8ClampedArray = function(index) {
  };
 $.dynamicFunction('is$List2').Uint8ClampedArray = function() { return true; };
 $.dynamicFunction('is$Collection').Uint8ClampedArray = function() { return true; };
-// 245 dynamic classes.
-// 372 classes
+// 228 dynamic classes.
+// 365 classes
 // 30 !leaf
 (function(){
   var v0/*class(_SVGTextPositioningElementImpl)*/ = 'SVGTextPositioningElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement';

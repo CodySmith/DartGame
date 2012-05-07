@@ -18,26 +18,26 @@ void main() {
   assetManager.queueDownload("sounds/hit3.mp3");
   assetManager.queueDownload("sounds/sweep.mp3");
 
-  html.WebSocket ws = new html.WebSocket("ws://localhost:8000/ws");
-  ws.on.open.add((e) {
-    bool ret = ws.send("Hello");
-    print("sent: $ret");
-  });
-  
-  ws.on.message.add((e) {
-    msgCount++;
-    if (e.data == "ping") {
-      ws.send("pong");
-    }
-  });
-  
-  ws.on.error.add((e) {
-    print("Error was : $e");
-  });
-  
-  ws.on.close.add((e) {
-    print("Closed: $e");
-  });
+//  html.WebSocket ws = new html.WebSocket("ws://localhost:8000/ws");
+//  ws.on.open.add((e) {
+//    bool ret = ws.send("Hello");
+//    print("sent: $ret");
+//  });
+//  
+//  ws.on.message.add((e) {
+//    msgCount++;
+//    if (e.data == "ping") {
+//      ws.send("pong");
+//    }
+//  });
+//  
+//  ws.on.error.add((e) {
+//    print("Error was : $e");
+//  });
+//  
+//  ws.on.close.add((e) {
+//    print("Closed: $e");
+//  });
   
   //new Timer.repeating(1000, (t) => print('$msgCount');
   

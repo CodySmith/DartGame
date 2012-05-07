@@ -397,12 +397,6 @@ IndexOutOfRangeException.prototype.is$IndexOutOfRangeException = function(){retu
 IndexOutOfRangeException.prototype.toString = function() {
   return ("IndexOutOfRangeException: " + this._index);
 }
-function IllegalAccessException() {
-
-}
-IllegalAccessException.prototype.toString = function() {
-  return "Attempt to modify an immutable object";
-}
 function NoSuchMethodException(_receiver, _functionName, _arguments, _existingArgumentNames) {
   this._receiver = _receiver;
   this._functionName = _functionName;
@@ -692,31 +686,6 @@ ListIterator.prototype.next = function() {
   }
   return this._array.$index(this._pos++);
 }
-function ImmutableMap(keyValuePairs) {
-  this._internal = _map(keyValuePairs);
-}
-ImmutableMap.prototype.is$Map = function(){return true};
-ImmutableMap.prototype.$index = function(key) {
-  return this._internal.$index(key);
-}
-ImmutableMap.prototype.get$length = function() {
-  return this._internal.get$length();
-}
-ImmutableMap.prototype.forEach = function(f) {
-  this._internal.forEach$1(f);
-}
-ImmutableMap.prototype.containsKey = function(key) {
-  return this._internal.containsKey(key);
-}
-ImmutableMap.prototype.$setindex = function(key, value) {
-  $throw(const$0008);
-}
-ImmutableMap.prototype.toString = function() {
-  return Maps.mapToString(this);
-}
-ImmutableMap.prototype.forEach$1 = function($0) {
-  return this.forEach(to$call$2($0));
-};
 function JSSyntaxRegExp(pattern, multiLine, ignoreCase) {
   JSSyntaxRegExp._create$ctor.call(this, pattern, $add$(($eq$(multiLine, true) ? "m" : ""), ($eq$(ignoreCase, true) ? "i" : "")));
 }
@@ -1006,24 +975,10 @@ HashMapImplementation.prototype.getKeys = function() {
   );
   return list;
 }
-HashMapImplementation.prototype.containsKey = function(key) {
-  return (this._probeForLookup(key) != (-1));
-}
 HashMapImplementation.prototype.toString = function() {
   return Maps.mapToString(this);
 }
 HashMapImplementation.prototype.forEach$1 = function($0) {
-  return this.forEach(to$call$2($0));
-};
-$inherits(HashMapImplementation_Dynamic$DoubleLinkedQueueEntry_KeyValuePair, HashMapImplementation);
-function HashMapImplementation_Dynamic$DoubleLinkedQueueEntry_KeyValuePair() {
-  this._numberOfEntries = (0);
-  this._numberOfDeleted = (0);
-  this._loadLimit = HashMapImplementation._computeLoadLimit((8));
-  this._keys = new Array((8));
-  this._values = new Array((8));
-}
-HashMapImplementation_Dynamic$DoubleLinkedQueueEntry_KeyValuePair.prototype.forEach$1 = function($0) {
   return this.forEach(to$call$2($0));
 };
 $inherits(HashMapImplementation_dart_core_String$dart_core_String, HashMapImplementation);
@@ -1123,49 +1078,6 @@ HashSetIterator.prototype._advance = function() {
 function _DeletedKeySentinel() {
 
 }
-function KeyValuePair(key, value) {
-  this.key$_ = key;
-  this.value = value;
-}
-KeyValuePair.prototype.get$value = function() { return this.value; };
-KeyValuePair.prototype.set$value = function(value) { return this.value = value; };
-function LinkedHashMapImplementation() {
-  this._map = new HashMapImplementation_Dynamic$DoubleLinkedQueueEntry_KeyValuePair();
-  this._list = new DoubleLinkedQueue_KeyValuePair();
-}
-LinkedHashMapImplementation.prototype.is$Map = function(){return true};
-LinkedHashMapImplementation.prototype.$setindex = function(key, value) {
-  if (this._map.containsKey(key)) {
-    this._map.$index(key).get$element().set$value(value);
-  }
-  else {
-    this._list.addLast(new KeyValuePair(key, value));
-    this._map.$setindex(key, this._list.lastEntry());
-  }
-}
-LinkedHashMapImplementation.prototype.$index = function(key) {
-  var entry = this._map.$index(key);
-  if (null == entry) return null;
-  return entry.get$element().get$value();
-}
-LinkedHashMapImplementation.prototype.forEach = function(f) {
-  this._list.forEach(function _(entry) {
-    f(entry.key$_, entry.value);
-  }
-  );
-}
-LinkedHashMapImplementation.prototype.containsKey = function(key) {
-  return this._map.containsKey(key);
-}
-LinkedHashMapImplementation.prototype.get$length = function() {
-  return this._map.get$length();
-}
-LinkedHashMapImplementation.prototype.toString = function() {
-  return Maps.mapToString(this);
-}
-LinkedHashMapImplementation.prototype.forEach$1 = function($0) {
-  return this.forEach(to$call$2($0));
-};
 function Maps() {}
 Maps.mapToString = function(m) {
   var result = new StringBufferImpl("");
@@ -1208,21 +1120,10 @@ DoubleLinkedQueueEntry.prototype.remove = function() {
   this._previous = null;
   return this._element;
 }
-DoubleLinkedQueueEntry.prototype._asNonSentinelEntry = function() {
-  return this;
-}
-DoubleLinkedQueueEntry.prototype.previousEntry = function() {
-  return this._previous._asNonSentinelEntry();
-}
 DoubleLinkedQueueEntry.prototype.get$element = function() {
   return this._element;
 }
 DoubleLinkedQueueEntry.prototype.remove$0 = DoubleLinkedQueueEntry.prototype.remove;
-$inherits(DoubleLinkedQueueEntry_KeyValuePair, DoubleLinkedQueueEntry);
-function DoubleLinkedQueueEntry_KeyValuePair(e) {
-  this._element = e;
-}
-DoubleLinkedQueueEntry_KeyValuePair.prototype.remove$0 = DoubleLinkedQueueEntry_KeyValuePair.prototype.remove;
 $inherits(_DoubleLinkedQueueEntrySentinel, DoubleLinkedQueueEntry);
 function _DoubleLinkedQueueEntrySentinel() {
   DoubleLinkedQueueEntry.call(this, null);
@@ -1231,18 +1132,10 @@ function _DoubleLinkedQueueEntrySentinel() {
 _DoubleLinkedQueueEntrySentinel.prototype.remove = function() {
   $throw(const$0002);
 }
-_DoubleLinkedQueueEntrySentinel.prototype._asNonSentinelEntry = function() {
-  return null;
-}
 _DoubleLinkedQueueEntrySentinel.prototype.get$element = function() {
   $throw(const$0002);
 }
 _DoubleLinkedQueueEntrySentinel.prototype.remove$0 = _DoubleLinkedQueueEntrySentinel.prototype.remove;
-$inherits(_DoubleLinkedQueueEntrySentinel_KeyValuePair, _DoubleLinkedQueueEntrySentinel);
-function _DoubleLinkedQueueEntrySentinel_KeyValuePair() {
-  DoubleLinkedQueueEntry_KeyValuePair.call(this, null);
-  this._link(this, this);
-}
 function DoubleLinkedQueue() {
   this._sentinel = new _DoubleLinkedQueueEntrySentinel();
 }
@@ -1252,9 +1145,6 @@ DoubleLinkedQueue.prototype.addLast = function(value) {
 }
 DoubleLinkedQueue.prototype.add = function(value) {
   this.addLast(value);
-}
-DoubleLinkedQueue.prototype.lastEntry = function() {
-  return this._sentinel.previousEntry();
 }
 DoubleLinkedQueue.prototype.get$length = function() {
   var counter = (0);
@@ -1305,13 +1195,6 @@ DoubleLinkedQueue.prototype.forEach$1 = function($0) {
   return this.forEach(to$call$1($0));
 };
 DoubleLinkedQueue.prototype.some$1 = function($0) {
-  return this.some(to$call$1($0));
-};
-$inherits(DoubleLinkedQueue_KeyValuePair, DoubleLinkedQueue);
-function DoubleLinkedQueue_KeyValuePair() {
-  this._sentinel = new _DoubleLinkedQueueEntrySentinel_KeyValuePair();
-}
-DoubleLinkedQueue_KeyValuePair.prototype.some$1 = function($0) {
   return this.some(to$call$1($0));
 };
 function _DoubleLinkedQueueIterator(_sentinel) {
@@ -1594,17 +1477,6 @@ _FunctionImplementation.prototype._genStub = function(argsLength, names) {
       return new Function('$f', 'return ' + f + '').call(null, this);
     
 }
-function _map(itemsAndKeys) {
-  var ret = new LinkedHashMapImplementation();
-  for (var i = (0);
-   i < itemsAndKeys.get$length(); ) {
-    ret.$setindex(itemsAndKeys.$index(i++), itemsAndKeys.$index(i++));
-  }
-  return ret;
-}
-function _constMap(itemsAndKeys) {
-  return new ImmutableMap(itemsAndKeys);
-}
 $dynamic("get$on").EventTarget = function() {
   return new _EventsImpl(this);
 }
@@ -1733,7 +1605,6 @@ $dynamic("get$length").WebKitAnimationList = function() { return this.length; };
 $dynamic("get$name").HTMLAppletElement = function() { return this.name; };
 $dynamic("get$name").Attr = function() { return this.name; };
 $dynamic("get$value").Attr = function() { return this.value; };
-$dynamic("set$value").Attr = function(value) { return this.value = value; };
 $dynamic("get$length").AudioBuffer = function() { return this.length; };
 $dynamic("get$on").AudioContext = function() {
   return new _AudioContextEventsImpl(this);
@@ -1753,7 +1624,6 @@ $dynamic("get$load").HTMLMediaElement = function() {
 }
 $dynamic("get$name").AudioParam = function() { return this.name; };
 $dynamic("get$value").AudioParam = function() { return this.value; };
-$dynamic("set$value").AudioParam = function(value) { return this.value = value; };
 $dynamic("get$on").BatteryManager = function() {
   return new _BatteryManagerEventsImpl(this);
 }
@@ -1789,8 +1659,6 @@ _BodyElementEventsImpl.prototype.get$load = function() {
 }
 $dynamic("get$name").HTMLButtonElement = function() { return this.name; };
 $dynamic("get$value").HTMLButtonElement = function() { return this.value; };
-$dynamic("set$value").HTMLButtonElement = function(value) { return this.value = value; };
-$dynamic("get$data").CharacterData = function() { return this.data; };
 $dynamic("get$length").CharacterData = function() { return this.length; };
 $dynamic("get$name").WebKitCSSKeyframesRule = function() { return this.name; };
 $dynamic("get$length").CSSRuleList = function() { return this.length; };
@@ -1814,7 +1682,6 @@ $dynamic("moveTo$2").CanvasRenderingContext2D = function($0, $1) {
 $dynamic("get$left").ClientRect = function() { return this.left; };
 $dynamic("get$top").ClientRect = function() { return this.top; };
 $dynamic("get$length").ClientRectList = function() { return this.length; };
-$dynamic("get$data").CompositionEvent = function() { return this.data; };
 var _ConsoleImpl = (typeof console == 'undefined' ? {} : console);
 _ConsoleImpl.get$error = function() {
   return this.error.bind(this);
@@ -1844,7 +1711,6 @@ $dynamic("add$1").DOMTokenList = function($0) {
   return this.add($0);
 };
 $dynamic("get$value").DOMSettableTokenList = function() { return this.value; };
-$dynamic("set$value").DOMSettableTokenList = function(value) { return this.value = value; };
 $dynamic("is$List").DOMStringList = function(){return true};
 $dynamic("is$Collection").DOMStringList = function(){return true};
 $dynamic("get$length").DOMStringList = function() { return this.length; };
@@ -2043,9 +1909,6 @@ EmptyElementRect.prototype.get$bounding = function() { return this.bounding; };
 $dynamic("is$html_Element").DocumentFragment = function(){return true};
 $dynamic("get$parent").DocumentFragment = function() {
   return null;
-}
-$dynamic("get$attributes").DocumentFragment = function() {
-  return const$0009;
 }
 $dynamic("get$on").DocumentFragment = function() {
   return new _ElementEventsImpl(this);
@@ -2295,9 +2158,6 @@ function _ElementAttributeMap(_element) {
   this._html_element = _element;
 }
 _ElementAttributeMap.prototype.is$Map = function(){return true};
-_ElementAttributeMap.prototype.containsKey = function(key) {
-  return this._html_element.hasAttribute(key);
-}
 _ElementAttributeMap.prototype.$index = function(key) {
   return this._html_element.getAttribute(key);
 }
@@ -2320,9 +2180,6 @@ _ElementAttributeMap.prototype.forEach$1 = function($0) {
 };
 function _DataAttributeMap() {}
 _DataAttributeMap.prototype.is$Map = function(){return true};
-_DataAttributeMap.prototype.containsKey = function(key) {
-  return this.$$dom_attributes.containsKey(this._attr(key));
-}
 _DataAttributeMap.prototype.$index = function(key) {
   return this.$$dom_attributes.$index(this._attr(key));
 }
@@ -2755,7 +2612,6 @@ function _IDBVersionChangeRequestEventsImpl(_ptr) {
 $dynamic("get$name").HTMLIFrameElement = function() { return this.name; };
 $dynamic("get$src").HTMLIFrameElement = function() { return this.src; };
 $dynamic("set$src").HTMLIFrameElement = function(value) { return this.src = value; };
-$dynamic("get$data").ImageData = function() { return this.data; };
 $dynamic("get$name").HTMLImageElement = function() { return this.name; };
 $dynamic("get$src").HTMLImageElement = function() { return this.src; };
 $dynamic("set$src").HTMLImageElement = function(value) { return this.src = value; };
@@ -2766,7 +2622,6 @@ $dynamic("get$name").HTMLInputElement = function() { return this.name; };
 $dynamic("get$src").HTMLInputElement = function() { return this.src; };
 $dynamic("set$src").HTMLInputElement = function(value) { return this.src = value; };
 $dynamic("get$value").HTMLInputElement = function() { return this.value; };
-$dynamic("set$value").HTMLInputElement = function(value) { return this.value = value; };
 $inherits(_InputElementEventsImpl, _ElementEventsImpl);
 function _InputElementEventsImpl(_ptr) {
   _ElementEventsImpl.call(this, _ptr);
@@ -2927,7 +2782,6 @@ function _JavaScriptAudioNodeEventsImpl(_ptr) {
 }
 $dynamic("get$name").HTMLKeygenElement = function() { return this.name; };
 $dynamic("get$value").HTMLLIElement = function() { return this.value; };
-$dynamic("set$value").HTMLLIElement = function(value) { return this.value = value; };
 $dynamic("get$on").MediaStream = function() {
   return new _MediaStreamEventsImpl(this);
 }
@@ -2999,7 +2853,6 @@ function _MediaStreamEventsImpl(_ptr) {
 }
 $dynamic("get$length").MediaStreamList = function() { return this.length; };
 $dynamic("get$length").MediaStreamTrackList = function() { return this.length; };
-$dynamic("get$data").MessageEvent = function() { return this.data; };
 $dynamic("get$on").MessagePort = function() {
   return new _MessagePortEventsImpl(this);
 }
@@ -3015,7 +2868,6 @@ function _MessagePortEventsImpl(_ptr) {
 }
 $dynamic("get$name").HTMLMetaElement = function() { return this.name; };
 $dynamic("get$value").HTMLMeterElement = function() { return this.value; };
-$dynamic("set$value").HTMLMeterElement = function(value) { return this.value = value; };
 $dynamic("get$clientX").MouseEvent = function() { return this.clientX; };
 $dynamic("get$clientY").MouseEvent = function() { return this.clientY; };
 $dynamic("is$List").NamedNodeMap = function(){return true};
@@ -3208,17 +3060,13 @@ function _NotificationEventsImpl(_ptr) {
 _NotificationEventsImpl.prototype.get$error = function() {
   return this._get("error");
 }
-$dynamic("get$data").HTMLObjectElement = function() { return this.data; };
 $dynamic("get$name").HTMLObjectElement = function() { return this.name; };
 $dynamic("get$name").OperationNotAllowedException = function() { return this.name; };
 $dynamic("get$value").HTMLOptionElement = function() { return this.value; };
-$dynamic("set$value").HTMLOptionElement = function(value) { return this.value = value; };
 $dynamic("get$name").HTMLOutputElement = function() { return this.name; };
 $dynamic("get$value").HTMLOutputElement = function() { return this.value; };
-$dynamic("set$value").HTMLOutputElement = function(value) { return this.value = value; };
 $dynamic("get$name").HTMLParamElement = function() { return this.name; };
 $dynamic("get$value").HTMLParamElement = function() { return this.value; };
-$dynamic("set$value").HTMLParamElement = function(value) { return this.value = value; };
 $dynamic("get$on").PeerConnection00 = function() {
   return new _PeerConnection00EventsImpl(this);
 }
@@ -3229,15 +3077,12 @@ $inherits(_PeerConnection00EventsImpl, _EventsImpl);
 function _PeerConnection00EventsImpl(_ptr) {
   _EventsImpl.call(this, _ptr);
 }
-$dynamic("get$data").ProcessingInstruction = function() { return this.data; };
 $dynamic("get$value").HTMLProgressElement = function() { return this.value; };
-$dynamic("set$value").HTMLProgressElement = function(value) { return this.value = value; };
 $dynamic("get$name").RangeException = function() { return this.name; };
 $dynamic("get$left").Rect = function() { return this.left; };
 $dynamic("get$top").Rect = function() { return this.top; };
 $dynamic("get$length").SQLResultSetRowList = function() { return this.length; };
 $dynamic("get$value").SVGAngle = function() { return this.value; };
-$dynamic("set$value").SVGAngle = function(value) { return this.value = value; };
 $inherits(_AttributeClassSet, _CssClassSet);
 function _AttributeClassSet() {}
 _AttributeClassSet.prototype._write = function(s) {
@@ -3259,15 +3104,12 @@ _SVGElementInstanceEventsImpl.prototype.get$load = function() {
 $dynamic("get$length").SVGElementInstanceList = function() { return this.length; };
 $dynamic("get$name").SVGException = function() { return this.name; };
 $dynamic("get$value").SVGLength = function() { return this.value; };
-$dynamic("set$value").SVGLength = function(value) { return this.value = value; };
 $dynamic("get$value").SVGNumber = function() { return this.value; };
-$dynamic("set$value").SVGNumber = function(value) { return this.value = value; };
 $dynamic("get$src").HTMLScriptElement = function() { return this.src; };
 $dynamic("set$src").HTMLScriptElement = function(value) { return this.src = value; };
 $dynamic("get$length").HTMLSelectElement = function() { return this.length; };
 $dynamic("get$name").HTMLSelectElement = function() { return this.name; };
 $dynamic("get$value").HTMLSelectElement = function() { return this.value; };
-$dynamic("set$value").HTMLSelectElement = function(value) { return this.value = value; };
 $dynamic("get$on").SharedWorkerContext = function() {
   return new _SharedWorkerContextEventsImpl(this);
 }
@@ -3302,9 +3144,6 @@ $dynamic("get$error").SpeechRecognitionEvent = function() { return this.error; }
 $dynamic("get$length").SpeechRecognitionResult = function() { return this.length; };
 $dynamic("get$length").SpeechRecognitionResultList = function() { return this.length; };
 $dynamic("is$Map").Storage = function(){return true};
-$dynamic("containsKey").Storage = function(key) {
-  return this.getItem(key) != null;
-}
 $dynamic("$index").Storage = function(key) {
   return this.getItem(key);
 }
@@ -3378,8 +3217,6 @@ $dynamic("some$1").StyleSheetList = function($0) {
 };
 $dynamic("get$name").HTMLTextAreaElement = function() { return this.name; };
 $dynamic("get$value").HTMLTextAreaElement = function() { return this.value; };
-$dynamic("set$value").HTMLTextAreaElement = function(value) { return this.value = value; };
-$dynamic("get$data").TextEvent = function() { return this.data; };
 $dynamic("get$on").TextTrack = function() {
   return new _TextTrackEventsImpl(this);
 }
@@ -3678,17 +3515,8 @@ $inherits(_WebSocketEventsImpl, _EventsImpl);
 function _WebSocketEventsImpl(_ptr) {
   _EventsImpl.call(this, _ptr);
 }
-_WebSocketEventsImpl.prototype.get$close = function() {
-  return this._get("close");
-}
 _WebSocketEventsImpl.prototype.get$error = function() {
   return this._get("error");
-}
-_WebSocketEventsImpl.prototype.get$message = function() {
-  return this._get("message");
-}
-_WebSocketEventsImpl.prototype.get$open = function() {
-  return this._get("open");
 }
 $dynamic("get$clientX").WheelEvent = function() { return this.clientX; };
 $dynamic("get$clientY").WheelEvent = function() { return this.clientY; };
@@ -3826,7 +3654,6 @@ function _MeasurementRequest(computeValue, completer) {
   this.completer = completer;
 }
 _MeasurementRequest.prototype.get$value = function() { return this.value; };
-_MeasurementRequest.prototype.set$value = function(value) { return this.value = value; };
 function _EventFactoryProvider() {}
 function _MouseEventFactoryProvider() {}
 function _CSSStyleDeclarationFactoryProvider() {}
@@ -3836,9 +3663,6 @@ function _SVGSVGElementFactoryProvider() {}
 function _AudioContextFactoryProvider() {}
 function _PointFactoryProvider() {}
 function _WebSocketFactoryProvider() {}
-_WebSocketFactoryProvider.WebSocket$factory = function(url) {
-  return new WebSocket(url);
-}
 function _TextFactoryProvider() {}
 function _IDBKeyRangeFactoryProvider() {}
 function _TypedArrayFactoryProvider() {}
@@ -4170,7 +3994,6 @@ AssetManager.prototype.downloadAll = function(downloadCallback) {
     }
     else {
       print$($add$(path, " is loaded"));
-      el.get$attributes().$setindex("preload", "auto");
       el.load();
       this._successCount = this._successCount + (1);
       if (this.isDone()) {
@@ -4466,7 +4289,7 @@ PongGame.prototype.newGame = function() {
   this.ball.momentum.xVel = this.ball.startVel;
 }
 PongGame.prototype.gameOver = function() {
-  this.playSound("sounds/sweep.ogg", (1.0));
+  this.playSound("sounds/sweep", (1.0));
   this.bgFade();
   this.newGame();
 }
@@ -4785,35 +4608,10 @@ function main() {
   var ctx = canvas.getContext("2d");
   var msgCount = (0);
   var assetManager = new AssetManager();
-  assetManager.queueDownload("sounds/hit1.ogg");
-  assetManager.queueDownload("sounds/hit2.ogg");
-  assetManager.queueDownload("sounds/hit3.ogg");
-  assetManager.queueDownload("sounds/sweep.ogg");
   assetManager.queueDownload("sounds/hit1.mp3");
   assetManager.queueDownload("sounds/hit2.mp3");
   assetManager.queueDownload("sounds/hit3.mp3");
   assetManager.queueDownload("sounds/sweep.mp3");
-  var ws = _WebSocketFactoryProvider.WebSocket$factory("ws://localhost:8000/ws");
-  ws.get$on().get$open().add($wrap_call$1((function (e) {
-    var ret = ws.send("Hello");
-    print$(("sent: " + ret));
-  })
-  ), false);
-  ws.get$on().get$message().add($wrap_call$1((function (e) {
-    msgCount++;
-    if ($eq$(e.get$data(), "ping")) {
-      ws.send("pong");
-    }
-  })
-  ), false);
-  ws.get$on().get$error().add($wrap_call$1((function (e) {
-    print$(("Error was : " + e));
-  })
-  ), false);
-  ws.get$on().get$close().add($wrap_call$1((function (e) {
-    print$(("Closed: " + e));
-  })
-  ), false);
   var game = new PongGame(assetManager, ctx);
   game.set$enableSound(true);
   game.set$debugMode(false);
@@ -4866,8 +4664,6 @@ var const$0002 = Object.create(EmptyQueueException.prototype, {});
 var const$0003 = Object.create(UnsupportedOperationException.prototype, {_message: {"value": "", writeable: false}});
 var const$0004 = new JSSyntaxRegExp("^#[_a-zA-Z]\\w*$");
 var const$0007 = Object.create(NotImplementedException.prototype, {});
-var const$0008 = Object.create(IllegalAccessException.prototype, {});
-var const$0009 = _constMap([]);
 var $globals = {};
 $static_init();
 if (typeof window != 'undefined' && typeof document != 'undefined' &&
