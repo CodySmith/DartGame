@@ -380,7 +380,7 @@ Isolate.$defineClass("PongGame", "Game", ["ball", "player2", "player1", "lastPow
   $.window().setTimeout$2(new $.Closure32(this), 175);
  },
  gameOver$0: function() {
-  this.playSound$1('sounds/sweep');
+  this.playSound$1('Sounds/sweep');
   this.bgFade$0();
   this.newGame$0();
  },
@@ -2857,17 +2857,17 @@ Isolate.$defineClass("Ball", "GameEntity", ["startVel", "fill", "color", "opacit
     var t0 = this.get$momentum();
     t0.set$yVel($.mul(t0.get$yVel(), -1));
     var volume = $.min($.sub(90, $.div($.atan2($.abs(this.get$momentum().get$xVel()), $.abs(this.get$momentum().get$yVel())), 0.017453292519943295)) / 50, 1);
-    this.get$game().playSound$2('sounds/hit3', volume);
+    this.get$game().playSound$2('Sounds/hit3', volume);
   }
   if (this.collidesWith$1(g.get$player1()) === true) {
     g.ballHit$0();
     this.ballHit$1(g.get$player1());
-    this.get$game().playSound$1('sounds/hit1');
+    this.get$game().playSound$1('Sounds/hit1');
   } else {
     if (this.collidesWith$1(g.get$player2()) === true) {
       g.ballHit$0();
       this.ballHit$1(g.get$player2());
-      this.get$game().playSound$1('sounds/hit2');
+      this.get$game().playSound$1('Sounds/hit2');
     }
   }
   if ($.gtB(this.get$x(), this.get$game().get$halfSurfaceWidth()) || $.ltB(this.get$x(), $.neg(this.get$game().get$halfSurfaceWidth()))) {

@@ -4447,7 +4447,7 @@ PongGame.prototype.newGame = function() {
   this.ball.momentum.xVel = this.ball.startVel;
 }
 PongGame.prototype.gameOver = function() {
-  this.playSound("sounds/sweep", (1.0));
+  this.playSound("Sounds/sweep", (1.0));
   this.bgFade();
   this.newGame();
 }
@@ -4663,17 +4663,17 @@ Ball.prototype.update = function() {
     var angle = Math.atan2(this.momentum.xVel.abs(), this.momentum.yVel.abs()) / (0.017453292519943295);
     var volume = ((90) - angle) / (50);
     volume = Math.min(volume, (1));
-    this.game.playSound("sounds/hit3", volume);
+    this.game.playSound("Sounds/hit3", volume);
   }
   if (this.collidesWith(g.player1)) {
     g.ballHit();
     this.ballHit(g.player1);
-    this.game.playSound("sounds/hit1", (1.0));
+    this.game.playSound("Sounds/hit1", (1.0));
   }
   else if (this.collidesWith(g.player2)) {
     g.ballHit();
     this.ballHit(g.player2);
-    this.game.playSound("sounds/hit2", (1.0));
+    this.game.playSound("Sounds/hit2", (1.0));
   }
   if (this.get$x() > this.game.get$halfSurfaceWidth() || this.get$x() < -this.game.get$halfSurfaceWidth()) {
     if (this.get$x() > (0)) {

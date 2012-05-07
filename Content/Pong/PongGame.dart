@@ -109,7 +109,7 @@ class PongGame extends Game {
   }
   
   void gameOver() {
-    playSound("sounds/sweep");
+    playSound("Sounds/sweep");
     bgFade();
     newGame();
   }
