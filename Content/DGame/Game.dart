@@ -11,7 +11,7 @@
 #source('Utils.dart');
 
 class Game {
-  List entities;
+  List<GameEntity> entities;
   html.CanvasRenderingContext2D ctx;
   Point click;
   Point mouse;
@@ -19,9 +19,7 @@ class Game {
   num clockTick;
   num surfaceWidth;
   num surfaceHeight;
-  num halfSurfaceWidth;
-  num halfSurfaceHeight;
-  Point clientBoundingRect;
+  Point clientPoint;
   AssetManager assetManager;
   bool debugMode = false;
   bool enableSound = true;
@@ -44,17 +42,18 @@ class Game {
   void init() {
     surfaceWidth = ctx.canvas.width;
     surfaceHeight = ctx.canvas.height;
-    halfSurfaceWidth = surfaceWidth / 2;
-    halfSurfaceHeight = surfaceHeight / 2;
     
     Future<html.ElementRect> futureRect = ctx.canvas.rect;
     futureRect.then((html.ElementRect rect) {
-      clientBoundingRect = new Point(rect.bounding.left, rect.bounding.top);
+      clientPoint = new Point(rect.bounding.left, rect.bounding.top);
     });
     
     startInput();
     print('game initialized');
   }
+  
+  num get halfSurfaceWidth() => surfaceWidth / 2;
+  num get halfSurfaceHeight() => surfaceHeight / 2;
   
   void start() {
     print("starting game");
@@ -73,8 +72,8 @@ class Game {
     print('Starting input');
     
     Point getXandY(e) {
-        num x =  e.clientX - clientBoundingRect.x - (ctx.canvas.width / 2);
-        num y = e.clientY - clientBoundingRect.y - (ctx.canvas.height / 2);
+        num x =  e.clientX - clientPoint.x - (ctx.canvas.width / 2);
+        num y = e.clientY - clientPoint.y - (ctx.canvas.height / 2);
         return new Point(x, y);
     }
     

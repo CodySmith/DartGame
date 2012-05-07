@@ -1,11 +1,11 @@
 #import('dart:io');
 #import('dart:json');
-#import('../Content/Pong/PongGame.dart');
 #source('StaticFileHandler.dart');
 #source('NotFoundHandler.dart');
 
 void main() {
   Map clients = new Map<double, WebSocketConnection>();
+  int ballX = 0, ballY = 0;
   
   HttpServer httpServer = new HttpServer();
   WebSocketHandler webSocketHandler = new WebSocketHandler();

@@ -10,6 +10,7 @@ class Ball extends GameEntity {
     super.update();
     PongGame g = game;
     
+    // if the ball gets to either side of the board, make sure it doesn't go through the paddle before we check for collision
     if (momentum.xVel > 0 && box.right > g.player2.box.left
         && g.player2.box.top < box.bottom && g.player2.box.bottom > box.top)
       x = g.player2.box.left - (width / 2);
@@ -17,6 +18,7 @@ class Ball extends GameEntity {
         && g.player1.box.top < box.bottom && g.player1.box.bottom > box.top)
       x = g.player1.box.right + (width / 2);
 
+    // if the ball gets to the top or bottom, make sure it doesn't go through them before we check for collision
     if (momentum.yVel > 0 && box.bottom > game.halfSurfaceHeight)
       y = game.halfSurfaceHeight - (height / 2);
     if (momentum.yVel < 0 && box.top < -game.halfSurfaceHeight)
@@ -40,6 +42,7 @@ class Ball extends GameEntity {
       ballHit(g.player2);
       game.playSound("sounds/hit2");
     }
+    
     if (x > game.halfSurfaceWidth || x < -game.halfSurfaceWidth) {
       if (x > 0) {
         x = -400;
@@ -52,7 +55,6 @@ class Ball extends GameEntity {
       }
       g.gameOver();
     }
-
   }
   
   void ballHit(Paddle paddle) {

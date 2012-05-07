@@ -1,5 +1,7 @@
 class ComputerPaddle extends Paddle {
   // target the top, middle or bottom of the paddle
+  int targetPaddleSide = 0;
+  // used to introduce some variation to where the AI hits the ball or possibly even misses it.
   int targetOffset = 0;
   int amountToMove = 3;
   bool ballComing;
@@ -22,14 +24,22 @@ class ComputerPaddle extends Paddle {
     bool newBallComing = (x > 0 && g.ball.momentum.xVel > 0) || (x < 0 && g.ball.momentum.xVel < 0);
     // if the direction changed, then set a new random target
     if (ballComing == null || newBallComing != ballComing) {
-      targetOffset = Utils.random(-1, 1, true);
+      // randomly pick if we should target the top, middle or bottom of the paddle
+      targetPaddleSide = Utils.random(-1, 1, true);
+      // introduce some target hit spot variation based on skill level
+      targetOffset = getTargetOffset();
+      // the amount to move based on skill level
       amountToMove = getAmountToMove();
     }
     ballComing = newBallComing;
     
+    // either move toward the ball or toward the middle of the screen
     num targetPosition = ballComing ?
-        g.ball.y + (targetOffset * 50)
+        g.ball.y + (targetPaddleSide * ((height / 2) - 5))
         : 0;
+    
+    // add random variation
+    //targetPosition += targetOffset;
     
     // if we are within 1 of our targetPosition, just stay there.
     if ((y - targetPosition).abs() <= 1)
@@ -75,5 +85,24 @@ class ComputerPaddle extends Paddle {
     }
     
     return 3;
+  }
+  
+  num getTargetOffset() {
+    switch (_skillLevel) {
+      case 1: {
+        return Utils.random(-20, 20, true);
+        break;
+      }
+      case 2: {
+        return Utils.random(-10, 10, true);
+        break;
+      }
+      case 3: {
+        return Utils.random(-5, 5, true);
+        break;
+      }
+    }
+    
+    return 0;
   }
 }

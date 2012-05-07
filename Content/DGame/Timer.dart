@@ -14,6 +14,7 @@ class Timer {
     
     num gameDelta = Math.min(wallDelta, MAX_STEP);
     gameTime += gameDelta;
+    
     return gameDelta;
   }
 }

@@ -42,8 +42,8 @@ void main() {
   //new Timer.repeating(1000, (t) => print('$msgCount');
   
   var game = new PongGame(assetManager, ctx);
-  game.enableSound = false;
-  game.debugMode = true;
+  game.enableSound = true;
+  game.debugMode = false;
   
   assetManager.downloadAll(() {
     game.init();
