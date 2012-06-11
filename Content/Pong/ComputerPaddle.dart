@@ -8,7 +8,7 @@ class ComputerPaddle extends Paddle {
   // Computer skill level between 1 and 3;
   int _skillLevel;
   
-  ComputerPaddle(Game game, num x, num y, [int skillLevel = 1]) : super(game, x, y) {
+  ComputerPaddle(PongGame game, num x, num y, [int skillLevel = 1]) : super(game, x, y) {
     _skillLevel = Math.max(Math.min(skillLevel, 3), 1);
   }
   

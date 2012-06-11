@@ -6,6 +6,12 @@ class Rectangle {
   
   Rectangle(this.top, this.left, this.right, this.bottom);
   Rectangle.clone(Rectangle rect) : this(rect.top, rect.left, rect.right, rect.bottom);
+  Rectangle.withSize(num width, num height) {
+    top = 0;
+    bottom = height;
+    left = 0;
+    right = width;
+  }
   
   void updateFrom(Rectangle rect) {
     top = rect.top;
@@ -20,6 +26,10 @@ class Rectangle {
   
   num get width() => right - left;
   num get height() => bottom - top;
+  num get x() => left;
+  num get y() => top;
+  num get halfWidth() => width / 2;
+  num get halfHeight() => height / 2;
   
   static bool intersect(Rectangle r1, Rectangle r2) {
     return !(r1.left > r2.right || 

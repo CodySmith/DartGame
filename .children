@@ -1,6 +1,8 @@
 Content/DGame/Game.dart
 Content/Pong/Pong.dart
+Content/Pong/Html/PongHtml.dart
 Content/Pong/PongGame.dart
 Content/BadAliens/BadAliensDart.dart
-Content/DGame/Vector.dart
 Server/app.dart
+Content/DGame/Utils.dart
+Content/DGame/Html/HtmlGame.dart

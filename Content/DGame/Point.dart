@@ -8,4 +8,5 @@ class Point {
   final num y;
   
   Point(this.x, this.y);
+  Point.clone(Point p) : this(p.x, p.y);
 }

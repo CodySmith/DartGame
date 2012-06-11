@@ -77,59 +77,17 @@ class GameEntity {
     box.bottom = box.top + height;
   }
   
-  void draw(html.CanvasRenderingContext2D ctx) {
-    if (color != null) {
-      if (fill) {
-        ctx.fillStyle = "rgba($color, $opacity)";
-        ctx.fillRect(box.left, box.top, box.width, box.height);
-      } else {
-        ctx.strokeStyle = "rgba($color, $opacity)";
-        ctx.strokeRect(box.left, box.top, box.width, box.height);
-      }
-    }
-    
-    if (game.showOutlines) {
-      ctx.beginPath();
-      ctx.strokeStyle = "green";
-      ctx.arc(x, y, radius, 0, Math.PI * 2, false);
-      ctx.stroke();
-      ctx.closePath();
-    }
-  }
-  
-  void drawSpriteCentered(html.CanvasRenderingContext2D ctx) {
-    num cx = x - sprite.width / 2;
-    num cy = y - sprite.height / 2;
-    ctx.drawImage(sprite, cx, cy);
-  }
-  
   void removeFromGame() {
     _removeFromGame = true;
   }
   
   bool outsideScreen() {
-    return (x > game.halfSurfaceWidth || x < -(game.halfSurfaceWidth) ||
-        y > game.halfSurfaceHeight || y < -(game.halfSurfaceHeight));
+    return (x > game.rect.halfWidth || x < -(game.rect.halfWidth) ||
+        y > game.rect.halfHeight || y < -(game.rect.halfHeight));
   }
   
   bool collidesWith(GameEntity entity) {
     // TODO: Check for radius to see if collision should be circular
     return entity.box.intersectsWith(box);
-  }
-  
-  html.CanvasElement rotateAndCache(image, angle) {
-    var offscreenCanvas = new html.Element.tag("canvas");
-    var size = Math.max(image.width, image.height);
-    offscreenCanvas.width = size;
-    offscreenCanvas.height = size;
-    var offscreenCtx = offscreenCanvas.getContext('2d');
-    offscreenCtx.save();
-    offscreenCtx.translate(size / 2, size / 2);
-    offscreenCtx.rotate(angle + Math.PI / 2);
-    offscreenCtx.translate(0,0);
-    offscreenCtx.drawImage(image, -(image.width / 2), -(image.height / 2));
-    offscreenCtx.restore();
-    
-    return offscreenCanvas;
   }
 }
