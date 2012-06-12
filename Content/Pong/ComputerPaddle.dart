@@ -50,6 +50,13 @@ class ComputerPaddle extends Paddle {
       y -= amountToMove;
     else
       y += amountToMove;
+    
+    if (g.player2.bullet == true) {
+      if (y > g.player1.y || y < -(g.player1.height))
+      {
+        g.newBullet(x - 10, y, false);
+      }
+    }
   }
   
   num getAmountToMove() {

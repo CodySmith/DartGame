@@ -48,10 +48,12 @@ class Ball extends GameEntity {
         x = -400;
         startVel = 400;
         g.player1.score++;
+        game.playSound("sounds/sweep");
       } else {
         x = 400;
         startVel = -400;
         g.player2.score++;
+        game.playSound("sounds/sweep");
       }
       g.gameOver();
     }
