@@ -6,7 +6,7 @@ class StaticFileHandler {
   void onRequest(HttpRequest req, HttpResponse res){
     String path = req.path;
     if (path.endsWith('/'))
-      path += "index.html";
+      path = path.concat("index.html");
     String fileName = "$basePath$path";
     
     File file = new File(fileName);

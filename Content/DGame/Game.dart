@@ -87,7 +87,8 @@ class Game {
     
     html.document.on.touchMove.add((e) {
       e.preventDefault();
-      mouse = getXandY(e.touches[0]);
+      var te = e as html.TouchEvent;
+      mouse = getXandY(te.touches[0]);
       return false;
     });
     
@@ -137,9 +138,9 @@ class Game {
     }
     
     if (_supportsMp3 == true)
-      path += ".mp3";
+      path = path.concat(".mp3");
     else
-      path += ".ogg";
+      path = path.concat(".ogg");
     
     var s = assetManager.getAsset(path);
     if (s == null)

@@ -43,7 +43,7 @@ void main() {
     };
   };
   
-  new Timer.repeating(50, (t) => clients.forEach((k, v) => v.send('ping')));
+  //new Timer.repeating(50, (t) => clients.forEach((k, v) => v.send('ping')));
   
   httpServer.listen('127.0.0.1', 8000);
   print('listening on: http://127.0.0.1:8000');

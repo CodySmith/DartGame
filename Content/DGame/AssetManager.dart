@@ -22,8 +22,9 @@ class AssetManager {
       bool isImg = isImage(path);
       var el = new html.Element.tag(isImg ? "img" : "audio");
       if (isImg) {
+        var img = el as html.ImageElement;
         el.on.load.add((event) {
-          print(el.src + ' is loaded');
+          print('${img.src} is loaded');
           _successCount += 1;
           if (isDone()) {
               downloadCallback();
@@ -35,16 +36,17 @@ class AssetManager {
               downloadCallback();
           }
         });
+        img.src = path;
       } else {
-        print(path + ' is loaded');
+        var audio = el as html.AudioElement;
+        print('$path is loaded');
         el.attributes["preload"] = "auto";
-        el.load();
         _successCount += 1;
         if (isDone()) {
           downloadCallback();
         }
+        audio.src = path;
       }
-      el.src = path;
       _cache[path] = el;
     }
   }
