@@ -1,6 +1,6 @@
 class Paddle extends GameEntity {
   num score = 0;
-  num bullet = 10;
+  num bullet = 0;
   num bulletTime = 0;
   
   Paddle(Game game, num x, num y) : super.withPosition(game, x, y, 8, 120) {
