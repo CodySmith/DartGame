@@ -44,16 +44,16 @@ class PowerUp extends GameEntity {
           break;
         case 'bullet':
           if (g.ball.momentum.xVel > 0)
-            g.player1.bullet == true;
+            g.player1.bullet += 2;
           else if (g.ball.momentum.xVel < 0)
-            g.player2.bullet == true;
-          
+            g.player2.bullet += 2;
+          break;
       }
       
       game.playSound("sounds/sweep", .1);
       removeFromGame();
     }
-    
+   
     super.update();
   }
   

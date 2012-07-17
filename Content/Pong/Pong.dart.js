@@ -1204,7 +1204,7 @@ $$.CastException = {"":
 };
 
 $$.PongGame = {"":
- ["ball?", "player2?", "player1?", "lastPowerUp", "highscore", "score=", "includeUI", "showOutlines", "_supportsMp3", "bgStyle", "enableSound", "debugMode", "assetManager", "clientPoint", "surfaceHeight", "surfaceWidth", "clockTick", "timer", "mouse", "click", "ctx", "entities"],
+ ["ball?", "player2?", "player1?", "p2Dead", "p1Dead", "paused=", "lastPowerUp", "highscore", "score=", "includeUI", "showOutlines", "_supportsMp3", "bgStyle", "enableSound", "debugMode", "assetManager", "clientPoint", "surfaceHeight", "surfaceWidth", "clockTick", "timer", "mouse", "click", "ctx", "entities"],
  super: "Game",
  bgFade$0: function() {
   this.bgStyle = 'rgba(0, 0, 0, 0.8)';
@@ -1237,13 +1237,26 @@ $$.PongGame = {"":
  },
  newGame$0: function() {
   this.ball.set$y(0);
-  $.forEach($.filter(this.entities, new $.PongGame_newGame_anon()), new $.PongGame_newGame_anon0());
+  this.score = 0;
+  var t1 = this.entities;
+  $.forEach($.filter(t1, new $.PongGame_newGame_anon()), new $.PongGame_newGame_anon0());
+  $.forEach($.filter(t1, new $.PongGame_newGame_anon1()), new $.PongGame_newGame_anon2());
   if ($.gtB($.Math_random(), 0.5)) {
-    var t1 = $.Utils_random(0, 200, false);
+    t1 = $.Utils_random(0, 200, false);
     this.ball.get$momentum().set$yVel(t1);
   } else {
     t1 = $.Utils_random(-200, 0, false);
     this.ball.get$momentum().set$yVel(t1);
+  }
+  if ($.eqB(this.p1Dead, true) || this.player1 == null) {
+    this.player1 = $.Paddle$(this, $.neg($.sub(this.get$halfSurfaceWidth(), 10)), 10);
+    this.addEntity$1(this.player1);
+    this.p1Dead = false;
+  }
+  if ($.eqB(this.p2Dead, true) || this.player2 == null) {
+    this.player2 = $.ComputerPaddle$(this, $.sub(this.get$halfSurfaceWidth(), 10), 10, 3);
+    this.addEntity$1(this.player2);
+    this.p2Dead = false;
   }
   this.player1.set$height(120);
   this.player2.set$height(120);
@@ -1267,7 +1280,7 @@ $$.PongGame = {"":
   var t1 = this.ctx;
   t1.set$fillStyle('rgba(255, 255, 255, 1)');
   t1.set$font('26px cinnamoncake, Verdana');
-  t1.fillText$3($.S(this.player1.get$score()) + '              ' + $.S(this.player2.get$score()), -60, $.neg($.sub(this.get$halfSurfaceHeight(), 30)));
+  t1.fillText$3($.S(this.player1.get$score()) + '              ' + $.S(this.player2.get$score()) + '                               Rally Length: ' + $.S(this.score), -60, $.neg($.sub(this.get$halfSurfaceHeight(), 30)));
  },
  drawDebugInfo$0: function() {
   var t1 = this.ctx;
@@ -1275,6 +1288,20 @@ $$.PongGame = {"":
   t1.set$font('16px Verdana');
   t1.fillText$3('V: ' + $.S($.toStringAsFixed(this.ball.get$momentum().get$xVel(), 0)), $.neg($.sub(this.get$halfSurfaceWidth(), 20)), $.neg($.sub(this.get$halfSurfaceHeight(), 30)));
   $.Game.prototype.drawDebugInfo$0.call(this);
+ },
+ run$0: function() {
+  var t1 = new $.PongGame_run_onKeyboardEvent(this);
+  $.document().get$window().get$on().get$keyDown().add$2(t1, false);
+ },
+ newBullet$3: function(x, y, p1) {
+  if ($.eqB(p1, true)) {
+    var t1 = this.player1;
+    t1.set$bullet($.sub(t1.get$bullet(), 1));
+  } else {
+    t1 = this.player2;
+    t1.set$bullet($.sub(t1.get$bullet(), 1));
+  }
+  this.addEntity$1($.Bullet$(this, x, y, p1));
  },
  newPowerUp$0: function() {
   if ($.geB($.Math_random(), 0.1)) return;
@@ -1301,19 +1328,15 @@ $$.PongGame = {"":
   $.Game.prototype.update$0.call(this);
  },
  start$0: function() {
-  this.player1 = $.Paddle$(this, $.neg($.sub(this.get$halfSurfaceWidth(), 10)), 10);
-  this.player2 = $.ComputerPaddle$(this, $.sub(this.get$halfSurfaceWidth(), 10), 10, 3);
   this.ball = $.Ball$(this, 0, 0);
   this.addEntity$1(this.ball);
-  this.addEntity$1(this.player1);
-  this.addEntity$1(this.player2);
   this.newGame$0();
   $.Game.prototype.start$0.call(this);
  }
 };
 
 $$.Paddle = {"":
- ["score=", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
+ ["bulletTime=", "bullet=", "score=", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
  super: "GameEntity",
  fade$0: function() {
   this.opacity = 0.5;
@@ -1322,8 +1345,9 @@ $$.Paddle = {"":
   $.window().setTimeout$2(new $.Paddle_fade_anon1(this), 150);
  },
  move$0: function() {
-  var t1 = this.game;
-  !(t1.get$mouse() == null) && this.set$y(t1.get$mouse().get$y());
+  var g = this.game;
+  !(g.get$mouse() == null) && this.set$y(g.get$mouse().get$y());
+  $.add$1($.document().get$on().get$click(), new $.Paddle_move_anon(this, g));
  },
  update$0: function() {
   this.move$0();
@@ -1335,7 +1359,7 @@ $$.Paddle = {"":
 };
 
 $$.ComputerPaddle = {"":
- ["_skillLevel", "ballComing", "amountToMove", "targetOffset", "targetPaddleSide", "score", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
+ ["_skillLevel", "ballComing", "amountToMove", "targetOffset", "targetPaddleSide", "bulletTime", "bullet", "score", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
  super: "Paddle",
  getTargetOffset$0: function() {
   switch (this._skillLevel) {
@@ -1369,6 +1393,14 @@ $$.ComputerPaddle = {"":
  move$0: function() {
   var g = this.game;
   if (g.get$ball() == null) return;
+  if ($.leB($.add(this.bulletTime, 0.25), g.get$timer().get$gameTime())) {
+    if ($.geB(g.get$player2().get$bullet(), 1)) {
+      if ($.geB($.add(this.get$y(), 60), g.get$player1().get$y()) && $.leB($.sub(this.get$y(), 60), g.get$player1().get$y())) {
+        g.newBullet$3($.sub(this.get$x(), 10), this.get$y(), false);
+        this.bulletTime = g.get$timer().get$gameTime();
+      }
+    }
+  }
   if (!($.gtB(this.get$x(), 0) && $.gtB(g.get$ball().get$momentum().get$xVel(), 0))) {
     var newBallComing = $.ltB(this.get$x(), 0) && $.ltB(g.get$ball().get$momentum().get$xVel(), 0);
   } else newBallComing = true;
@@ -1405,22 +1437,22 @@ $$.Ball = {"":
   var g = this.game;
   var t1 = this.momentum;
   var t2 = t1.get$xVel();
-  if (typeof t2 !== 'number') return this.update$0$bailout(1, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(1, t2, g, t1, 0);
   if (t2 > 0) {
     t2 = this.box.get$right();
-    if (typeof t2 !== 'number') return this.update$0$bailout(2, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(2, t2, g, t1, 0);
     var t3 = g.get$player2().get$box().get$left();
-    if (typeof t3 !== 'number') return this.update$0$bailout(3, t1, t2, t3, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(3, t2, g, t1, t3);
     if (t2 > t3) {
       t2 = g.get$player2().get$box().get$top();
-      if (typeof t2 !== 'number') return this.update$0$bailout(4, t1, t2, g, 0);
+      if (typeof t2 !== 'number') return this.update$0$bailout(4, g, t1, t2, 0);
       t3 = this.box.get$bottom();
-      if (typeof t3 !== 'number') return this.update$0$bailout(5, t1, g, t2, t3);
+      if (typeof t3 !== 'number') return this.update$0$bailout(5, g, t1, t2, t3);
       if (t2 < t3) {
         t2 = g.get$player2().get$box().get$bottom();
-        if (typeof t2 !== 'number') return this.update$0$bailout(6, t1, t2, g, 0);
+        if (typeof t2 !== 'number') return this.update$0$bailout(6, g, t1, t2, 0);
         t3 = this.box.get$top();
-        if (typeof t3 !== 'number') return this.update$0$bailout(7, t1, t3, g, t2);
+        if (typeof t3 !== 'number') return this.update$0$bailout(7, t3, g, t1, t2);
         t3 = t2 > t3;
         t2 = t3;
       } else t2 = false;
@@ -1428,28 +1460,28 @@ $$.Ball = {"":
   } else t2 = false;
   if (t2) {
     t2 = g.get$player2().get$box().get$left();
-    if (typeof t2 !== 'number') return this.update$0$bailout(8, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(8, g, t1, t2, 0);
     t3 = this.get$width();
-    if (typeof t3 !== 'number') return this.update$0$bailout(9, t1, t2, t3, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(9, g, t1, t2, t3);
     this.set$x(t2 - t3 / 2);
   }
   t2 = t1.get$xVel();
-  if (typeof t2 !== 'number') return this.update$0$bailout(10, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(10, t2, g, t1, 0);
   if (t2 < 0) {
     t2 = this.box.get$left();
-    if (typeof t2 !== 'number') return this.update$0$bailout(11, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(11, t2, g, t1, 0);
     t3 = g.get$player1().get$box().get$right();
-    if (typeof t3 !== 'number') return this.update$0$bailout(12, t1, t2, t3, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(12, t2, g, t1, t3);
     if (t2 < t3) {
       t2 = g.get$player1().get$box().get$top();
-      if (typeof t2 !== 'number') return this.update$0$bailout(13, t1, t2, g, 0);
+      if (typeof t2 !== 'number') return this.update$0$bailout(13, g, t1, t2, 0);
       t3 = this.box.get$bottom();
-      if (typeof t3 !== 'number') return this.update$0$bailout(14, t1, t3, t2, g);
+      if (typeof t3 !== 'number') return this.update$0$bailout(14, t3, g, t1, t2);
       if (t2 < t3) {
         t2 = g.get$player1().get$box().get$bottom();
-        if (typeof t2 !== 'number') return this.update$0$bailout(15, t1, t2, g, 0);
+        if (typeof t2 !== 'number') return this.update$0$bailout(15, t2, g, t1, 0);
         t3 = this.box.get$top();
-        if (typeof t3 !== 'number') return this.update$0$bailout(16, t1, t2, t3, g);
+        if (typeof t3 !== 'number') return this.update$0$bailout(16, t2, t3, g, t1);
         t3 = t2 > t3;
         t2 = t3;
       } else t2 = false;
@@ -1457,62 +1489,62 @@ $$.Ball = {"":
   } else t2 = false;
   if (t2) {
     t2 = g.get$player1().get$box().get$right();
-    if (typeof t2 !== 'number') return this.update$0$bailout(17, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(17, g, t1, t2, 0);
     t3 = this.get$width();
-    if (typeof t3 !== 'number') return this.update$0$bailout(18, t1, t2, t3, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(18, g, t1, t2, t3);
     this.set$x(t2 + t3 / 2);
   }
   t2 = t1.get$yVel();
-  if (typeof t2 !== 'number') return this.update$0$bailout(19, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(19, t2, g, t1, 0);
   if (t2 > 0) {
     t2 = this.box.get$bottom();
-    if (typeof t2 !== 'number') return this.update$0$bailout(20, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(20, t2, g, t1, 0);
     t3 = g.get$halfSurfaceHeight();
-    if (typeof t3 !== 'number') return this.update$0$bailout(21, t1, t2, t3, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(21, t2, t3, g, t1);
     t3 = t2 > t3;
     t2 = t3;
   } else t2 = false;
   if (t2) {
     t2 = g.get$halfSurfaceHeight();
-    if (typeof t2 !== 'number') return this.update$0$bailout(22, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(22, g, t1, t2, 0);
     t3 = this.get$height();
-    if (typeof t3 !== 'number') return this.update$0$bailout(23, t1, t2, t3, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(23, g, t1, t3, t2);
     this.set$y(t2 - t3 / 2);
   }
   t2 = t1.get$yVel();
-  if (typeof t2 !== 'number') return this.update$0$bailout(24, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(24, t2, g, t1, 0);
   if (t2 < 0) {
     t2 = this.box.get$top();
-    if (typeof t2 !== 'number') return this.update$0$bailout(25, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(25, g, t1, t2, 0);
     t3 = g.get$halfSurfaceHeight();
-    if (typeof t3 !== 'number') return this.update$0$bailout(26, t1, t3, t2, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(26, t3, g, t1, t2);
     t2 = t2 < -t3;
   } else t2 = false;
   if (t2) {
     t2 = g.get$halfSurfaceHeight();
-    if (typeof t2 !== 'number') return this.update$0$bailout(27, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(27, g, t1, t2, 0);
     t2 = -t2;
     t3 = this.get$height();
-    if (typeof t3 !== 'number') return this.update$0$bailout(28, t1, t3, t2, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(28, t3, g, t1, t2);
     this.set$y(t2 + t3 / 2);
   }
   t2 = this.box.get$bottom();
-  if (typeof t2 !== 'number') return this.update$0$bailout(29, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(29, t2, g, t1, 0);
   t3 = g.get$halfSurfaceHeight();
-  if (typeof t3 !== 'number') return this.update$0$bailout(30, t1, t2, t3, g);
+  if (typeof t3 !== 'number') return this.update$0$bailout(30, t2, g, t1, t3);
   if (!(t2 >= t3)) {
     t2 = this.box.get$top();
-    if (typeof t2 !== 'number') return this.update$0$bailout(31, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(31, g, t1, t2, 0);
     t3 = g.get$halfSurfaceHeight();
-    if (typeof t3 !== 'number') return this.update$0$bailout(32, t1, t3, t2, g);
+    if (typeof t3 !== 'number') return this.update$0$bailout(32, g, t1, t2, t3);
     t2 = t2 <= -t3;
   } else t2 = true;
   if (t2) {
     t2 = t1.get$yVel();
-    if (typeof t2 !== 'number') return this.update$0$bailout(33, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(33, g, t1, t2, 0);
     t1.set$yVel(t2 * -1);
     t3 = $.Math_atan2($.abs(t1.get$xVel()), $.abs(t1.get$yVel()));
-    if (typeof t3 !== 'number') return this.update$0$bailout(34, t3, g, 0, 0);
+    if (typeof t3 !== 'number') return this.update$0$bailout(34, g, t3, 0, 0);
     g.playSound$2('Sounds/hit3', $.Math_min((90 - t3 / 0.017453292519943295) / 50, 1));
   }
   if (this.collidesWith$1(g.get$player1()) === true) {
@@ -1527,19 +1559,19 @@ $$.Ball = {"":
     }
   }
   t1 = this.get$x();
-  if (typeof t1 !== 'number') return this.update$0$bailout(35, t1, g, 0, 0);
+  if (typeof t1 !== 'number') return this.update$0$bailout(35, g, t1, 0, 0);
   t2 = g.get$halfSurfaceWidth();
   if (typeof t2 !== 'number') return this.update$0$bailout(36, g, t1, t2, 0);
   if (!(t1 > t2)) {
     t1 = this.get$x();
-    if (typeof t1 !== 'number') return this.update$0$bailout(37, t1, g, 0, 0);
+    if (typeof t1 !== 'number') return this.update$0$bailout(37, g, t1, 0, 0);
     t2 = g.get$halfSurfaceWidth();
-    if (typeof t2 !== 'number') return this.update$0$bailout(38, t2, t1, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(38, t2, g, t1, 0);
     t1 = t1 < -t2;
   } else t1 = true;
   if (t1) {
     t1 = this.get$x();
-    if (typeof t1 !== 'number') return this.update$0$bailout(39, t1, g, 0, 0);
+    if (typeof t1 !== 'number') return this.update$0$bailout(39, g, t1, 0, 0);
     if (t1 > 0) {
       this.set$x(-400);
       this.startVel = 400;
@@ -1547,13 +1579,15 @@ $$.Ball = {"":
       t2 = t1.get$score();
       if (typeof t2 !== 'number') return this.update$0$bailout(40, t2, g, t1, 0);
       t1.set$score(t2 + 1);
+      g.playSound$1('sounds/sweep');
     } else {
       this.set$x(400);
       this.startVel = -400;
       t1 = g.get$player2();
       t2 = t1.get$score();
-      if (typeof t2 !== 'number') return this.update$0$bailout(41, t1, t2, g, 0);
+      if (typeof t2 !== 'number') return this.update$0$bailout(41, g, t1, t2, 0);
       t1.set$score(t2 + 1);
+      g.playSound$1('sounds/sweep');
     }
     g.gameOver$0();
   }
@@ -1561,191 +1595,191 @@ $$.Ball = {"":
  update$0$bailout: function(state, env0, env1, env2, env3) {
   switch (state) {
     case 1:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
       break;
     case 2:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
       break;
     case 3:
-      t1 = env0;
-      t2 = env1;
-      t3 = env2;
-      g = env3;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      t3 = env3;
       break;
     case 4:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 5:
-      t1 = env0;
-      g = env1;
+      g = env0;
+      t1 = env1;
       t2 = env2;
       t3 = env3;
       break;
     case 6:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 7:
-      t1 = env0;
-      t3 = env1;
-      g = env2;
+      t3 = env0;
+      g = env1;
+      t1 = env2;
       t2 = env3;
       break;
     case 8:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 9:
-      t1 = env0;
-      t2 = env1;
-      t3 = env2;
-      g = env3;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      t3 = env3;
       break;
     case 10:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
       break;
     case 11:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
       break;
     case 12:
-      t1 = env0;
-      t2 = env1;
-      t3 = env2;
-      g = env3;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      t3 = env3;
       break;
     case 13:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 14:
-      t1 = env0;
-      t3 = env1;
-      t2 = env2;
-      g = env3;
-      break;
-    case 15:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 16:
-      t1 = env0;
-      t2 = env1;
-      t3 = env2;
-      g = env3;
-      break;
-    case 17:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 18:
-      t1 = env0;
-      t2 = env1;
-      t3 = env2;
-      g = env3;
-      break;
-    case 19:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 20:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 21:
-      t1 = env0;
-      t2 = env1;
-      t3 = env2;
-      g = env3;
-      break;
-    case 22:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 23:
-      t1 = env0;
-      t2 = env1;
-      t3 = env2;
-      g = env3;
-      break;
-    case 24:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 25:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 26:
-      t1 = env0;
-      t3 = env1;
-      t2 = env2;
-      g = env3;
-      break;
-    case 27:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 28:
-      t1 = env0;
-      t3 = env1;
-      t2 = env2;
-      g = env3;
-      break;
-    case 29:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 30:
-      t1 = env0;
-      t2 = env1;
-      t3 = env2;
-      g = env3;
-      break;
-    case 31:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 32:
-      t1 = env0;
-      t3 = env1;
-      t2 = env2;
-      g = env3;
-      break;
-    case 33:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 34:
       t3 = env0;
       g = env1;
+      t1 = env2;
+      t2 = env3;
+      break;
+    case 15:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 16:
+      t2 = env0;
+      t3 = env1;
+      g = env2;
+      t1 = env3;
+      break;
+    case 17:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 18:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      t3 = env3;
+      break;
+    case 19:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 20:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 21:
+      t2 = env0;
+      t3 = env1;
+      g = env2;
+      t1 = env3;
+      break;
+    case 22:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 23:
+      g = env0;
+      t1 = env1;
+      t3 = env2;
+      t2 = env3;
+      break;
+    case 24:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 25:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 26:
+      t3 = env0;
+      g = env1;
+      t1 = env2;
+      t2 = env3;
+      break;
+    case 27:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 28:
+      t3 = env0;
+      g = env1;
+      t1 = env2;
+      t2 = env3;
+      break;
+    case 29:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 30:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      t3 = env3;
+      break;
+    case 31:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 32:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      t3 = env3;
+      break;
+    case 33:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 34:
+      g = env0;
+      t3 = env1;
       break;
     case 35:
-      t1 = env0;
-      g = env1;
+      g = env0;
+      t1 = env1;
       break;
     case 36:
       g = env0;
@@ -1753,17 +1787,17 @@ $$.Ball = {"":
       t2 = env2;
       break;
     case 37:
-      t1 = env0;
-      g = env1;
+      g = env0;
+      t1 = env1;
       break;
     case 38:
       t2 = env0;
-      t1 = env1;
-      g = env2;
+      g = env1;
+      t1 = env2;
       break;
     case 39:
-      t1 = env0;
-      g = env1;
+      g = env0;
+      t1 = env1;
       break;
     case 40:
       t2 = env0;
@@ -1771,9 +1805,9 @@ $$.Ball = {"":
       t1 = env2;
       break;
     case 41:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
   }
   switch (state) {
@@ -2082,6 +2116,7 @@ $$.Ball = {"":
                 case 40:
                   state = 0;
                   t1.set$score($.add(t2, 1));
+                  g.playSound$1('sounds/sweep');
               }
             } else {
               switch (state) {
@@ -2093,6 +2128,7 @@ $$.Ball = {"":
                 case 41:
                   state = 0;
                   t1.set$score($.add(t2, 1));
+                  g.playSound$1('sounds/sweep');
               }
             }
             g.gameOver$0();
@@ -2110,6 +2146,18 @@ $$.Ball = {"":
 $$.PowerUp = {"":
  ["creationTime", "type", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
  super: "GameEntity",
+ shrinkUpdate$0: function() {
+  var g = this.game;
+  if ($.gtB(g.get$ball().get$momentum().get$xVel(), 0)) {
+    var t1 = g.get$player1();
+    t1.set$height($.sub(t1.get$height(), 50));
+  } else {
+    if ($.ltB(g.get$ball().get$momentum().get$xVel(), 0)) {
+      t1 = g.get$player2();
+      t1.set$height($.sub(t1.get$height(), 50));
+    }
+  }
+ },
  extendUpdate$0: function() {
   var g = this.game;
   if ($.gtB(g.get$ball().get$momentum().get$xVel(), 0)) {
@@ -2143,6 +2191,12 @@ $$.PowerUp = {"":
     case 'extendor':
       ctx.fillText$3('E', $.sub(this.get$x(), 8), $.add(this.get$y(), 8));
       break;
+    case 'shrink':
+      ctx.fillText$3('S', $.sub(this.get$x(), 8), $.add(this.get$y(), 8));
+      break;
+    case 'bullet':
+      ctx.fillText$3('B', $.sub(this.get$x(), 8), $.add(this.get$y(), 8));
+      break;
   }
  },
  update$0: function() {
@@ -2156,7 +2210,22 @@ $$.PowerUp = {"":
       case 'extendor':
         this.extendUpdate$0();
         break;
+      case 'shrink':
+        this.shrinkUpdate$0();
+        break;
+      case 'bullet':
+        if ($.gtB(g.get$ball().get$momentum().get$xVel(), 0)) {
+          var t1 = g.get$player1();
+          t1.set$bullet($.add(t1.get$bullet(), 2));
+        } else {
+          if ($.ltB(g.get$ball().get$momentum().get$xVel(), 0)) {
+            t1 = g.get$player2();
+            t1.set$bullet($.add(t1.get$bullet(), 2));
+          }
+        }
+        break;
     }
+    g.playSound$2('sounds/sweep', 0.1);
     this.removeFromGame$0();
   }
   $.GameEntity.prototype.update$0.call(this);
@@ -2164,15 +2233,115 @@ $$.PowerUp = {"":
  PowerUp$3: function(game, x, y) {
   var rType = $.Math_random();
   this.creationTime = game.get$timer().get$gameTime();
-  if ($.gtB(rType, 0.5)) {
+  if ($.ltB(rType, 0.2)) {
     this.color = '255, 255, 255';
     this.type = 'reflector';
   } else {
-    this.color = '255, 255, 0';
-    this.type = 'extendor';
+    if ($.ltB(rType, 0.4)) {
+      this.color = '255, 255, 0';
+      this.type = 'extendor';
+    } else {
+      if ($.ltB(rType, 0.6)) {
+        this.color = '255, 0, 255';
+        this.type = 'shrink';
+      } else {
+        if ($.ltB(rType, 1.0)) {
+          this.color = '0, 255, 255';
+          this.type = 'bullet';
+        }
+      }
+    }
   }
  },
  is$PowerUp: true
+};
+
+$$.Bullet = {"":
+ ["isP1", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
+ super: "GameEntity",
+ move$0: function() {
+  if ($.eqB(this.isP1, true)) this.set$x($.add(this.get$x(), 4));
+  else this.set$x($.sub(this.get$x(), 4));
+ },
+ update$0: function() {
+  var g = this.game;
+  this.move$0();
+  if (this.collidesWith$1(g.get$player1()) === true) {
+    var t1 = g.get$player1();
+    var t2 = t1.get$x();
+    if (typeof t2 !== 'number') return this.update$0$bailout(1, t1, t2, g);
+    t1.set$x(t2 - 100);
+    g.get$player1().removeFromGame$0();
+    this.removeFromGame$0();
+  } else {
+    if (this.collidesWith$1(g.get$player2()) === true) {
+      t1 = g.get$player2();
+      t2 = t1.get$x();
+      if (typeof t2 !== 'number') return this.update$0$bailout(2, t1, t2, g);
+      t1.set$x(t2 + 100);
+      g.get$player2().removeFromGame$0();
+      this.removeFromGame$0();
+    }
+  }
+  $.GameEntity.prototype.update$0.call(this);
+ },
+ update$0$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      t1 = env0;
+      t2 = env1;
+      g = env2;
+      break;
+    case 2:
+      t1 = env0;
+      t2 = env1;
+      g = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var g = this.game;
+      this.move$0();
+    case 1:
+    case 2:
+      if (state == 1 || (state == 0 && this.collidesWith$1(g.get$player1()) === true)) {
+        switch (state) {
+          case 0:
+            var t1 = g.get$player1();
+            var t2 = t1.get$x();
+          case 1:
+            state = 0;
+            t1.set$x($.sub(t2, 100));
+            g.get$player1().removeFromGame$0();
+            this.removeFromGame$0();
+        }
+      } else {
+        switch (state) {
+          case 0:
+          case 2:
+            if (state == 2 || (state == 0 && this.collidesWith$1(g.get$player2()) === true)) {
+              switch (state) {
+                case 0:
+                  t1 = g.get$player2();
+                  t2 = t1.get$x();
+                case 2:
+                  state = 0;
+                  t1.set$x($.add(t2, 100));
+                  g.get$player2().removeFromGame$0();
+                  this.removeFromGame$0();
+              }
+            }
+        }
+      }
+      $.GameEntity.prototype.update$0.call(this);
+  }
+ },
+ Bullet$4: function(game, x, y, p1) {
+  this.opacity = 1;
+  this.color = '255, 0, 0';
+  this.isP1 = p1;
+ },
+ is$Bullet: true
 };
 
 $$._AbstractWorkerEventsImpl = {"":
@@ -2253,6 +2422,9 @@ $$._DocumentEventsImpl = {"":
  },
  get$load: function() {
   return this.operator$index$1('load');
+ },
+ get$keyDown: function() {
+  return this.operator$index$1('keydown');
  },
  get$error: function() {
   return this.operator$index$1('error');
@@ -2419,6 +2591,9 @@ $$._ElementEventsImpl = {"":
  },
  get$load: function() {
   return this.operator$index$1('load');
+ },
+ get$keyDown: function() {
+  return this.operator$index$1('keydown');
  },
  get$error: function() {
   return this.operator$index$1('error');
@@ -2652,6 +2827,9 @@ $$._SVGElementInstanceEventsImpl = {"":
  get$load: function() {
   return this.operator$index$1('load');
  },
+ get$keyDown: function() {
+  return this.operator$index$1('keydown');
+ },
  get$error: function() {
   return this.operator$index$1('error');
  },
@@ -2728,6 +2906,9 @@ $$._WindowEventsImpl = {"":
  },
  get$load: function() {
   return this.operator$index$1('load');
+ },
+ get$keyDown: function() {
+  return this.operator$index$1('keydown');
  },
  get$error: function() {
   return this.operator$index$1('error');
@@ -3528,12 +3709,12 @@ $$.GameEntity = {"":
  },
  draw$1: function(ctx) {
   var t1 = this.color;
-  if (!(t1 === null)) {
+  if (!(t1 == null)) {
     if (this.fill === true) {
-      ctx.set$fillStyle('rgba(' + t1 + ', ' + $.S(this.opacity) + ')');
+      ctx.set$fillStyle('rgba(' + $.S(t1) + ', ' + $.S(this.opacity) + ')');
       ctx.fillRect$4(this.box.get$left(), this.box.get$top(), this.box.get$width(), this.box.get$height());
     } else {
-      ctx.set$strokeStyle('rgba(' + t1 + ', ' + $.S(this.opacity) + ')');
+      ctx.set$strokeStyle('rgba(' + $.S(t1) + ', ' + $.S(this.opacity) + ')');
       ctx.strokeRect$4(this.box.get$left(), this.box.get$top(), this.box.get$width(), this.box.get$height());
     }
   }
@@ -3825,6 +4006,24 @@ $$.invokeClosure_anon1 = {"":
  }
 };
 
+$$.PongGame_run_onKeyboardEvent = {"":
+ ["this_0"],
+ super: "Closure",
+ $call$1: function(e) {
+  switch (e.get$keyCode()) {
+    case 27:
+      var t1 = $.eqB(this.this_0.get$paused(), true);
+      var t2 = this.this_0;
+      if (t1) t2.set$paused(false);
+      else t2.set$paused(true);
+      break;
+    default:
+      $.print($.S(e.get$keyCode()));
+      break;
+  }
+ }
+};
+
 $$.DoubleLinkedQueue_length__ = {"":
  ["box_0"],
  super: "Closure",
@@ -3935,30 +4134,6 @@ $$.PongGame_bgFade_function9 = {"":
  super: "Closure",
  $call$0: function() {
   this.this_10.set$bgStyle('rgba(0, 0, 0, 0.85)');
- }
-};
-
-$$.Paddle_fade_anon = {"":
- ["this_0"],
- super: "Closure",
- $call$0: function() {
-  this.this_0.set$opacity(0.4);
- }
-};
-
-$$.Paddle_fade_anon0 = {"":
- ["this_1"],
- super: "Closure",
- $call$0: function() {
-  this.this_1.set$opacity(0.3);
- }
-};
-
-$$.Paddle_fade_anon1 = {"":
- ["this_2"],
- super: "Closure",
- $call$0: function() {
-  this.this_2.set$opacity(0.2);
  }
 };
 
@@ -4088,6 +4263,60 @@ $$.PongGame_newGame_anon0 = {"":
  super: "Closure",
  $call$1: function(e) {
   return e.removeFromGame$0();
+ }
+};
+
+$$.PongGame_newGame_anon1 = {"":
+ [],
+ super: "Closure",
+ $call$1: function(e) {
+  return typeof e === 'object' && e !== null && !!e.is$Bullet;
+ }
+};
+
+$$.PongGame_newGame_anon2 = {"":
+ [],
+ super: "Closure",
+ $call$1: function(e) {
+  return e.removeFromGame$0();
+ }
+};
+
+$$.Paddle_move_anon = {"":
+ ["this_1", "g_0"],
+ super: "Closure",
+ $call$1: function(e) {
+  if ($.leB($.add(this.this_1.get$bulletTime(), 0.1), this.g_0.get$timer().get$gameTime())) {
+    if ($.geB(this.g_0.get$player1().get$bullet(), 1)) {
+      var t1 = this.g_0.get$timer().get$gameTime();
+      this.this_1.set$bulletTime(t1);
+      this.g_0.newBullet$3($.add(this.this_1.get$x(), 10), this.this_1.get$y(), true);
+    }
+  }
+ }
+};
+
+$$.Paddle_fade_anon = {"":
+ ["this_0"],
+ super: "Closure",
+ $call$0: function() {
+  this.this_0.set$opacity(0.4);
+ }
+};
+
+$$.Paddle_fade_anon0 = {"":
+ ["this_1"],
+ super: "Closure",
+ $call$0: function() {
+  this.this_1.set$opacity(0.3);
+ }
+};
+
+$$.Paddle_fade_anon1 = {"":
+ ["this_2"],
+ super: "Closure",
+ $call$0: function() {
+  this.this_2.set$opacity(0.2);
  }
 };
 
@@ -4548,7 +4777,7 @@ $.removeRange = function(receiver, start, length$) {
 };
 
 $.PongGame$ = function(assetManager, ctx) {
-  var t1 = new $.PongGame(null, null, null, 5, 0, 0, true, false, null, 'rgba(0, 0, 0, 0.85)', true, false, assetManager, null, null, null, null, null, null, null, ctx, null);
+  var t1 = new $.PongGame(null, null, null, null, null, false, 5, 0, 0, true, false, null, 'rgba(0, 0, 0, 0.85)', true, false, assetManager, null, null, null, null, null, null, null, ctx, null);
   t1.Game$2(assetManager, ctx);
   return t1;
 };
@@ -4804,12 +5033,6 @@ $.checkMutable = function(list, reason) {
   if (!!(list.immutable$list)) throw $.captureStackTrace($.UnsupportedOperationException$(reason));
 };
 
-$.DoubleLinkedQueueEntry$ = function(e) {
-  var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
-  t1.DoubleLinkedQueueEntry$1(e);
-  return t1;
-};
-
 $.sub$slow = function(a, b) {
   if ($.checkNumbers(a, b) === true) return a - b;
   return a.operator$sub$1(b);
@@ -4821,6 +5044,12 @@ $.toStringWrapper = function() {
 
 $._PeerConnection00EventsImpl$ = function(_ptr) {
   return new $._PeerConnection00EventsImpl(_ptr);
+};
+
+$.DoubleLinkedQueueEntry$ = function(e) {
+  var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
+  t1.DoubleLinkedQueueEntry$1(e);
+  return t1;
 };
 
 $._WorkerContextEventsImpl$ = function(_ptr) {
@@ -5032,6 +5261,11 @@ $.Maps_mapToString = function(m) {
   return result.toString$0();
 };
 
+$.isEmpty = function(receiver) {
+  if (typeof receiver === 'string' || $.isJsArray(receiver) === true) return receiver.length === 0;
+  return receiver.isEmpty$0();
+};
+
 $.Primitives_lazyAsJsDate = function(receiver) {
   (receiver.date === (void 0)) && (receiver.date = new Date(receiver.get$millisecondsSinceEpoch()));
   return receiver.date;
@@ -5080,11 +5314,6 @@ $._Device_isFirefox = function() {
 
 $.ge = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a >= b) : $.ge$slow(a, b);
-};
-
-$.isEmpty = function(receiver) {
-  if (typeof receiver === 'string' || $.isJsArray(receiver) === true) return receiver.length === 0;
-  return receiver.isEmpty$0();
 };
 
 $._MeasurementRequest$ = function(computeValue, completer) {
@@ -5283,15 +5512,15 @@ $.isNaN = function(receiver) {
   return receiver.isNaN$0();
 };
 
+$.Utils_round = function(value, decimals) {
+  var o = $.Math_pow(10, decimals);
+  return $.div($.round($.mul(value, o)), o);
+};
+
 $.round = function(receiver) {
   if (!(typeof receiver === 'number')) return receiver.round$0();
   if (receiver < 0) return -Math.round(-receiver);
   return Math.round(receiver);
-};
-
-$.Utils_round = function(value, decimals) {
-  var o = $.Math_pow(10, decimals);
-  return $.div($.round($.mul(value, o)), o);
 };
 
 $.allMatchesInStringUnchecked = function(needle, haystack) {
@@ -5448,7 +5677,7 @@ $.split = function(receiver, pattern) {
 };
 
 $.ComputerPaddle$ = function(game, x, y, skillLevel) {
-  var t1 = new $.ComputerPaddle(null, null, 3, 0, 0, 0, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
+  var t1 = new $.ComputerPaddle(null, null, 3, 0, 0, 0, 0, 0, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
   t1.GameEntity$withPosition$5(game, x, y, 8, 120);
   t1.Paddle$3(game, x, y);
   t1.ComputerPaddle$4(game, x, y, skillLevel);
@@ -5525,7 +5754,7 @@ $.regExpGetNative = function(regExp) {
 };
 
 $.Paddle$ = function(game, x, y) {
-  var t1 = new $.Paddle(0, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
+  var t1 = new $.Paddle(0, 0, 0, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
   t1.GameEntity$withPosition$5(game, x, y, 8, 120);
   t1.Paddle$3(game, x, y);
   return t1;
@@ -5586,10 +5815,6 @@ $.Utils_random = function(min, max, wholeNumbers) {
   return wholeNumbers === true ? $.round(value) : value;
 };
 
-$.Math_random = function() {
-  return $.MathNatives_random();
-};
-
 $._DoubleLinkedQueueEntrySentinel$ = function() {
   var t1 = new $._DoubleLinkedQueueEntrySentinel(null, null, null);
   t1.DoubleLinkedQueueEntry$1(null);
@@ -5599,6 +5824,10 @@ $._DoubleLinkedQueueEntrySentinel$ = function() {
 
 $.Primitives_getHours = function(receiver) {
   return receiver.get$isUtc() === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCHours()) : ($.Primitives_lazyAsJsDate(receiver).getHours());
+};
+
+$.Math_random = function() {
+  return $.MathNatives_random();
 };
 
 $.MathNatives_random = function() {
@@ -6081,6 +6310,13 @@ $.Collections_some = function(iterable, f) {
   return false;
 };
 
+$.Bullet$ = function(game, x, y, p1) {
+  var t1 = new $.Bullet(null, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
+  t1.GameEntity$withPosition$5(game, x, y, 8, 8);
+  t1.Bullet$4(game, x, y, p1);
+  return t1;
+};
+
 $._SharedWorkerContextEventsImpl$ = function(_ptr) {
   return new $._SharedWorkerContextEventsImpl(_ptr);
 };
@@ -6515,9 +6751,9 @@ Isolate.makeConstantList = function(list) {
 };
 $.CTC = Isolate.makeConstantList([]);
 $.CTC2 = new Isolate.$isolateProperties.ConstantMap(Isolate.$isolateProperties.CTC, {}, 0);
+$.CTC5 = new Isolate.$isolateProperties._DeletedKeySentinel();
 $.CTC7 = new Isolate.$isolateProperties._SimpleClientRect(0, 0, 0, 0);
 $.CTC8 = new Isolate.$isolateProperties.EmptyElementRect(Isolate.$isolateProperties.CTC, Isolate.$isolateProperties.CTC7, Isolate.$isolateProperties.CTC7, Isolate.$isolateProperties.CTC7, Isolate.$isolateProperties.CTC7);
-$.CTC5 = new Isolate.$isolateProperties._DeletedKeySentinel();
 $.CTC9 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
 $.CTC10 = new Isolate.$isolateProperties.Object();
 $.CTC3 = new Isolate.$isolateProperties.IllegalAccessException();
@@ -6587,7 +6823,7 @@ $.$defineNativeClass('HTMLAnchorElement', ["name?"], {
  }
 });
 
-$.$defineNativeClass('WebKitAnimation', ["name?"], {
+$.$defineNativeClass('WebKitAnimation', ["paused?", "name?"], {
  play$0: function() {
   return this.play();
  }
@@ -6938,6 +7174,9 @@ $.$defineNativeClass('HTMLDocument', [], {
  },
  $dom_getElementById$1: function(elementId) {
   return this.getElementById(elementId);
+ },
+ get$window: function() {
+  return this.defaultView;;
  },
  get$on: function() {
   return $._DocumentEventsImpl$(this);
@@ -7640,7 +7879,7 @@ $.$defineNativeClass('HTMLMarqueeElement', ["width?", "height="], {
  }
 });
 
-$.$defineNativeClass('MediaController', ["volume!"], {
+$.$defineNativeClass('MediaController', ["volume!", "paused?"], {
  play$0: function() {
   return this.play();
  },
@@ -7649,7 +7888,7 @@ $.$defineNativeClass('MediaController', ["volume!"], {
  }
 });
 
-$.$defineNativeClass('HTMLMediaElement', ["volume!", "src=", "error?"], {
+$.$defineNativeClass('HTMLMediaElement', ["volume!", "src=", "paused?", "error?"], {
  play$0: function() {
   return this.play();
  },
@@ -7942,7 +8181,7 @@ $.$defineNativeClass('PeerConnection00', [], {
  }
 });
 
-$.$defineNativeClass('WebKitPoint', ["y=", "x?"], {
+$.$defineNativeClass('WebKitPoint', ["y=", "x="], {
 });
 
 $.$defineNativeClass('PositionError', ["message?"], {
@@ -8073,7 +8312,7 @@ $.$defineNativeClass('SVGFilterElement', ["y?", "x?", "width?", "height?"], {
 $.$defineNativeClass('SVGForeignObjectElement', ["y?", "x?", "width?", "height?"], {
 });
 
-$.$defineNativeClass('SVGGlyphRefElement', ["y=", "x?"], {
+$.$defineNativeClass('SVGGlyphRefElement', ["y=", "x="], {
 });
 
 $.$defineNativeClass('SVGImageElement', ["y?", "x?", "width?", "height?"], {
@@ -8106,46 +8345,46 @@ $.$defineNativeClass('SVGNumberList', [], {
  }
 });
 
-$.$defineNativeClass('SVGPathSegArcAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegArcAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegArcRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegArcRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegLinetoAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoHorizontalAbs', ["x?"], {
+$.$defineNativeClass('SVGPathSegLinetoHorizontalAbs', ["x="], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoHorizontalRel', ["x?"], {
+$.$defineNativeClass('SVGPathSegLinetoHorizontalRel', ["x="], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegLinetoRel', ["y=", "x="], {
 });
 
 $.$defineNativeClass('SVGPathSegLinetoVerticalAbs', ["y="], {
@@ -8160,16 +8399,16 @@ $.$defineNativeClass('SVGPathSegList', [], {
  }
 });
 
-$.$defineNativeClass('SVGPathSegMovetoAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegMovetoAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegMovetoRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegMovetoRel', ["y=", "x="], {
 });
 
 $.$defineNativeClass('SVGPatternElement', ["y?", "x?", "width?", "height?"], {
 });
 
-$.$defineNativeClass('SVGPoint', ["y=", "x?"], {
+$.$defineNativeClass('SVGPoint', ["y=", "x="], {
 });
 
 $.$defineNativeClass('SVGPointList', [], {
@@ -8178,7 +8417,7 @@ $.$defineNativeClass('SVGPointList', [], {
  }
 });
 
-$.$defineNativeClass('SVGRect', ["y=", "x?", "width?", "height="], {
+$.$defineNativeClass('SVGRect', ["y=", "x=", "width?", "height="], {
 });
 
 $.$defineNativeClass('SVGRectElement', ["y?", "x?", "width?", "height?"], {
@@ -8212,6 +8451,9 @@ $.$defineNativeClass('HTMLScriptElement', ["src="], {
 });
 
 $.$defineNativeClass('HTMLSelectElement', ["value=", "name?", "length="], {
+ add$2: function(element, before) {
+  return this.add(element,before);
+ }
 });
 
 $.$defineNativeClass('ShadowRoot', [], {
@@ -8467,6 +8709,9 @@ $.$defineNativeClass('TreeWalker', [], {
  filter$1: function(arg0) { return this.filter.$call$1(arg0); }
 });
 
+$.$defineNativeClass('UIEvent', ["keyCode?"], {
+});
+
 $.$defineNativeClass('Uint16Array', ["length?"], {
  removeRange$2: function(start, rangeLength) {
   throw $.captureStackTrace($.UnsupportedOperationException$('Cannot removeRange on immutable List.'));
@@ -8628,7 +8873,7 @@ $.$defineNativeClass('WebSocket', [], {
  }
 });
 
-$.$defineNativeClass('DOMWindow', ["navigator?", "name?", "length?"], {
+$.$defineNativeClass('DOMWindow', ["window?", "navigator?", "name?", "length?"], {
  setTimeout$2: function(handler, timeout) {
   return this.setTimeout($.convertDartClosureToJS(handler, 0),timeout);
  },
@@ -8772,47 +9017,49 @@ $.$defineNativeClass('Worker', [], {
  }
 });
 
-// 246 dynamic classes.
+// 247 dynamic classes.
 // 377 classes
 // 32 !leaf
 (function(){
-  var v0/*class(_SVGTextPositioningElementImpl)*/ = 'SVGTextPositioningElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement';
-  var v1/*class(_SVGElementImpl)*/ = [v0/*class(_SVGTextPositioningElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,'SVGElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement'].join('|');
-  var v2/*class(_MediaElementImpl)*/ = 'HTMLMediaElement|HTMLVideoElement|HTMLAudioElement|HTMLVideoElement|HTMLAudioElement';
-  var v3/*class(_MouseEventImpl)*/ = 'MouseEvent|WheelEvent|WheelEvent';
-  var v4/*class(_ElementImpl)*/ = [v1/*class(_SVGElementImpl)*/,v2/*class(_MediaElementImpl)*/,v1/*class(_SVGElementImpl)*/,v2/*class(_MediaElementImpl)*/,'Element|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement'].join('|');
-  var v5/*class(_DocumentFragmentImpl)*/ = 'DocumentFragment|ShadowRoot|ShadowRoot';
-  var v6/*class(_DocumentImpl)*/ = 'HTMLDocument|SVGDocument|SVGDocument';
-  var v7/*class(_CharacterDataImpl)*/ = 'CharacterData|Text|CDATASection|CDATASection|Comment|Text|CDATASection|CDATASection|Comment';
-  var v8/*class(_WorkerContextImpl)*/ = 'WorkerContext|SharedWorkerContext|DedicatedWorkerContext|SharedWorkerContext|DedicatedWorkerContext';
-  var v9/*class(_NodeImpl)*/ = [v4/*class(_ElementImpl)*/,v5/*class(_DocumentFragmentImpl)*/,v6/*class(_DocumentImpl)*/,v7/*class(_CharacterDataImpl)*/,v4/*class(_ElementImpl)*/,v5/*class(_DocumentFragmentImpl)*/,v6/*class(_DocumentImpl)*/,v7/*class(_CharacterDataImpl)*/,'Node|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr'].join('|');
-  var v10/*class(_MediaStreamImpl)*/ = 'MediaStream|LocalMediaStream|LocalMediaStream';
-  var v11/*class(_IDBRequestImpl)*/ = 'IDBRequest|IDBOpenDBRequest|IDBVersionChangeRequest|IDBOpenDBRequest|IDBVersionChangeRequest';
-  var v12/*class(_AbstractWorkerImpl)*/ = 'AbstractWorker|Worker|SharedWorker|Worker|SharedWorker';
+  var v0/*class(_MouseEventImpl)*/ = 'MouseEvent|WheelEvent|WheelEvent';
+  var v1/*class(_SVGTextPositioningElementImpl)*/ = 'SVGTextPositioningElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement';
+  var v2/*class(_SVGElementImpl)*/ = [v1/*class(_SVGTextPositioningElementImpl)*/,v1/*class(_SVGTextPositioningElementImpl)*/,v1/*class(_SVGTextPositioningElementImpl)*/,v1/*class(_SVGTextPositioningElementImpl)*/,'SVGElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement'].join('|');
+  var v3/*class(_MediaElementImpl)*/ = 'HTMLMediaElement|HTMLVideoElement|HTMLAudioElement|HTMLVideoElement|HTMLAudioElement';
+  var v4/*class(_UIEventImpl)*/ = [v0/*class(_MouseEventImpl)*/,v0/*class(_MouseEventImpl)*/,'UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent'].join('|');
+  var v5/*class(_ElementImpl)*/ = [v2/*class(_SVGElementImpl)*/,v3/*class(_MediaElementImpl)*/,v2/*class(_SVGElementImpl)*/,v3/*class(_MediaElementImpl)*/,'Element|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement'].join('|');
+  var v6/*class(_DocumentFragmentImpl)*/ = 'DocumentFragment|ShadowRoot|ShadowRoot';
+  var v7/*class(_DocumentImpl)*/ = 'HTMLDocument|SVGDocument|SVGDocument';
+  var v8/*class(_CharacterDataImpl)*/ = 'CharacterData|Text|CDATASection|CDATASection|Comment|Text|CDATASection|CDATASection|Comment';
+  var v9/*class(_WorkerContextImpl)*/ = 'WorkerContext|SharedWorkerContext|DedicatedWorkerContext|SharedWorkerContext|DedicatedWorkerContext';
+  var v10/*class(_NodeImpl)*/ = [v5/*class(_ElementImpl)*/,v6/*class(_DocumentFragmentImpl)*/,v7/*class(_DocumentImpl)*/,v8/*class(_CharacterDataImpl)*/,v5/*class(_ElementImpl)*/,v6/*class(_DocumentFragmentImpl)*/,v7/*class(_DocumentImpl)*/,v8/*class(_CharacterDataImpl)*/,'Node|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr'].join('|');
+  var v11/*class(_MediaStreamImpl)*/ = 'MediaStream|LocalMediaStream|LocalMediaStream';
+  var v12/*class(_IDBRequestImpl)*/ = 'IDBRequest|IDBOpenDBRequest|IDBVersionChangeRequest|IDBOpenDBRequest|IDBVersionChangeRequest';
+  var v13/*class(_AbstractWorkerImpl)*/ = 'AbstractWorker|Worker|SharedWorker|Worker|SharedWorker';
   var table = [
     // [dynamic-dispatch-tag, tags of classes implementing dynamic-dispatch-tag]
-    ['SVGTextPositioningElement', v0/*class(_SVGTextPositioningElementImpl)*/],
-    ['AbstractWorker', v12/*class(_AbstractWorkerImpl)*/],
+    ['SVGTextPositioningElement', v1/*class(_SVGTextPositioningElementImpl)*/],
+    ['MouseEvent', v0/*class(_MouseEventImpl)*/],
+    ['UIEvent', v4/*class(_UIEventImpl)*/],
     ['Uint8Array', 'Uint8Array|Uint8ClampedArray|Uint8ClampedArray'],
+    ['AbstractWorker', v13/*class(_AbstractWorkerImpl)*/],
     ['AudioParam', 'AudioParam|AudioGain|AudioGain'],
-    ['WorkerContext', v8/*class(_WorkerContextImpl)*/],
+    ['WorkerContext', v9/*class(_WorkerContextImpl)*/],
     ['CSSValueList', 'CSSValueList|WebKitCSSFilterValue|WebKitCSSTransformValue|WebKitCSSFilterValue|WebKitCSSTransformValue'],
     ['CanvasRenderingContext', 'CanvasRenderingContext|WebGLRenderingContext|CanvasRenderingContext2D|WebGLRenderingContext|CanvasRenderingContext2D'],
-    ['CharacterData', v7/*class(_CharacterDataImpl)*/],
+    ['CharacterData', v8/*class(_CharacterDataImpl)*/],
     ['DOMTokenList', 'DOMTokenList|DOMSettableTokenList|DOMSettableTokenList'],
-    ['HTMLDocument', v6/*class(_DocumentImpl)*/],
-    ['DocumentFragment', v5/*class(_DocumentFragmentImpl)*/],
-    ['SVGElement', v1/*class(_SVGElementImpl)*/],
-    ['HTMLMediaElement', v2/*class(_MediaElementImpl)*/],
-    ['Element', v4/*class(_ElementImpl)*/],
+    ['HTMLDocument', v7/*class(_DocumentImpl)*/],
+    ['DocumentFragment', v6/*class(_DocumentFragmentImpl)*/],
+    ['SVGElement', v2/*class(_SVGElementImpl)*/],
+    ['HTMLMediaElement', v3/*class(_MediaElementImpl)*/],
+    ['Element', v5/*class(_ElementImpl)*/],
     ['Entry', 'Entry|FileEntry|DirectoryEntry|FileEntry|DirectoryEntry'],
     ['EntrySync', 'EntrySync|FileEntrySync|DirectoryEntrySync|FileEntrySync|DirectoryEntrySync'],
-    ['MouseEvent', v3/*class(_MouseEventImpl)*/],
-    ['Event', [v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,'Event|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent'].join('|')],
-    ['Node', v9/*class(_NodeImpl)*/],
-    ['MediaStream', v10/*class(_MediaStreamImpl)*/],
-    ['IDBRequest', v11/*class(_IDBRequestImpl)*/],
-    ['EventTarget', [v8/*class(_WorkerContextImpl)*/,v9/*class(_NodeImpl)*/,v10/*class(_MediaStreamImpl)*/,v11/*class(_IDBRequestImpl)*/,v12/*class(_AbstractWorkerImpl)*/,v8/*class(_WorkerContextImpl)*/,v9/*class(_NodeImpl)*/,v10/*class(_MediaStreamImpl)*/,v11/*class(_IDBRequestImpl)*/,v12/*class(_AbstractWorkerImpl)*/,'EventTarget|XMLHttpRequestUpload|XMLHttpRequest|DOMWindow|WebSocket|TextTrackList|TextTrackCue|TextTrack|SpeechRecognition|Performance|PeerConnection00|Notification|MessagePort|MediaStreamTrackList|MediaController|IDBTransaction|IDBDatabase|FileWriter|FileReader|EventSource|DeprecatedPeerConnection|DOMApplicationCache|BatteryManager|AudioContext|XMLHttpRequestUpload|XMLHttpRequest|DOMWindow|WebSocket|TextTrackList|TextTrackCue|TextTrack|SpeechRecognition|Performance|PeerConnection00|Notification|MessagePort|MediaStreamTrackList|MediaController|IDBTransaction|IDBDatabase|FileWriter|FileReader|EventSource|DeprecatedPeerConnection|DOMApplicationCache|BatteryManager|AudioContext'].join('|')],
+    ['Event', [v4/*class(_UIEventImpl)*/,v4/*class(_UIEventImpl)*/,'Event|WebGLContextEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent|WebGLContextEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent'].join('|')],
+    ['Node', v10/*class(_NodeImpl)*/],
+    ['MediaStream', v11/*class(_MediaStreamImpl)*/],
+    ['IDBRequest', v12/*class(_IDBRequestImpl)*/],
+    ['EventTarget', [v9/*class(_WorkerContextImpl)*/,v10/*class(_NodeImpl)*/,v11/*class(_MediaStreamImpl)*/,v12/*class(_IDBRequestImpl)*/,v13/*class(_AbstractWorkerImpl)*/,v9/*class(_WorkerContextImpl)*/,v10/*class(_NodeImpl)*/,v11/*class(_MediaStreamImpl)*/,v12/*class(_IDBRequestImpl)*/,v13/*class(_AbstractWorkerImpl)*/,'EventTarget|XMLHttpRequestUpload|XMLHttpRequest|DOMWindow|WebSocket|TextTrackList|TextTrackCue|TextTrack|SpeechRecognition|Performance|PeerConnection00|Notification|MessagePort|MediaStreamTrackList|MediaController|IDBTransaction|IDBDatabase|FileWriter|FileReader|EventSource|DeprecatedPeerConnection|DOMApplicationCache|BatteryManager|AudioContext|XMLHttpRequestUpload|XMLHttpRequest|DOMWindow|WebSocket|TextTrackList|TextTrackCue|TextTrack|SpeechRecognition|Performance|PeerConnection00|Notification|MessagePort|MediaStreamTrackList|MediaController|IDBTransaction|IDBDatabase|FileWriter|FileReader|EventSource|DeprecatedPeerConnection|DOMApplicationCache|BatteryManager|AudioContext'].join('|')],
     ['HTMLCollection', 'HTMLCollection|HTMLOptionsCollection|HTMLOptionsCollection'],
     ['IDBCursor', 'IDBCursor|IDBCursorWithValue|IDBCursorWithValue'],
     ['NodeList', 'NodeList|RadioNodeList|RadioNodeList']];

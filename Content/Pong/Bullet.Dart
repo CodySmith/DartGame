@@ -12,14 +12,15 @@ class Bullet extends GameEntity {
     move();
     
     if (collidesWith(g.player1)) {
+      g.player1.x -= 100;
       g.player1.removeFromGame();
       removeFromGame();
-      g.p1Dead = true;
     } else if (collidesWith(g.player2)) {
+      g.player2.x += 100;
       g.player2.removeFromGame();
       removeFromGame();
-      g.p2Dead = true;
     }
+    
     super.update();
   }
   

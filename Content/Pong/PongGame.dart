@@ -71,9 +71,9 @@ class PongGame extends Game {
   
   void newBullet(num x, num y, bool p1) {
     if (p1 == true)
-      player1.bullet = false;
+      player1.bullet--;
     else
-      player2.bullet = false;
+      player2.bullet--;
     
     Bullet bullet = new Bullet(this, x, y, p1);
     addEntity(bullet);

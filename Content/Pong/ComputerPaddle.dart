@@ -20,6 +20,17 @@ class ComputerPaddle extends Paddle {
     if (g.ball == null)
       return;
     
+    if (bulletTime + .25 <= g.timer.gameTime)
+    {
+      if (g.player2.bullet >= 1) {
+        if (y + 60 >= g.player1.y && y - 60 <= g.player1.y)
+        {
+          g.newBullet(x - 10, y, false);
+          bulletTime = g.timer.gameTime;
+        }
+      }
+    }
+    
     // detect if the ball is coming towards us or away from us
     bool newBallComing = (x > 0 && g.ball.momentum.xVel > 0) || (x < 0 && g.ball.momentum.xVel < 0);
     // if the direction changed, then set a new random target
@@ -50,13 +61,6 @@ class ComputerPaddle extends Paddle {
       y -= amountToMove;
     else
       y += amountToMove;
-    
-    if (g.player2.bullet == true) {
-      if (y > g.player1.y || y < -(g.player1.height))
-      {
-        g.newBullet(x - 10, y, false);
-      }
-    }
   }
   
   num getAmountToMove() {
