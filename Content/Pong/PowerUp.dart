@@ -8,12 +8,20 @@ class PowerUp extends GameEntity {
     num rType = Math.random();
     creationTime = g.timer.gameTime;
     
-    if (rType > .5) {
+    if (rType < .2) {
       color = "255, 255, 255";
       type = 'reflector';
-    } else {
+    } else if (rType < .4) {
       color = "255, 255, 0";
       type = 'extendor';
+    } else if (rType < .6) {
+      color = "255, 0, 255";
+      type = 'shrink';
+    } else if (rType < 1.0) {
+      color = "0, 255, 255";
+      type = 'bullet';
+    } else {
+      
     }
   }
   
@@ -31,11 +39,21 @@ class PowerUp extends GameEntity {
         case 'extendor':
           extendUpdate();
           break;
+        case 'shrink':
+          shrinkUpdate();
+          break;
+        case 'bullet':
+          if (g.ball.momentum.xVel > 0)
+            g.player1.bullet += 2;
+          else if (g.ball.momentum.xVel < 0)
+            g.player2.bullet += 2;
+          break;
       }
       
+      game.playSound("sounds/sweep", .1);
       removeFromGame();
     }
-    
+   
     super.update();
   }
   
@@ -53,6 +71,12 @@ class PowerUp extends GameEntity {
       case 'extendor':
         ctx.fillText("E", x - 8, y + 8);
         break;
+      case 'shrink':
+        ctx.fillText("S", x - 8, y + 8);
+        break;
+      case 'bullet':
+        ctx.fillText("B", x - 8, y + 8);
+        break;  
     }
   }
   
@@ -72,5 +96,14 @@ class PowerUp extends GameEntity {
       g.player1.height += 50;
     else if (g.ball.momentum.xVel < 0)
       g.player2.height += 50;
+  }
+  
+  void shrinkUpdate() {
+    PongGame g = game;
+    
+    if (g.ball.momentum.xVel > 0)
+      g.player1.height -= 50;
+    else if (g.ball.momentum.xVel < 0)
+      g.player2.height -= 50;
   }
 }

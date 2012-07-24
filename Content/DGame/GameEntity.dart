@@ -105,6 +105,7 @@ class GameEntity {
   
   void removeFromGame() {
     _removeFromGame = true;
+    
   }
   
   bool outsideScreen() {

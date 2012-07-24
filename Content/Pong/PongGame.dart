@@ -5,11 +5,14 @@
 #source('ComputerPaddle.dart');
 #source('Ball.dart');
 #source('PowerUp.dart');
+#source('Bullet.dart');
 
 class PongGame extends Game {
   num score = 0;
   num highscore = 0;
   num lastPowerUp = 5;
+  bool paused = false;
+  bool p1Dead, p2Dead;
   
   Paddle player1;
   Paddle player2;
@@ -18,17 +21,17 @@ class PongGame extends Game {
   PongGame(AssetManager assetManager, CanvasRenderingContext2D ctx) : super(assetManager, ctx);
   
   void start() {
-    player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
-    player2 = new ComputerPaddle(this, halfSurfaceWidth - 10, 10, 3);
+
     ball = new Ball(this, 0, 0);
     addEntity(ball);
-    addEntity(player1);
-    addEntity(player2);
+    
+
     newGame();
     super.start();
   }
   
   void update() {
+    //run();
     newPowerUp();
     
     super.update();
@@ -36,6 +39,7 @@ class PongGame extends Game {
   
   void drawBeforeCtxRestore() {
     drawMiddleLine();
+    //pauseUpdate();
     drawScore();
     super.drawBeforeCtxRestore();
   }
@@ -65,6 +69,44 @@ class PongGame extends Game {
     addEntity(powerUp);
   }
   
+  void newBullet(num x, num y, bool p1) {
+    if (p1 == true)
+      player1.bullet--;
+    else
+      player2.bullet--;
+    
+    Bullet bullet = new Bullet(this, x, y, p1);
+    addEntity(bullet);
+  }
+  
+  void pauseUpdate() {
+    if (paused == true) {
+      ctx.fillStyle = "rgba(255, 255, 255, 1.0)";
+      ctx.font = "72px Verdana";
+      ctx.fillText("PAUSED", 0, 0);
+    }
+  }
+  
+  void run() {    
+    onKeyboardEvent(KeyboardEvent e) {
+      switch(e.keyCode) {
+        
+      case 27:
+        if (paused == true)
+          paused = false;
+        else
+          paused = true;
+        break;
+        
+      default:
+        print('${e.keyCode}');
+        break;
+      }
+    }
+    
+    document.window.on.keyDown.add(onKeyboardEvent, false);
+  }
+  
   void drawDebugInfo() {
     ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.font = "16px Verdana";
@@ -75,7 +117,7 @@ class PongGame extends Game {
   void drawScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("${player1.score}              ${player2.score}", -60, -(halfSurfaceHeight - 30));
+    ctx.fillText("${player1.score}              ${player2.score}                               Rally Length: ${score}", -60, -(halfSurfaceHeight - 30));
   }
   
   void drawMiddleLine() {
@@ -87,20 +129,34 @@ class PongGame extends Game {
     ctx.stroke();
   }
   
-  void ballHit(){
+  void ballHit() {
     score++;
     subtleBgFade();
   }
   
   void newGame() {
     ball.y = 0;
+    score = 0;
     
     entities.filter((e) => e is PowerUp).forEach((e) => e.removeFromGame());
+    entities.filter((e) => e is Bullet).forEach((e) => e.removeFromGame());
     
     if (Math.random() > .5)
       ball.momentum.yVel = Utils.random(0, 200);
     else
       ball.momentum.yVel = Utils.random(-200, 0);
+    
+    if (p1Dead == true || player1 == null) {
+      player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
+      addEntity(player1);
+      p1Dead = false;
+    }
+
+    if (p2Dead == true || player2 == null) {
+      player2 = new ComputerPaddle(this, halfSurfaceWidth - 10, 10, 3);
+      addEntity(player2);
+      p2Dead = false;
+    }
     
     player1.height = 120;
     player2.height = 120;
