@@ -1,4 +1,4 @@
-#import('dart:html', prefix:"html");
+#import('dart:html');
 #import('../dgame/game.dart');
 #source('Alien.dart');
 #source('AlienExplosion.dart');
@@ -9,7 +9,7 @@
 #source('EvilAliens.dart');
 
 void main() {
-  html.CanvasElement canvas = html.document.query('#surface');
+  CanvasElement canvas = document.query('#surface');
   var ctx = canvas.getContext('2d');
   
   AssetManager assetManager = new AssetManager();

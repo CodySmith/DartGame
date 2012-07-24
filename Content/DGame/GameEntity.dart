@@ -77,7 +77,7 @@ class GameEntity {
     box.bottom = box.top + height;
   }
   
-  void draw(html.CanvasRenderingContext2D ctx) {
+  void draw(CanvasRenderingContext2D ctx) {
     if (color != null) {
       if (fill) {
         ctx.fillStyle = "rgba($color, $opacity)";
@@ -97,7 +97,7 @@ class GameEntity {
     }
   }
   
-  void drawSpriteCentered(html.CanvasRenderingContext2D ctx) {
+  void drawSpriteCentered(CanvasRenderingContext2D ctx) {
     num cx = x - sprite.width / 2;
     num cy = y - sprite.height / 2;
     ctx.drawImage(sprite, cx, cy);
@@ -117,12 +117,12 @@ class GameEntity {
     return entity.box.intersectsWith(box);
   }
   
-  html.CanvasElement rotateAndCache(image, angle) {
-    html.CanvasElement offscreenCanvas = new html.Element.tag("canvas");
+  CanvasElement rotateAndCache(image, angle) {
+    CanvasElement offscreenCanvas = new Element.tag("canvas");
     var size = Math.max(image.width, image.height);
     offscreenCanvas.width = size;
     offscreenCanvas.height = size;
-    html.CanvasRenderingContext2D offscreenCtx = offscreenCanvas.getContext('2d');
+    CanvasRenderingContext2D offscreenCtx = offscreenCanvas.getContext('2d');
     offscreenCtx.save();
     offscreenCtx.translate(size / 2, size / 2);
     offscreenCtx.rotate(angle + Math.PI / 2);

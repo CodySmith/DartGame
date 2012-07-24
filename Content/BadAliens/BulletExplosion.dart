@@ -1,10 +1,10 @@
 class BulletExplosion extends GameEntity {
   
-  Animation animation;
+  SpriteAnimation animation;
   
   BulletExplosion(Game game, num x, num y) : super.withPosition(game, x, y) {
     sprite = game.assetManager.getAsset('img/explosion.png');
-    animation = new Animation(sprite, 34, 0.05);
+    animation = new SpriteAnimation(sprite, 34, 0.05);
     radius = animation.frameWidth / 2;
   }
   
@@ -36,7 +36,7 @@ class BulletExplosion extends GameEntity {
     return 1 + (animation.currentFrame() / 3);
   }
   
-  void draw(html.CanvasRenderingContext2D ctx) {
+  void draw(CanvasRenderingContext2D ctx) {
     animation.drawFrame(game.clockTick, ctx, x, y, scaleFactor());
     
     super.draw(ctx);

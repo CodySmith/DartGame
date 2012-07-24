@@ -1,25 +1,25 @@
 #library("dgame");
-#import('dart:html', prefix:"html");
+#import('dart:html');
 
 #source('AssetManager.dart');
-#source('Animation.dart');
+#source('SpriteAnimation.dart');
 #source('Timer.dart');
 #source('GameEntity.dart');
-#source('Point.dart');
 #source('Rectangle.dart');
 #source('Momentum.dart');
 #source('Utils.dart');
+#source('Vector.dart');
 
 class Game {
   List<GameEntity> entities;
-  html.CanvasRenderingContext2D ctx;
-  Point click;
-  Point mouse;
+  CanvasRenderingContext2D ctx;
+  Vector click;
+  Vector mouse;
   Timer timer;
   num clockTick;
   num surfaceWidth;
   num surfaceHeight;
-  Point clientPoint;
+  Vector clientPoint;
   AssetManager assetManager;
   bool debugMode = false;
   bool enableSound = true;
@@ -28,7 +28,7 @@ class Game {
   bool showOutlines = false;
   bool includeUI = true;
   
-  Game(AssetManager this.assetManager, html.CanvasRenderingContext2D this.ctx) {
+  Game(AssetManager this.assetManager, CanvasRenderingContext2D this.ctx) {
     timer = new Timer();
     entities = [];
   }
@@ -43,9 +43,9 @@ class Game {
     surfaceWidth = ctx.canvas.width;
     surfaceHeight = ctx.canvas.height;
     
-    Future<html.ElementRect> futureRect = ctx.canvas.rect;
-    futureRect.then((html.ElementRect rect) {
-      clientPoint = new Point(rect.bounding.left, rect.bounding.top);
+    Future<ElementRect> futureRect = ctx.canvas.rect;
+    futureRect.then((ElementRect rect) {
+      clientPoint = new Vector(rect.bounding.left, rect.bounding.top);
     });
     
     startInput();
@@ -57,7 +57,7 @@ class Game {
   
   void start() {
     print("starting game");
-    html.window.requestAnimationFrame(loop);
+    window.requestAnimationFrame(loop);
   }
   
   bool loop(int time) {
@@ -65,34 +65,34 @@ class Game {
     update();
     draw();
     click = null;
-    html.window.requestAnimationFrame(loop);
+    window.requestAnimationFrame(loop);
   }
   
   void startInput() {
     print('Starting input');
     
-    Point getXandY(e) {
+    Vector getXandY(e) {
       num x =  e.clientX - clientPoint.x - (ctx.canvas.width / 2);
       num y = e.clientY - clientPoint.y - (ctx.canvas.height / 2);
-      return new Point(x, y);
+      return new Vector(x, y);
     }
     
-    html.document.on.click.add((e) {
+    document.on.click.add((e) {
       click = getXandY(e);
     });
     
-    html.document.on.mouseMove.add((e) {
+    document.on.mouseMove.add((e) {
       mouse = getXandY(e);
     });
     
-    html.document.on.touchMove.add((e) {
+    document.on.touchMove.add((e) {
       e.preventDefault();
-      var te = e as html.TouchEvent;
+      var te = e as TouchEvent;
       mouse = getXandY(te.touches[0]);
       return false;
     });
     
-    html.document.on.touchStart.add((e) {
+    document.on.touchStart.add((e) {
       e.preventDefault();
       return false;
     });
@@ -133,7 +133,7 @@ class Game {
       return;
     
     if (_supportsMp3 == null) {
-      html.AudioElement audio = new html.Element.tag("audio");
+      AudioElement audio = new Element.tag("audio");
       _supportsMp3 = audio.canPlayType('audio/mpeg', '') != '';
     }
     
@@ -146,7 +146,7 @@ class Game {
     if (s == null)
       return;
     
-    html.AudioElement c = s.clone(true);
+    AudioElement c = s.clone(true);
     c.volume = Utils.round(volume, 3);
     c.play();
   }

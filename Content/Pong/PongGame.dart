@@ -1,5 +1,5 @@
 #library("pong");
-#import('dart:html', prefix:"html");
+#import('dart:html');
 #import('../dgame/game.dart');
 #source('Paddle.dart');
 #source('ComputerPaddle.dart');
@@ -14,8 +14,8 @@ class PongGame extends Game {
   Paddle player1;
   Paddle player2;
   Ball ball;
-  
-  PongGame(AssetManager assetManager, html.CanvasRenderingContext2D ctx) : super(assetManager, ctx);
+   
+  PongGame(AssetManager assetManager, CanvasRenderingContext2D ctx) : super(assetManager, ctx);
   
   void start() {
     player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
@@ -116,27 +116,27 @@ class PongGame extends Game {
   
   void subtleBgFade(){
     bgStyle = "rgba(0, 0, 0, 0.84)";
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 25);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 50);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.81)"; }, 75);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 100);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 125);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.84)"; }, 150);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 175);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 25);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 50);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.81)"; }, 75);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 100);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 125);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.84)"; }, 150);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 175);
   }
   
   void bgFade(){
     bgStyle = "rgba(0, 0, 0, 0.8)";
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 25);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 50);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 75);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 100);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.55)"; }, 125);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 150);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 175);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 200);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 225);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.80)"; }, 250);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 275);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 25);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 50);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 75);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 100);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.55)"; }, 125);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 150);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 175);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 200);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 225);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.80)"; }, 250);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 275);
   }
 }

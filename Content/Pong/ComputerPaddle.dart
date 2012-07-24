@@ -1,12 +1,12 @@
 class ComputerPaddle extends Paddle {
   // target the top, middle or bottom of the paddle
-  int targetPaddleSide = 0;
+  num targetPaddleSide = 0;
   // used to introduce some variation to where the AI hits the ball or possibly even misses it.
-  int targetOffset = 0;
-  int amountToMove = 3;
+  num targetOffset = 0;
+  num amountToMove = 3;
   bool ballComing;
   // Computer skill level between 1 and 3;
-  int _skillLevel;
+  num _skillLevel;
   
   ComputerPaddle(Game game, num x, num y, [int skillLevel = 1]) : super(game, x, y) {
     _skillLevel = Math.max(Math.min(skillLevel, 3), 1);

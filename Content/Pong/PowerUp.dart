@@ -40,7 +40,7 @@ class PowerUp extends GameEntity {
   }
   
   
-  void draw(html.CanvasRenderingContext2D ctx) {
+  void draw(CanvasRenderingContext2D ctx) {
     super.draw(ctx);
     
     ctx.fillStyle = "rgba(0, 0, 0, .5)";

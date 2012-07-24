@@ -1,6 +1,6 @@
-class Animation {
+class SpriteAnimation {
 
-  html.ImageElement spriteSheet;
+  ImageElement spriteSheet;
   num frameWidth;
   num frameHeight;
   num frameDuration;
@@ -8,12 +8,12 @@ class Animation {
   bool loop;
   int elapsedTime = 0;
   
-  Animation(html.ImageElement this.spriteSheet, num this.frameWidth, num this.frameDuration, [bool this.loop = false]) {
+  SpriteAnimation(ImageElement this.spriteSheet, num this.frameWidth, num this.frameDuration, [bool this.loop = false]) {
     frameHeight = spriteSheet.height;
     totalTime = (spriteSheet.width / frameWidth) * frameDuration;
   }
   
-  void drawFrame(num tick, html.CanvasRenderingContext2D ctx, num x, num y, [num scaleBy = 1]) {
+  void drawFrame(num tick, CanvasRenderingContext2D ctx, num x, num y, [num scaleBy = 1]) {
     elapsedTime += tick;
     if (loop) {
         if (isDone()) {
