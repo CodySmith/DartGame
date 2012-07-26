@@ -1,6 +1,8 @@
 Content/DGame/Game.dart
+Content/SpaceShooter/SpaceShooter.dart
 Content/Pong/Pong.dart
 Content/Pong/PongGame.dart
 Content/BadAliens/BadAliensDart.dart
 Content/DGame/Vector.dart
 Server/app.dart
+Content/SpaceShooter/SpaceGame.dart

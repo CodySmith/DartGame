@@ -1,29 +1,22 @@
-#library("pong");
+#library("spaceshooter");
 #import('dart:html', prefix:"html");
 #import('../dgame/game.dart');
-#source('Paddle.dart');
-#source('ComputerPaddle.dart');
-#source('Ball.dart');
+#source('Ship.dart');
 #source('PowerUp.dart');
 #source('Bullet.dart');
 
-class PongGame extends Game {
+class SpaceGame extends Game {
   num score = 0;
   num highscore = 0;
   num lastPowerUp = 5;
   bool paused = false;
   bool p1Dead, p2Dead;
   
-  Paddle player1;
-  Paddle player2;
-  Ball ball;
+  Ship player1;
   
-  PongGame(AssetManager assetManager, html.CanvasRenderingContext2D ctx) : super(assetManager, ctx);
+  SpaceGame(AssetManager assetManager, html.CanvasRenderingContext2D ctx) : super(assetManager, ctx);
   
   void start() {
-
-    ball = new Ball(this, 0, 0);
-    addEntity(ball);
     
     newGame();
     super.start();
@@ -58,7 +51,6 @@ class PongGame extends Game {
   }
   
   void drawBeforeCtxRestore() {
-    drawMiddleLine();
     pauseUpdate();
     drawScore();
     super.drawBeforeCtxRestore();
@@ -80,7 +72,7 @@ class PongGame extends Game {
     PowerUp powerUp = new PowerUp(this, 0, 0);
     
     do {
-      powerUp.x = Utils.random(-halfSurfaceWidth + 100, halfSurfaceWidth - 100);
+      powerUp.x = Utils.random(halfSurfaceWidth, halfSurfaceWidth);
       powerUp.y = Utils.random(-halfSurfaceHeight + 50, halfSurfaceHeight - 50);
       
     } while(entities.filter((e) => e is PowerUp).some((e) => powerUp.collidesWith(e)));
@@ -89,13 +81,9 @@ class PongGame extends Game {
     addEntity(powerUp);
   }
   
-  void newBullet(num x, num y, bool p1) {
-    if (p1 == true)
-      player1.bullet--;
-    else
-      player2.bullet--;
+  void newBullet(num x, num y, num height, num width, bool p1) { 
     
-    Bullet bullet = new Bullet(this, x, y, p1);
+    Bullet bullet = new Bullet(this, x, y, height, width, p1);
     addEntity(bullet);
   }
   
@@ -107,61 +95,25 @@ class PongGame extends Game {
     }
   }
   
-  void drawDebugInfo() {
-    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-    ctx.font = "16px Verdana";
-    ctx.fillText("V: ${ball.momentum.xVel.toStringAsFixed(0)}", -(halfSurfaceWidth - 20), -(halfSurfaceHeight - 30));
-    super.drawDebugInfo();
-  }
-  
   void drawScore() {
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
-    ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("${player1.score}              ${player2.score}                               Rally Length: ${score}", -60, -(halfSurfaceHeight - 30));
-  }
-  
-  void drawMiddleLine() {
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-    ctx.lineWidth = 3;
-    
-    ctx.beginPath();
-    Utils.drawDashedLine(ctx, 0, -(halfSurfaceHeight), 0, halfSurfaceHeight);
-    ctx.stroke();
-  }
-  
-  void ballHit() {
-    score++;
-    subtleBgFade();
+    ctx.font = "12px cinnamoncake, Verdana";
+    ctx.fillText("${player1.score} ", -150, -(halfSurfaceHeight - 30));
   }
   
   void newGame() {
-    ball.y = 0;
     score = 0;
     
     entities.filter((e) => e is PowerUp).forEach((e) => e.removeFromGame());
     entities.filter((e) => e is Bullet).forEach((e) => e.removeFromGame());
     
-    if (Math.random() > .5)
-      ball.momentum.yVel = Utils.random(0, 200);
-    else
-      ball.momentum.yVel = Utils.random(-200, 0);
-    
     if (p1Dead == true || player1 == null) {
-      player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
+      player1 = new Ship(this, -(halfSurfaceWidth - 10), 10);
       addEntity(player1);
       p1Dead = false;
     }
-
-    if (p2Dead == true || player2 == null) {
-      player2 = new ComputerPaddle(this, halfSurfaceWidth - 10, 10, 3);
-      addEntity(player2);
-      p2Dead = false;
-    }
     
-    player1.height = 120;
-    player2.height = 120;
     timer.gameTime = 0;
-    ball.momentum.xVel = ball.startVel;
   }
   
   void gameOver() {
