@@ -1,9 +1,9 @@
 #import('ponggame.dart');
-#import('dart:html', prefix:"html");
+#import('dart:html');
 #import('../dgame/game.dart');
 
 void main() {
-  html.CanvasElement canvas = html.document.query('#surface');
+  CanvasElement canvas = document.query('#surface');
   var ctx = canvas.getContext('2d');
   num msgCount = 0;
   

@@ -20,9 +20,9 @@ class AssetManager {
     
     for (final String path in _downloadQueue) {
       bool isImg = isImage(path);
-      var el = new html.Element.tag(isImg ? "img" : "audio");
+      var el = new Element.tag(isImg ? "img" : "audio");
       if (isImg) {
-        var img = el as html.ImageElement;
+        var img = el as ImageElement;
         el.on.load.add((event) {
           print('${img.src} is loaded');
           _successCount += 1;
@@ -38,7 +38,7 @@ class AssetManager {
         });
         img.src = path;
       } else {
-        var audio = el as html.AudioElement;
+        var audio = el as AudioElement;
         print('$path is loaded');
         el.attributes["preload"] = "auto";
         _successCount += 1;

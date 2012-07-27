@@ -1,14 +1,14 @@
 class Bullet extends GameEntity {
   
   num angle;
-  Point explodesAt;
+  Vector explodesAt;
   static final num speed = 250;
   num radialDistance = 95;
-  Animation animation;
+  SpriteAnimation animation;
   
-  Bullet(Game game, num x, num y, num this.angle, Point this.explodesAt) : super.withPosition(game, x, y) {
+  Bullet(Game game, num x, num y, num this.angle, Vector this.explodesAt) : super.withPosition(game, x, y) {
     sprite = game.assetManager.getAsset('img/bullet.png');
-    animation = new Animation(sprite, 7, 0.05, true);
+    animation = new SpriteAnimation(sprite, 7, 0.05, true);
   }
   
   void update() {
@@ -25,7 +25,7 @@ class Bullet extends GameEntity {
     }
   }
   
-  void draw(html.CanvasRenderingContext2D ctx) {
+  void draw(CanvasRenderingContext2D ctx) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(angle + Math.PI/2);

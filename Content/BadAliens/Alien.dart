@@ -27,7 +27,7 @@ class Alien extends GameEntity {
     }
   }
   
-  void draw(html.CanvasRenderingContext2D ctx) {
+  void draw(CanvasRenderingContext2D ctx) {
     drawSpriteCentered(ctx);
     
     super.draw(ctx);

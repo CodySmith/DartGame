@@ -22,7 +22,7 @@ class Sentry extends GameEntity {
     }
   }
   
-  void draw(html.CanvasRenderingContext2D ctx) {
+  void draw(CanvasRenderingContext2D ctx) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(angle + Math.PI/2);

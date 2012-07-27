@@ -19,7 +19,7 @@ class Paddle extends GameEntity {
       y = game.mouse.y;
     
 
-    html.document.on.click.add((e) {
+    document.on.click.add((e) {
       if (bulletTime + .1 <= g.timer.gameTime)
       {
         if (g.player1.bullet >= 1)
@@ -34,8 +34,8 @@ class Paddle extends GameEntity {
   
   void fade() {
     opacity = 0.5;
-    html.window.setTimeout(() { opacity = 0.4;}, 50);
-    html.window.setTimeout(() { opacity = 0.3;}, 100);
-    html.window.setTimeout(() { opacity = 0.2;}, 150);
+    window.setTimeout(() { opacity = 0.4;}, 50);
+    window.setTimeout(() { opacity = 0.3;}, 100);
+    window.setTimeout(() { opacity = 0.2;}, 150);
   }
 }

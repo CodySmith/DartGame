@@ -6,7 +6,7 @@ class EvilAliens extends Game {
   Earth earth;
   num lastAlienAddedAt;
   
-  EvilAliens(AssetManager assetManager, html.CanvasRenderingContext2D ctx) : super(assetManager, ctx);
+  EvilAliens(AssetManager assetManager, CanvasRenderingContext2D ctx) : super(assetManager, ctx);
   
   void start() {
     sentry = new Sentry(this);

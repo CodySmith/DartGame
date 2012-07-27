@@ -1,5 +1,5 @@
 #library("pong");
-#import('dart:html', prefix:"html");
+#import('dart:html');
 #import('../dgame/game.dart');
 #source('Paddle.dart');
 #source('ComputerPaddle.dart');
@@ -17,41 +17,21 @@ class PongGame extends Game {
   Paddle player1;
   Paddle player2;
   Ball ball;
-  
-  PongGame(AssetManager assetManager, html.CanvasRenderingContext2D ctx) : super(assetManager, ctx);
+   
+  PongGame(AssetManager assetManager, CanvasRenderingContext2D ctx) : super(assetManager, ctx);
   
   void start() {
 
     ball = new Ball(this, 0, 0);
     addEntity(ball);
     
+
     newGame();
     super.start();
   }
   
   void update() {
-   
-    onKeyboardEvent(html.KeyboardEvent e) {
-      switch(e.keyCode) {
-        
-      case 80:
-        if (paused == true)
-          paused = false;
-        else
-          paused = true;
-        break;
-        
-      default:
-        print('${e.keyCode}');
-        break;
-      }
-    }
-    
-    html.document.window.on.keyDown.add(onKeyboardEvent, false);
-    
-    if (paused == true)
-      return;
-      
+    //run();
     newPowerUp();
     
     super.update();
@@ -59,7 +39,7 @@ class PongGame extends Game {
   
   void drawBeforeCtxRestore() {
     drawMiddleLine();
-    pauseUpdate();
+    //pauseUpdate();
     drawScore();
     super.drawBeforeCtxRestore();
   }
@@ -101,10 +81,30 @@ class PongGame extends Game {
   
   void pauseUpdate() {
     if (paused == true) {
-      ctx.fillStyle = "rgba(255, 255, 255, .8)";
-      ctx.font = "144px Verdana";
-      ctx.fillText("PAUSED", -275, 0);
+      ctx.fillStyle = "rgba(255, 255, 255, 1.0)";
+      ctx.font = "72px Verdana";
+      ctx.fillText("PAUSED", 0, 0);
     }
+  }
+  
+  void run() {    
+    onKeyboardEvent(KeyboardEvent e) {
+      switch(e.keyCode) {
+        
+      case 27:
+        if (paused == true)
+          paused = false;
+        else
+          paused = true;
+        break;
+        
+      default:
+        print('${e.keyCode}');
+        break;
+      }
+    }
+    
+    document.window.on.keyDown.add(onKeyboardEvent, false);
   }
   
   void drawDebugInfo() {
@@ -172,27 +172,27 @@ class PongGame extends Game {
   
   void subtleBgFade(){
     bgStyle = "rgba(0, 0, 0, 0.84)";
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 25);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 50);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.81)"; }, 75);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 100);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 125);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.84)"; }, 150);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 175);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 25);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 50);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.81)"; }, 75);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 100);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 125);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.84)"; }, 150);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 175);
   }
   
   void bgFade(){
     bgStyle = "rgba(0, 0, 0, 0.8)";
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 25);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 50);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 75);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 100);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.55)"; }, 125);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 150);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 175);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 200);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 225);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.80)"; }, 250);
-    html.window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 275);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 25);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 50);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 75);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 100);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.55)"; }, 125);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 150);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 175);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 200);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 225);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.80)"; }, 250);
+    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 275);
   }
 }
