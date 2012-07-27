@@ -25,33 +25,13 @@ class PongGame extends Game {
     ball = new Ball(this, 0, 0);
     addEntity(ball);
     
+
     newGame();
     super.start();
   }
   
   void update() {
-   
-    onKeyboardEvent(html.KeyboardEvent e) {
-      switch(e.keyCode) {
-        
-      case 80:
-        if (paused == true)
-          paused = false;
-        else
-          paused = true;
-        break;
-        
-      default:
-        print('${e.keyCode}');
-        break;
-      }
-    }
-    
-    html.document.window.on.keyDown.add(onKeyboardEvent, false);
-    
-    if (paused == true)
-      return;
-      
+    //run();
     newPowerUp();
     
     super.update();
@@ -59,7 +39,7 @@ class PongGame extends Game {
   
   void drawBeforeCtxRestore() {
     drawMiddleLine();
-    pauseUpdate();
+    //pauseUpdate();
     drawScore();
     super.drawBeforeCtxRestore();
   }
@@ -101,9 +81,9 @@ class PongGame extends Game {
   
   void pauseUpdate() {
     if (paused == true) {
-      ctx.fillStyle = "rgba(255, 255, 255, .8)";
-      ctx.font = "144px Verdana";
-      ctx.fillText("PAUSED", -275, 0);
+      ctx.fillStyle = "rgba(255, 255, 255, 1.0)";
+      ctx.font = "72px Verdana";
+      ctx.fillText("PAUSED", 0, 0);
     }
   }
   
