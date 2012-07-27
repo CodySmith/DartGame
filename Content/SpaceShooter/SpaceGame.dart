@@ -2,13 +2,17 @@
 #import('dart:html', prefix:"html");
 #import('../dgame/game.dart');
 #source('Ship.dart');
+#source('Enemy.dart');
 #source('PowerUp.dart');
 #source('Bullet.dart');
+#source('Stars.dart');
 
 class SpaceGame extends Game {
   num score = 0;
   num highscore = 0;
   num lastPowerUp = 5;
+  num lastEnemy = 5;
+  num lastStar = 0;
   bool paused = false;
   bool p1Dead, p2Dead;
   
@@ -17,7 +21,6 @@ class SpaceGame extends Game {
   SpaceGame(AssetManager assetManager, html.CanvasRenderingContext2D ctx) : super(assetManager, ctx);
   
   void start() {
-    
     newGame();
     super.start();
   }
@@ -46,6 +49,8 @@ class SpaceGame extends Game {
       return;
       
     newPowerUp();
+    newEnemy();
+    newStar();
     
     super.update();
   }
@@ -54,6 +59,62 @@ class SpaceGame extends Game {
     pauseUpdate();
     drawScore();
     super.drawBeforeCtxRestore();
+  }
+  
+  void startStars() {
+    Stars star = new Stars(this, 0, 0);
+    
+    do {
+      star.x = Utils.random(-halfSurfaceWidth, halfSurfaceWidth);
+      star.y = Utils.random(-halfSurfaceHeight + 50, halfSurfaceHeight - 50);
+      
+    } while(entities.filter((e) => e is Stars).some((e) => star.collidesWith(e)));
+    
+    addEntity(star);
+  }
+  
+  void newStar() {
+    if (Math.random() <= .1)
+      return;
+    
+    if (lastStar + .2 >= timer.gameTime)
+      return;
+    
+    Stars star = new Stars(this, 0, 0);
+    
+    do {
+      star.x = Utils.random(halfSurfaceWidth, halfSurfaceWidth);
+      star.y = Utils.random(-halfSurfaceHeight + 50, halfSurfaceHeight - 50);
+      
+    } while(entities.filter((e) => e is Stars).some((e) => star.collidesWith(e)));
+    
+    lastStar = timer.gameTime;
+    addEntity(star);
+  }
+  
+  void newEnemy() {
+    if (Math.random() <= .1)
+      return;
+    
+    if (entities.filter((e) => e is Enemy).length >= 10)
+      return;
+    
+    if (timer.gameTime < 3)
+      return;
+    
+    if (lastEnemy + 2 >= timer.gameTime)
+      return;
+    
+    Enemy enemy = new Enemy(this, 0, 0);
+    
+    do {
+      enemy.x = Utils.random(halfSurfaceWidth, halfSurfaceWidth);
+      enemy.y = Utils.random(-halfSurfaceHeight + 50, halfSurfaceHeight - 50);
+      
+    } while(entities.filter((e) => e is Enemy).some((e) => enemy.collidesWith(e)));
+    
+    lastEnemy = timer.gameTime;
+    addEntity(enemy);
   }
   
   void newPowerUp() {
@@ -102,6 +163,9 @@ class SpaceGame extends Game {
   }
   
   void newGame() {
+    for (int i = 0; i < 60; i++)
+      startStars();
+    
     score = 0;
     
     entities.filter((e) => e is PowerUp).forEach((e) => e.removeFromGame());

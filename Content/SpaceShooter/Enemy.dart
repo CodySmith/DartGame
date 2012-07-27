@@ -1,16 +1,16 @@
-class PowerUp extends GameEntity {
+class Enemy extends GameEntity {
   String type;
   num creationTime = 0;
   
-  PowerUp(Game game, num x, num y) : super.withPosition(game, x, y, 36, 36) {
+  Enemy(Game game, num x, num y) : super.withPosition(game, x, y, 36, 36) {
     SpaceGame g = game;
     
     num rType = Math.random();
     creationTime = g.timer.gameTime;
     
     if (rType < 1) {
-      color = "0, 255, 255";
-      type = 'reflector';
+      color = "255, 0, 255";
+      type = 'Normal';
     }
   }
   
@@ -23,15 +23,8 @@ class PowerUp extends GameEntity {
       removeFromGame();
     
     if (collidesWith(g.player1)) {
-      switch (type) {
-        case 'SpreadShot':
-          SpreadUpdate();
-          break;
+      g.player1.removeFromGame();
       }
-      
-      game.playSound("sounds/sweep", .1);
-      removeFromGame();
-    }
    
     super.update();
   }
