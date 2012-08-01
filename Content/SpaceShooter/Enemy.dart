@@ -42,11 +42,5 @@ class Enemy extends GameEntity {
         break;
 
     }
-  }
-  
-  void SpreadUpdate() {
-    SpaceGame g = game;
-    
-  }
-  
+  } 
 }

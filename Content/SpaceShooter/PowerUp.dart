@@ -10,7 +10,7 @@ class PowerUp extends GameEntity {
     
     if (rType < 1) {
       color = "0, 255, 255";
-      type = 'reflector';
+      type = 'SpreadShot';
     }
   }
   
@@ -54,6 +54,7 @@ class PowerUp extends GameEntity {
   void SpreadUpdate() {
     SpaceGame g = game;
     
+    g.player1.spreadShot = true;
   }
   
 }

@@ -13,6 +13,7 @@ class SpaceGame extends Game {
   num lastPowerUp = 5;
   num lastEnemy = 5;
   num lastStar = 0;
+  num w = 0;
   bool paused = false;
   bool p1Dead, p2Dead;
   
@@ -62,11 +63,12 @@ class SpaceGame extends Game {
   }
   
   void startStars() {
-    Stars star = new Stars(this, 0, 0);
+    w = Utils.random(.5, 3.5);
+    Stars star = new Stars(this, 0, 0, w, w);
     
     do {
       star.x = Utils.random(-halfSurfaceWidth, halfSurfaceWidth);
-      star.y = Utils.random(-halfSurfaceHeight + 50, halfSurfaceHeight - 50);
+      star.y = Utils.random(-halfSurfaceHeight, halfSurfaceHeight);
       
     } while(entities.filter((e) => e is Stars).some((e) => star.collidesWith(e)));
     
@@ -77,14 +79,16 @@ class SpaceGame extends Game {
     if (Math.random() <= .1)
       return;
     
-    if (lastStar + .2 >= timer.gameTime)
+    if (lastStar + Utils.random(.1, .2) >= timer.gameTime)
       return;
     
-    Stars star = new Stars(this, 0, 0);
+    w = Utils.random(.5, 3.5);
+    
+    Stars star = new Stars(this, 0, 0, w, w);
     
     do {
       star.x = Utils.random(halfSurfaceWidth, halfSurfaceWidth);
-      star.y = Utils.random(-halfSurfaceHeight + 50, halfSurfaceHeight - 50);
+      star.y = Utils.random(-halfSurfaceHeight, halfSurfaceHeight);
       
     } while(entities.filter((e) => e is Stars).some((e) => star.collidesWith(e)));
     
@@ -142,9 +146,9 @@ class SpaceGame extends Game {
     addEntity(powerUp);
   }
   
-  void newBullet(num x, num y, num height, num width, bool p1) { 
+  void newBullet(num x, num y, num dir, num height, num width, bool p1) { 
     
-    Bullet bullet = new Bullet(this, x, y, height, width, p1);
+    Bullet bullet = new Bullet(this, x, y, dir, height, width, p1);
     addEntity(bullet);
   }
   

@@ -5,6 +5,7 @@ class Ship extends GameEntity {
   num w = 8;
   bool isHeld;
   bool wasHeld;
+  bool spreadShot = false;
   
   Ship(Game game, num x, num y) : super.withPosition(game, x, y, 24, 24) {
     opacity = 0.2;
@@ -36,8 +37,17 @@ class Ship extends GameEntity {
     if (isHeld) {
       g.player1.h += .25;
       g.player1.w += .25;
-    } else if (!isHeld && wasHeld) {
-      g.newBullet(x + 10, y, g.player1.h, g.player1.w, true);
+    } else if (!isHeld && wasHeld && spreadShot == true) {
+      g.newBullet(x + 10, y, 0, g.player1.h, g.player1.w, true);
+      g.newBullet(x + 10, y, 1, g.player1.h, g.player1.w, true);
+      g.newBullet(x + 10, y, -1, g.player1.h, g.player1.w, true);
+      
+      g.player1.h = 8;
+      g.player1.w = 8;
+      
+      wasHeld = false;
+    } else if (!isHeld && wasHeld && spreadShot != true) {
+      g.newBullet(x + 10, y, 0, g.player1.h, g.player1.w, true);
       
       g.player1.h = 8;
       g.player1.w = 8;
