@@ -10,7 +10,7 @@ Demos
  
  [Bad Aliens](http://ejsmith.github.com/DartGame/Content/BadAliens/index.html)
  
- [Space Shooter](https://ejsmith.github.com/DartGame/Content/SpaceShooter/index.html)
+ [Space Shooter](http://ejsmith.github.com/DartGame/Content/SpaceShooter/index.html)
 
 Credits
 -------
