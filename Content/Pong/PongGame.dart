@@ -16,7 +16,7 @@ class PongGame extends Game {
   Ball ball;
   
   PongGame(Rectangle rect) : super(rect);
-  PongGame.withServices(Sound sound, GameInput input, GameRenderer renderer) : super.withServices(sound, input, renderer);
+  PongGame.withServices(GameSound sound, GameInput input, GameRenderer renderer, GameLoop loop) : super.withServices(sound, input, renderer, loop);
   
   void start() {
     player1 = new Paddle(this, -(rect.halfWidth - 10), 10);

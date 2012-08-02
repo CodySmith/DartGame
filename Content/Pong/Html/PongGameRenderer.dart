@@ -19,7 +19,7 @@ class PongGameRenderer extends CanvasGameRenderer {
   }
   
   void drawDebugInfo() {
-    PongGame g = game;
+    var g = game as PongGame;
     ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
     ctx.font = "16px Verdana";
     ctx.fillText("V: ${g.ball.momentum.xVel.toStringAsFixed(0)}", -(game.rect.halfWidth - 20), -(game.rect.halfHeight - 30));
@@ -27,7 +27,7 @@ class PongGameRenderer extends CanvasGameRenderer {
   }
   
   void drawScore() {
-    PongGame g = game;
+    var g = game as PongGame;
     ctx.fillStyle = "rgba(255, 255, 255, 1)";
     ctx.font = "26px cinnamoncake, Verdana";
     ctx.fillText("${g.player1.score}              ${g.player2.score}", -60, -(game.rect.halfHeight - 30));

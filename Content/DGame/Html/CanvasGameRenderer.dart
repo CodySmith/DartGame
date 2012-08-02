@@ -1,17 +1,17 @@
 class CanvasGameRenderer implements GameRenderer {
   String targetId;
   Game game;
-  html.CanvasRenderingContext2D ctx;
+  CanvasRenderingContext2D ctx;
   Renderer defaultRenderer;
   AssetManager assetManager;
   Rectangle rect;
   
   CanvasGameRenderer(String this.targetId) {
-    html.CanvasElement canvas = html.document.query('#$targetId');
-    html.CanvasRenderingContext2D ctx = canvas.getContext('2d');
+    CanvasElement canvas = query('#$targetId');
+    CanvasRenderingContext2D ctx = canvas.getContext('2d');
     
-    Future<html.ElementRect> futureRect = ctx.canvas.rect;
-    futureRect.then((html.ElementRect r) {
+    Future<ElementRect> futureRect = ctx.canvas.rect;
+    futureRect.then((ElementRect r) {
       rect = new Rectangle(r.bounding.top, r.bounding.left, r.bounding.right, r.bounding.bottom);
     });
     

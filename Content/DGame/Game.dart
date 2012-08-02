@@ -1,44 +1,44 @@
 #library("dgame");
+#import('dart:isolate');
 #import('Utils.dart');
 
-#source('Timer.dart');
+#source('GameTimer.dart');
 #source('GameEntity.dart');
-#source('Point.dart');
+#source('Vector.dart');
 #source('Rectangle.dart');
 #source('Momentum.dart');
-#source('Sound.dart');
+#source('GameSound.dart');
 #source('GameInput.dart');
 #source('GameRenderer.dart');
 #source('Renderer.dart');
-
-typedef RenderFrameCallback(RenderFrame);
-typedef bool RenderFrame(int highResTime);
+#source('GameLoop.dart');
 
 class Game {
   List<GameEntity> entities;
-  Timer timer;
+  GameTimer timer;
   num clockTick;
   Rectangle _rect;
   bool debugMode = false;
   String bgStyle = "rgba(0, 0, 0, 0.85)";
   bool showOutlines = false;
-  Sound sound;
+  GameSound sound;
   GameInput input;
-  RenderFrameCallback renderCallback;
   GameRenderer renderer;
+  GameLoop loop;
   
   Game(Rectangle this.rect) {
-    timer = new Timer();
-    sound = new Sound();
+    timer = new GameTimer();
+    sound = new GameSound();
     input = new GameInput();
     renderer = new GameRenderer();
+    loop = new GameLoop();
     entities = [];
   }
   
-  Game.withServices(Sound this.sound, GameInput this.input, GameRenderer this.renderer) {
+  Game.withServices(GameSound this.sound, GameInput this.input, GameRenderer this.renderer, GameLoop this.loop) {
     this.input.game = this;
     this.renderer.game = this;
-    timer = new Timer();
+    timer = new GameTimer();
     entities = new List<GameEntity>();
   }
   
@@ -47,15 +47,12 @@ class Game {
   void start() {
     print("starting game");
     input.start();
-    renderCallback(loop);
-  }
-  
-  bool loop(int time) {
-    clockTick = this.timer.tick();
-    update();
-    renderer.render();
-    input.reset();
-    renderCallback(loop);
+    loop.start(() {
+      clockTick = this.timer.tick();
+      update();
+      renderer.render();
+      input.reset();
+    });
   }
   
   void addEntity(GameEntity entity) {

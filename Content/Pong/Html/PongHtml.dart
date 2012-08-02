@@ -1,5 +1,5 @@
-#library("pong:html");
-#import('dart:html', prefix:"html");
+#library("ponghtml");
+#import('dart:html');
 #import("../PongGame.dart");
 #import("../../DGame/Html/HtmlGame.dart");
 #import('../../DGame/Game.dart');

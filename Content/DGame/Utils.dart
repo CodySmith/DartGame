@@ -1,4 +1,4 @@
-#library("dgame:utils");
+#library("dgameutils");
 
 class Utils {
   static double round(double value, [int decimals = 2]) { 

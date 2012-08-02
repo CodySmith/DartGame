@@ -7,7 +7,8 @@ class PowerUpRenderer extends DefaultCanvasRenderer {
     gr.ctx.fillStyle = "rgba(0, 0, 0, .5)";
     gr.ctx.font = "24px Verdana";
     
-    switch (e.type) {
+    var pe = e as PowerUp;
+    switch (pe.type) {
       case 'reflector':      
         gr.ctx.fillText("R", e.x - 8, e.y + 8);
         break;

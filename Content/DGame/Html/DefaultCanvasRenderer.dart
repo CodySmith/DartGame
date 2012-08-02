@@ -28,12 +28,12 @@ class DefaultCanvasRenderer implements Renderer {
     gr.ctx.drawImage(e.sprite, cx, cy);
   }
   
-  html.CanvasElement rotateAndCache(image, angle) {
-    html.CanvasElement offscreenCanvas = new html.Element.tag("canvas");
+  CanvasElement rotateAndCache(image, angle) {
+    CanvasElement offscreenCanvas = new Element.tag("canvas");
     var size = Math.max(image.width, image.height);
     offscreenCanvas.width = size;
     offscreenCanvas.height = size;
-    html.CanvasRenderingContext2D offscreenCtx = offscreenCanvas.getContext('2d');
+    CanvasRenderingContext2D offscreenCtx = offscreenCanvas.getContext('2d');
     offscreenCtx.save();
     offscreenCtx.translate(size / 2, size / 2);
     offscreenCtx.rotate(angle + Math.PI / 2);

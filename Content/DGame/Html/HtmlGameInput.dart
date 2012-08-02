@@ -1,6 +1,6 @@
 class HtmlGameInput implements GameInput {
-  Point click;
-  Point mouse;
+  Vector click;
+  Vector mouse;
   Game game;
   
   HtmlGameInput();
@@ -8,27 +8,27 @@ class HtmlGameInput implements GameInput {
   void start() {
     print('Starting input');
     
-    Point getXandY(e) {
+    Vector getXandY(e) {
       num x =  e.clientX - game.rect.x - game.rect.halfWidth;
       num y = e.clientY - game.rect.y - game.rect.halfHeight;
-      return new Point(x, y);
+      return new Vector(x, y);
     }
     
-    html.document.on.click.add((e) {
+    document.on.click.add((e) {
       click = getXandY(e);
     });
     
-    html.document.on.mouseMove.add((e) {
+    document.on.mouseMove.add((e) {
       mouse = getXandY(e);
     });
     
-    html.document.on.touchMove.add((e) {
+    document.on.touchMove.add((TouchEvent e) {
       e.preventDefault();
       mouse = getXandY(e.touches[0]);
       return false;
     });
     
-    html.document.on.touchStart.add((e) {
+    document.on.touchStart.add((e) {
       e.preventDefault();
       return false;
     });

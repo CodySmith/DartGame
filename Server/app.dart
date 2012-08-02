@@ -1,5 +1,6 @@
 #import('dart:io');
 #import('dart:json');
+#import('dart:isolate');
 #source('StaticFileHandler.dart');
 #source('NotFoundHandler.dart');
 

@@ -19,9 +19,9 @@ class AssetManager {
     }
     
     for (final String path in _downloadQueue) {
-      var el = new html.ImageElement();
+      var el = new ImageElement();
       el.on.load.add((event) {
-        print(el.src + ' is loaded');
+        print('${el.src} is loaded');
         _successCount += 1;
         if (isDone()) {
             downloadCallback();
