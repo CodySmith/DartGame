@@ -1,4 +1,5 @@
 #import('dart:io');
+#import('dart:isolate');
 #import('dart:json');
 #source('StaticFileHandler.dart');
 #source('NotFoundHandler.dart');
@@ -9,7 +10,7 @@ void main() {
   
   HttpServer httpServer = new HttpServer();
   WebSocketHandler webSocketHandler = new WebSocketHandler();
-  StaticFileHandler fileHandler = new StaticFileHandler("../content");
+  StaticFileHandler fileHandler = new StaticFileHandler("${new Directory.current().path}/content");
   httpServer.addRequestHandler((HttpRequest req) => req.path == "/ws", webSocketHandler.onRequest);
   httpServer.addRequestHandler((req) => true, (req,res) => fileHandler.onRequest(req, res));
   
@@ -21,7 +22,7 @@ void main() {
     clients[identifier] = connection;
     
     connection.onMessage = (message) {
-      clients.forEach((k, v) => v.send(message));
+      print(message);
     };
     
     connection.onClosed = (int status, String reason) {
@@ -43,7 +44,7 @@ void main() {
     };
   };
   
-  //new Timer.repeating(50, (t) => clients.forEach((k, v) => v.send('ping')));
+  new Timer.repeating(1000, (t) => clients.forEach((k, v) => v.send('ping')));
   
   httpServer.listen('127.0.0.1', 8000);
   print('listening on: http://127.0.0.1:8000');

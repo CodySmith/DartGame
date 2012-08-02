@@ -3,7 +3,7 @@
 
 #source('AssetManager.dart');
 #source('SpriteAnimation.dart');
-#source('Timer.dart');
+#source('GameTimer.dart');
 #source('GameEntity.dart');
 #source('Rectangle.dart');
 #source('Momentum.dart');
@@ -15,7 +15,7 @@ class Game {
   CanvasRenderingContext2D ctx;
   Vector click;
   Vector mouse;
-  Timer timer;
+  GameTimer timer;
   num clockTick;
   num surfaceWidth;
   num surfaceHeight;
@@ -29,12 +29,12 @@ class Game {
   bool includeUI = true;
   
   Game(AssetManager this.assetManager, CanvasRenderingContext2D this.ctx) {
-    timer = new Timer();
+    timer = new GameTimer();
     entities = [];
   }
   
   Game.withoutUI() {
-    timer = new Timer();
+    timer = new GameTimer();
     entities = [];
     includeUI = false;
   }
