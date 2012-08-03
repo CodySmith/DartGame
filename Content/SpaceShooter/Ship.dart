@@ -3,8 +3,8 @@ class Ship extends GameEntity {
   num bulletTime = 0;
   num h = 8;
   num w = 8;
-  bool isHeld;
-  bool wasHeld;
+  bool isHeld = false;
+  bool wasHeld = false;
   bool spreadShot = false;
   
   Ship(Game game, num x, num y) : super.withPosition(game, x, y, 24, 24) {
