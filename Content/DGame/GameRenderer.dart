@@ -3,7 +3,7 @@ class GameRenderer {
   Rectangle rect;
   GameRenderer();
   
-  Renderer getRenderer(GameEntity e) {
+  GameEntityRenderer getRenderer(GameEntity e) {
     return null;
   }
   

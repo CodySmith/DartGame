@@ -1,4 +1,4 @@
-class DefaultCanvasRenderer implements Renderer {
+class DefaultCanvasRenderer implements GameEntityRenderer {
   CanvasGameRenderer gr;
   DefaultCanvasRenderer(CanvasGameRenderer this.gr);
   

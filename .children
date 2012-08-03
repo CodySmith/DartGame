@@ -1,9 +1,6 @@
-Server/TestLib2.dart
 Content/DGame/Game.dart
+Content/Pong/PongHtml.dart
 Content/Pong/Pong.dart
-Server/TestLib1.dart
-Server/Test.dart
-Content/Pong/Html/PongHtml.dart
 Content/Pong/PongGame.dart
 Content/BadAliens/BadAliensDart.dart
 Server/app.dart

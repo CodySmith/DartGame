@@ -1,5 +1,5 @@
-class Renderer {
+class GameEntityRenderer {
   GameRenderer gr;
-  Renderer(GameRenderer this.gr);
+  GameEntityRenderer(GameRenderer this.gr);
   void render(GameEntity e) {}
 }

@@ -1,6 +1,6 @@
 #library("pong");
-#import('../dgame/Game.dart');
-#import('../dgame/Utils.dart');
+#import('../DGame/Game.dart');
+#import('../DGame/Utils.dart');
 #source('Paddle.dart');
 #source('ComputerPaddle.dart');
 #source('Ball.dart');

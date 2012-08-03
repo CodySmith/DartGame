@@ -2,7 +2,7 @@ class CanvasGameRenderer implements GameRenderer {
   String targetId;
   Game game;
   CanvasRenderingContext2D ctx;
-  Renderer defaultRenderer;
+  GameEntityRenderer defaultRenderer;
   AssetManager assetManager;
   Rectangle rect;
   
@@ -14,11 +14,12 @@ class CanvasGameRenderer implements GameRenderer {
     futureRect.then((ElementRect r) {
       rect = new Rectangle(r.bounding.top, r.bounding.left, r.bounding.right, r.bounding.bottom);
     });
+    Futures.wait([futureRect]);
     
     defaultRenderer = new DefaultCanvasRenderer(this);
   }
   
-  Renderer getRenderer(GameEntity e) {
+  GameEntityRenderer getRenderer(GameEntity e) {
     return defaultRenderer;
   }
   

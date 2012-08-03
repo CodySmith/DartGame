@@ -1,5 +1,6 @@
 #import('dart:html', prefix:"html");
-#import('../dgame/game.dart');
+#import('../DGame/Game.dart');
+#import('../DGame/Html/HtmlGame.dart');
 #source('Alien.dart');
 #source('AlienExplosion.dart');
 #source('Sentry.dart');

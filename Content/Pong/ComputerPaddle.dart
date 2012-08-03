@@ -1,6 +1,6 @@
 class ComputerPaddle extends Paddle {
   // target the top, middle or bottom of the paddle
-  int targetPaddleSide = 0;
+  num targetPaddleSide = 0;
   // used to introduce some variation to where the AI hits the ball or possibly even misses it.
   int targetOffset = 0;
   int amountToMove = 3;

@@ -5,7 +5,7 @@ class PongGameRenderer extends CanvasGameRenderer {
     powerUpRenderer = new PowerUpRenderer(this);
   }
   
-  Renderer getRenderer(GameEntity e) {
+  GameEntityRenderer getRenderer(GameEntity e) {
     if (e is PowerUp)
       return powerUpRenderer;
     

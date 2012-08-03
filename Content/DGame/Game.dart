@@ -26,7 +26,7 @@ class Game {
   GameRenderer renderer;
   GameLoop loop;
   
-  Game(Rectangle this.rect) {
+  Game(Rectangle this._rect) {
     timer = new GameTimer();
     sound = new GameSound();
     input = new GameInput();
