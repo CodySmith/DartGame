@@ -1,5 +1,6 @@
 #import('ponggame.dart');
 #import('dart:html');
+#import('dart:isolate');
 #import('../dgame/game.dart');
 
 void main() {
@@ -18,33 +19,31 @@ void main() {
   assetManager.queueDownload("Sounds/hit3.mp3");
   assetManager.queueDownload("Sounds/sweep.mp3");
 
-//  html.WebSocket ws = new html.WebSocket("ws://localhost:8000/ws");
-//  ws.on.open.add((e) {
-//    bool ret = ws.send("Hello");
-//    print("sent: $ret");
-//  });
-//  
-//  ws.on.message.add((e) {
-//    msgCount++;
-//    if (e.data == "ping") {
-//      ws.send("pong");
-//    }
-//  });
-//  
-//  ws.on.error.add((e) {
-//    print("Error was : $e");
-//  });
-//  
-//  ws.on.close.add((e) {
-//    print("Closed: $e");
-//  });
+  var ws = new WebSocket("ws://localhost:8000/ws");
+  ws.on.open.add((e) {
+    bool ret = ws.send("Hello");
+    print("sent: $ret");
+  });
   
-  //new Timer.repeating(1000, (t) => print('$msgCount');
+  ws.on.message.add((MessageEvent e) {
+    msgCount++;
+    if (e.data == "ping") {
+      ws.send("pong: $msgCount");
+    }
+  });
   
-  //new Keycodes().run();
+  ws.on.error.add((e) {
+    print("Error was : $e");
+  });
+  
+  ws.on.close.add((e) {
+    print("Closed: $e");
+  });
+  
+  window.setInterval(() => print(msgCount), 1000);
   
   var game = new PongGame(assetManager, ctx);
-  game.enableSound = true;
+  game.enableSound = false;
   game.debugMode = false;
   
   assetManager.downloadAll(() {

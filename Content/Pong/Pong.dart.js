@@ -3,6 +3,78 @@ init();
 
 var $$ = {};
 var $ = Isolate.$isolateProperties;
+$$.DateImplementation = {"":
+ ["isUtc?", "millisecondsSinceEpoch?"],
+ super: "Object",
+ get$millisecond: function() {
+  return $.Primitives_getMilliseconds(this);
+ },
+ get$second: function() {
+  return $.Primitives_getSeconds(this);
+ },
+ get$minute: function() {
+  return $.Primitives_getMinutes(this);
+ },
+ get$hour: function() {
+  return $.Primitives_getHours(this);
+ },
+ get$day: function() {
+  return $.Primitives_getDay(this);
+ },
+ get$month: function() {
+  return $.Primitives_getMonth(this);
+ },
+ get$year: function() {
+  return $.Primitives_getYear(this);
+ },
+ add$1: function(duration) {
+  return $.DateImplementation$fromMillisecondsSinceEpoch($.add(this.millisecondsSinceEpoch, duration.get$inMilliseconds()), this.isUtc);
+ },
+ toString$0: function() {
+  var t1 = new $.DateImplementation_toString_fourDigits();
+  var t2 = new $.DateImplementation_toString_threeDigits();
+  var t3 = new $.DateImplementation_toString_twoDigits();
+  var y = t1.$call$1(this.get$year());
+  var m = t3.$call$1(this.get$month());
+  var d = t3.$call$1(this.get$day());
+  var h = t3.$call$1(this.get$hour());
+  var min = t3.$call$1(this.get$minute());
+  var sec = t3.$call$1(this.get$second());
+  var ms = t2.$call$1(this.get$millisecond());
+  if (this.isUtc === true) return $.S(y) + '-' + $.S(m) + '-' + $.S(d) + ' ' + $.S(h) + ':' + $.S(min) + ':' + $.S(sec) + '.' + $.S(ms) + 'Z';
+  return $.S(y) + '-' + $.S(m) + '-' + $.S(d) + ' ' + $.S(h) + ':' + $.S(min) + ':' + $.S(sec) + '.' + $.S(ms);
+ },
+ hashCode$0: function() {
+  return this.millisecondsSinceEpoch;
+ },
+ operator$ge$1: function(other) {
+  return $.ge(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
+ },
+ operator$gt$1: function(other) {
+  return $.gt(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
+ },
+ operator$le$1: function(other) {
+  return $.le(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
+ },
+ operator$lt$1: function(other) {
+  return $.lt(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
+ },
+ operator$eq$1: function(other) {
+  if (!((typeof other === 'object' && other !== null) && !!other.is$Date)) return false;
+  return $.eq(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
+ },
+ DateImplementation$fromMillisecondsSinceEpoch$2: function(millisecondsSinceEpoch, isUtc) {
+  var t1 = this.millisecondsSinceEpoch;
+  if ($.gtB($.abs(t1), 8640000000000000)) throw $.captureStackTrace($.IllegalArgumentException$(t1));
+  t1 = this.isUtc;
+  if (t1 == null) throw $.captureStackTrace($.IllegalArgumentException$(t1));
+ },
+ DateImplementation$now$0: function() {
+  $.Primitives_lazyAsJsDate(this);
+ },
+ is$Date: true
+};
+
 $$.ExceptionImplementation = {"":
  ["_msg"],
  super: "Object",
@@ -58,6 +130,13 @@ $$.FutureImpl = {"":
     }
   }
  },
+ handleException$1: function(onException) {
+  if (this._exceptionHandled === true) return;
+  if (this._isComplete === true) {
+    var t1 = this._exception;
+    if (!(t1 == null)) this._exceptionHandled = onException.$call$1(t1);
+  } else $.add$1(this._exceptionHandlers, onException);
+ },
  then$1: function(onSuccess) {
   if (this.get$hasValue() === true) onSuccess.$call$1(this.get$value());
   else {
@@ -72,6 +151,10 @@ $$.FutureImpl = {"":
  },
  get$isComplete: function() {
   return this._isComplete;
+ },
+ get$stackTrace: function() {
+  if (this.get$isComplete() !== true) throw $.captureStackTrace($.FutureNotCompleteException$());
+  return this._stackTrace;
  },
  get$exception: function() {
   if (this.get$isComplete() !== true) throw $.captureStackTrace($.FutureNotCompleteException$());
@@ -155,9 +238,105 @@ $$.HashMapImplementation = {"":
  operator$indexSet$2: function(key, value) {
   this._ensureCapacity$0();
   var index = this._probeForAdding$1(key);
-  if ($.index(this._lib0_keys, index) == null || $.index(this._lib0_keys, index) === $.CTC5) this._numberOfEntries = $.add(this._numberOfEntries, 1);
-  $.indexSet(this._lib0_keys, index, key);
-  $.indexSet(this._values, index, value);
+  var t1 = this._lib0_keys;
+  if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.operator$indexSet$2$bailout(1, key, value, index, t1);
+  if (index !== (index | 0)) throw $.iae(index);
+  var t3 = t1.length;
+  if (index < 0 || index >= t3) throw $.ioore(index);
+  if (!(t1[index] == null)) {
+    if (typeof t1 !== 'string' && (typeof t1 !== 'object' || t1 === null || (t1.constructor !== Array && !t1.is$JavaScriptIndexingBehavior()))) return this.operator$indexSet$2$bailout(2, key, value, index, t1);
+    t3 = t1.length;
+    if (index < 0 || index >= t3) throw $.ioore(index);
+    var t4 = t1[index] === $.CTC5;
+    t1 = t4;
+  } else t1 = true;
+  if (t1) {
+    t1 = this._numberOfEntries;
+    if (typeof t1 !== 'number') return this.operator$indexSet$2$bailout(3, key, value, t1, index);
+    this._numberOfEntries = t1 + 1;
+  }
+  t1 = this._lib0_keys;
+  if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.operator$indexSet$2$bailout(4, key, value, t1, index);
+  t3 = t1.length;
+  if (index < 0 || index >= t3) throw $.ioore(index);
+  t1[index] = key;
+  t1 = this._values;
+  if (typeof t1 !== 'object' || t1 === null || ((t1.constructor !== Array || !!t1.immutable$list) && !t1.is$JavaScriptIndexingBehavior())) return this.operator$indexSet$2$bailout(5, value, t1, index, 0);
+  var t5 = t1.length;
+  if (index < 0 || index >= t5) throw $.ioore(index);
+  t1[index] = value;
+ },
+ operator$indexSet$2$bailout: function(state, env0, env1, env2, env3) {
+  switch (state) {
+    case 1:
+      var key = env0;
+      var value = env1;
+      index = env2;
+      t1 = env3;
+      break;
+    case 2:
+      key = env0;
+      value = env1;
+      index = env2;
+      t1 = env3;
+      break;
+    case 3:
+      key = env0;
+      value = env1;
+      t1 = env2;
+      index = env3;
+      break;
+    case 4:
+      key = env0;
+      value = env1;
+      t1 = env2;
+      index = env3;
+      break;
+    case 5:
+      value = env0;
+      t1 = env1;
+      index = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      this._ensureCapacity$0();
+      var index = this._probeForAdding$1(key);
+      var t1 = this._lib0_keys;
+    case 1:
+      state = 0;
+    case 2:
+      if (state == 2 || (state == 0 && !($.index(t1, index) == null))) {
+        switch (state) {
+          case 0:
+            t1 = this._lib0_keys;
+          case 2:
+            state = 0;
+            var t3 = $.index(t1, index) === $.CTC5;
+            t1 = t3;
+        }
+      } else {
+        t1 = true;
+      }
+    case 3:
+      if (state == 3 || (state == 0 && t1)) {
+        switch (state) {
+          case 0:
+            t1 = this._numberOfEntries;
+          case 3:
+            state = 0;
+            this._numberOfEntries = $.add(t1, 1);
+        }
+      }
+      t1 = this._lib0_keys;
+    case 4:
+      state = 0;
+      $.indexSet(t1, index, key);
+      t1 = this._values;
+    case 5:
+      state = 0;
+      $.indexSet(t1, index, value);
+  }
  },
  clear$0: function() {
   this._numberOfEntries = 0;
@@ -843,79 +1022,6 @@ $$._AllMatchesIterator = {"":
  }
 };
 
-$$.DateImplementation = {"":
- ["isUtc?", "millisecondsSinceEpoch?"],
- super: "Object",
- _asJs$0: function() {
-  return $.Primitives_lazyAsJsDate(this);
- },
- add$1: function(duration) {
-  return $.DateImplementation$fromMillisecondsSinceEpoch($.add(this.millisecondsSinceEpoch, duration.get$inMilliseconds()), this.isUtc);
- },
- toString$0: function() {
-  var t1 = new $.DateImplementation_toString_fourDigits();
-  var t2 = new $.DateImplementation_toString_threeDigits();
-  var t3 = new $.DateImplementation_toString_twoDigits();
-  var y = t1.$call$1(this.get$year());
-  var m = t3.$call$1(this.get$month());
-  var d = t3.$call$1(this.get$day());
-  var h = t3.$call$1(this.get$hour());
-  var min = t3.$call$1(this.get$minute());
-  var sec = t3.$call$1(this.get$second());
-  var ms = t2.$call$1(this.get$millisecond());
-  if (this.isUtc === true) return $.S(y) + '-' + $.S(m) + '-' + $.S(d) + ' ' + $.S(h) + ':' + $.S(min) + ':' + $.S(sec) + '.' + $.S(ms) + 'Z';
-  return $.S(y) + '-' + $.S(m) + '-' + $.S(d) + ' ' + $.S(h) + ':' + $.S(min) + ':' + $.S(sec) + '.' + $.S(ms);
- },
- get$millisecond: function() {
-  return $.Primitives_getMilliseconds(this);
- },
- get$second: function() {
-  return $.Primitives_getSeconds(this);
- },
- get$minute: function() {
-  return $.Primitives_getMinutes(this);
- },
- get$hour: function() {
-  return $.Primitives_getHours(this);
- },
- get$day: function() {
-  return $.Primitives_getDay(this);
- },
- get$month: function() {
-  return $.Primitives_getMonth(this);
- },
- get$year: function() {
-  return $.Primitives_getYear(this);
- },
- hashCode$0: function() {
-  return this.millisecondsSinceEpoch;
- },
- operator$ge$1: function(other) {
-  return $.ge(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
- },
- operator$gt$1: function(other) {
-  return $.gt(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
- },
- operator$le$1: function(other) {
-  return $.le(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
- },
- operator$lt$1: function(other) {
-  return $.lt(this.millisecondsSinceEpoch, other.get$millisecondsSinceEpoch());
- },
- operator$eq$1: function(other) {
-  if (!((typeof other === 'object' && other !== null) && !!other.is$DateImplementation)) return false;
-  return $.eq(this.millisecondsSinceEpoch, other.millisecondsSinceEpoch);
- },
- DateImplementation$fromMillisecondsSinceEpoch$2: function(millisecondsSinceEpoch, isUtc) {
-  var t1 = this.millisecondsSinceEpoch;
-  if ($.gtB($.abs(t1), 8640000000000000)) throw $.captureStackTrace($.IllegalArgumentException$(t1));
- },
- DateImplementation$now$0: function() {
-  this._asJs$0();
- },
- is$DateImplementation: true
-};
-
 $$.ListIterator = {"":
  ["list", "i"],
  super: "Object",
@@ -1021,4792 +1127,9 @@ $$.StringMatch = {"":
 $$.Object = {"":
  [],
  super: "",
- noSuchMethod$2: function(name$, args) {
-  throw $.captureStackTrace($.NoSuchMethodException$(this, name$, args, null));
- },
  toString$0: function() {
   return $.Primitives_objectToString(this);
- },
- _lib1_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib2_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib3_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib4_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib5_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib6_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib7_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib5_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib8_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib9_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- _lib10_probeForLookup$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForLookup', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForLookup', [arg0])
-},
- visitBufferingSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitBufferingSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitBufferingSendPort', [arg0])
-},
- visitBufferingSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitBufferingSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitBufferingSendPort', [arg0])
-},
- newGame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('newGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'newGame', [])
-},
- _lib1_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib2_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib3_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib4_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib5_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib6_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib0_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib5_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib0_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib8_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib9_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- _lib10_setAttachedInfo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setAttachedInfo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setAttachedInfo', [arg0, arg1])
-},
- getContext$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('getContext', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'getContext', [arg0])
-},
- $dom_addEventListener$3: function (arg0, arg1, arg2) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_addEventListener', [arg0, arg1, arg2])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_addEventListener', [arg0, arg1, arg2])
-},
- init$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('init', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'init', [])
-},
- $dom_hasAttribute$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_hasAttribute', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_hasAttribute', [arg0])
-},
- save$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('save', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'save', [])
-},
- removeFromGame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'removeFromGame', [])
-},
- removeFromGame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'removeFromGame', [])
-},
- floor$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('floor', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'floor', [])
-},
- truncate$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('truncate', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'truncate', [])
-},
- $dom_getElementById$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_getElementById', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_getElementById', [arg0])
-},
- operator$le$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$le', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$le', [arg0])
-},
- charCodeAt$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('charCodeAt', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'charCodeAt', [arg0])
-},
- $dom_getItem$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_getItem', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_getItem', [arg0])
-},
- isNaN$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('isNaN', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'isNaN', [])
-},
- updateBox$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('updateBox', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'updateBox', [])
-},
- getValues$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('getValues', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'getValues', [])
-},
- preventDefault$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('preventDefault', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'preventDefault', [])
-},
- visitList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitList', [arg0])
-},
- fillRect$4: function (arg0, arg1, arg2, arg3) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('fillRect', [arg0, arg1, arg2, arg3])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'fillRect', [arg0, arg1, arg2, arg3])
-},
- lastEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('lastEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'lastEntry', [])
-},
- _lib1_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib2_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib3_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib4_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib5_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib6_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib7_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib5_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib8_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib9_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- _lib10_ensureCapacity$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureCapacity', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureCapacity', [])
-},
- round$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('round', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'round', [])
-},
- process$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('process', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'process', [])
-},
- translate$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('translate', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'translate', [arg0, arg1])
-},
- operator$tdiv$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$tdiv', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$tdiv', [arg0])
-},
- $dom_setItem$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_setItem', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_setItem', [arg0, arg1])
-},
- subtleBgFade$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('subtleBgFade', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'subtleBgFade', [])
-},
- toStringAsFixed$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('toStringAsFixed', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'toStringAsFixed', [arg0])
-},
- operator$div$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$div', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$div', [arg0])
-},
- containsKey$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('containsKey', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'containsKey', [arg0])
-},
- containsKey$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('containsKey', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'containsKey', [arg0])
-},
- complete$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('complete', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'complete', [arg0])
-},
- visitWorkerSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitWorkerSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitWorkerSendPort', [arg0])
-},
- visitWorkerSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitWorkerSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitWorkerSendPort', [arg0])
-},
- draw$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('draw', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'draw', [])
-},
- draw$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('draw', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'draw', [arg0])
-},
- beginPath$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('beginPath', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'beginPath', [])
-},
- last$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('last', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'last', [])
-},
- _lib1_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib2_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib3_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib4_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib5_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib6_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib7_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib5_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib8_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib9_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- _lib10_setValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setValue', [arg0])
-},
- $dom_appendChild$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_appendChild', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_appendChild', [arg0])
-},
- firstMatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('firstMatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'firstMatch', [arg0])
-},
- next$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'next', [])
-},
- remove$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('remove', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'remove', [])
-},
- remove$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('remove', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'remove', [arg0])
-},
- hasNext$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('hasNext', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'hasNext', [])
-},
- operator$ge$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$ge', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$ge', [arg0])
-},
- requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'requestAnimationFrame', [arg0])
-},
- $dom_removeChild$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_removeChild', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_removeChild', [arg0])
-},
- previousEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('previousEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'previousEntry', [])
-},
- allMatches$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('allMatches', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'allMatches', [arg0])
-},
- _lib1_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib2_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib3_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib4_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib5_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib6_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib7_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib0_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib5_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib0_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib8_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib9_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib10_add$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_add', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_add', [arg0, arg1])
-},
- _lib1_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib2_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib3_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib4_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib5_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib6_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib7_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib5_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib8_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib9_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- _lib10_complete$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_complete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_complete', [])
-},
- getAmountToMove$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('getAmountToMove', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'getAmountToMove', [])
-},
- arc$6: function (arg0, arg1, arg2, arg3, arg4, arg5) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('arc', [arg0, arg1, arg2, arg3, arg4, arg5])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'arc', [arg0, arg1, arg2, arg3, arg4, arg5])
-},
- maybeCloseWorker$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('maybeCloseWorker', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'maybeCloseWorker', [])
-},
- filter$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('filter', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'filter', [arg0])
-},
- startInput$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('startInput', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'startInput', [])
-},
- _lib1_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib2_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib3_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib4_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib5_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib6_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib0_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib5_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib0_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib8_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib9_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib10_serializeList$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_serializeList', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_serializeList', [arg0])
-},
- _lib1_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib2_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib3_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib4_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib5_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib6_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib0_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib5_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib0_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib8_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib9_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib10_getAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_getAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_getAttachedInfo', [arg0])
-},
- _lib1_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib2_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib3_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib4_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib5_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib6_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib0_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib5_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib0_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib8_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib9_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- _lib10_nativeInitWorkerMessageHandler$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeInitWorkerMessageHandler', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeInitWorkerMessageHandler', [])
-},
- prepend$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('prepend', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'prepend', [arg0])
-},
- restore$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('restore', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'restore', [])
-},
- runIteration$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('runIteration', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'runIteration', [])
-},
- runIteration$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('runIteration', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'runIteration', [])
-},
- operator$mul$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$mul', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$mul', [arg0])
-},
- $dom_setAttribute$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_setAttribute', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_setAttribute', [arg0, arg1])
-},
- add$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('add', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'add', [arg0])
-},
- $dom_querySelector$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_querySelector', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_querySelector', [arg0])
-},
- $dom_querySelector$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_querySelector', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_querySelector', [arg0])
-},
- $dom_querySelector$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_querySelector', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_querySelector', [arg0])
-},
- canPlayType$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('canPlayType', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'canPlayType', [arg0, arg1])
-},
- drawScore$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('drawScore', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'drawScore', [])
-},
- contains$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('contains', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'contains', [arg0])
-},
- contains$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('contains', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'contains', [arg0, arg1])
-},
- operator$negate$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$negate', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$negate', [])
-},
- run$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('run', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'run', [])
-},
- $dom_getClientRects$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_getClientRects', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_getClientRects', [])
-},
- _lib1_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib2_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib3_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib4_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib5_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib6_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib7_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib5_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib8_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib9_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- _lib10_setException$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setException', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setException', [arg0, arg1])
-},
- computeValue$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('computeValue', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'computeValue', [])
-},
- stroke$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('stroke', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'stroke', [])
-},
- updateFrom$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('updateFrom', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'updateFrom', [arg0])
-},
- drawBeforeCtxRestore$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('drawBeforeCtxRestore', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'drawBeforeCtxRestore', [])
-},
- endsWith$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('endsWith', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'endsWith', [arg0])
-},
- intersectsWith$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('intersectsWith', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'intersectsWith', [arg0])
-},
- query$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('query', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'query', [arg0])
-},
- visitPrimitive$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitPrimitive', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitPrimitive', [arg0])
-},
- clearRect$4: function (arg0, arg1, arg2, arg3) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('clearRect', [arg0, arg1, arg2, arg3])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'clearRect', [arg0, arg1, arg2, arg3])
-},
- update$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('update', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'update', [])
-},
- update$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('update', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'update', [])
-},
- update$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('update', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'update', [arg0])
-},
- _lib1_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib2_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib3_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib4_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib5_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib6_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib7_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib5_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib8_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib9_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- _lib10_asJs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asJs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asJs', [])
-},
- reflectorUpdate$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('reflectorUpdate', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'reflectorUpdate', [])
-},
- postMessage$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('postMessage', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'postMessage', [arg0])
-},
- postMessage$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('postMessage', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'postMessage', [arg0, arg1])
-},
- bgFade$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('bgFade', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'bgFade', [])
-},
- completeException$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('completeException', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'completeException', [arg0])
-},
- move$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('move', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'move', [])
-},
- operator$shl$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$shl', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$shl', [arg0])
-},
- addLast$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('addLast', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'addLast', [arg0])
-},
- _lib1_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib2_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib3_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib4_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib5_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib6_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib0_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib5_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib0_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib8_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib9_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib10_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib1_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib2_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib3_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib4_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib5_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib6_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib0_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib5_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib0_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib8_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib9_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib10_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib1_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib2_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib3_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib4_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib5_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib6_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib0_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib5_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib0_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib8_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib9_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- _lib10_dispatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_dispatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_dispatch', [arg0])
-},
- $dom_getBoundingClientRect$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_getBoundingClientRect', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_getBoundingClientRect', [])
-},
- isDone$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('isDone', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'isDone', [])
-},
- isDone$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('isDone', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'isDone', [])
-},
- ballHit$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('ballHit', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'ballHit', [])
-},
- ballHit$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('ballHit', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'ballHit', [arg0])
-},
- _lib1_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib2_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib3_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib4_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib5_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib6_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib0_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib5_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib0_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib8_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib9_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- _lib10_nativeDetectEnvironment$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_nativeDetectEnvironment', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_nativeDetectEnvironment', [])
-},
- operator$xor$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$xor', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$xor', [arg0])
-},
- group$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('group', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'group', [arg0])
-},
- group$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('group', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'group', [arg0])
-},
- clone$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('clone', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'clone', [arg0])
-},
- operator$index$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$index', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$index', [arg0])
-},
- indexOf$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('indexOf', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'indexOf', [arg0, arg1])
-},
- operator$sub$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$sub', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$sub', [arg0])
-},
- $dom_replaceChild$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_replaceChild', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_replaceChild', [arg0, arg1])
-},
- drawMiddleLine$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('drawMiddleLine', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'drawMiddleLine', [])
-},
- operator$mod$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$mod', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$mod', [arg0])
-},
- operator$lt$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$lt', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$lt', [arg0])
-},
- clear$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('clear', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'clear', [])
-},
- abs$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('abs', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'abs', [])
-},
- some$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('some', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'some', [arg0])
-},
- getPropertyValue$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('getPropertyValue', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'getPropertyValue', [arg0])
-},
- $dom_key$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_key', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_key', [arg0])
-},
- dequeue$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('dequeue', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'dequeue', [])
-},
- $dom_clear$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_clear', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_clear', [])
-},
- $call$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$call', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$call', [])
-},
- $call$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$call', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$call', [arg0])
-},
- $call$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$call', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$call', [arg0, arg1])
-},
- $call$3: function (arg0, arg1, arg2) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$call', [arg0, arg1, arg2])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$call', [arg0, arg1, arg2])
-},
- forEach$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('forEach', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'forEach', [arg0])
-},
- operator$indexSet$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$indexSet', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$indexSet', [arg0, arg1])
-},
- start$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('start', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'start', [])
-},
- concat$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('concat', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'concat', [arg0])
-},
- operator$and$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$and', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$and', [arg0])
-},
- playSound$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('playSound', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'playSound', [arg0])
-},
- playSound$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('playSound', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'playSound', [arg0, arg1])
-},
- extendUpdate$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('extendUpdate', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'extendUpdate', [])
-},
- _lib1_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib2_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib3_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib4_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib5_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib6_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib0_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib5_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib0_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib8_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib9_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib10_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib1_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib2_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib3_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib4_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib5_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib6_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib0_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib5_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib0_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib8_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib9_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib10_setGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_setGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_setGlobals', [])
-},
- _lib1_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib2_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib3_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib4_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib5_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib6_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib7_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib5_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib8_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib9_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- _lib10_link$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_link', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_link', [arg0, arg1])
-},
- isImage$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('isImage', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'isImage', [arg0])
-},
- isNegative$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('isNegative', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'isNegative', [])
-},
- hasMatch$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('hasMatch', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'hasMatch', [arg0])
-},
- removeLast$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('removeLast', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'removeLast', [])
-},
- collidesWith$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('collidesWith', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'collidesWith', [arg0])
-},
- collidesWith$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('collidesWith', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'collidesWith', [arg0])
-},
- collidesWith$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('collidesWith', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'collidesWith', [arg0])
-},
- gameOver$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('gameOver', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'gameOver', [])
-},
- operator$add$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$add', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$add', [arg0])
-},
- _lib1_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib2_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib3_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib4_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib5_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib6_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib7_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib5_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib8_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib9_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib10_grow$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_grow', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_grow', [arg0])
-},
- _lib1_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib2_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib3_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib4_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib5_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib6_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib0_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib5_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib0_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib8_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib9_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- _lib10_runHelper$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_runHelper', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_runHelper', [])
-},
- then$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('then', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'then', [arg0])
-},
- _lib1_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib2_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib4_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib5_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib6_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib7_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib0_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib5_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib0_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib8_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib9_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib10_throwImmutable$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_throwImmutable', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_throwImmutable', [])
-},
- _lib1_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib2_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib3_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib4_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib5_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib6_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib7_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib5_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib8_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib9_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- _lib10_probeForAdding$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_probeForAdding', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_probeForAdding', [arg0])
-},
- getTargetOffset$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('getTargetOffset', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'getTargetOffset', [])
-},
- newPowerUp$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('newPowerUp', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'newPowerUp', [])
-},
- fade$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('fade', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'fade', [])
-},
- operator$gt$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$gt', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$gt', [arg0])
-},
- initGlobals$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('initGlobals', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'initGlobals', [])
-},
- removeRange$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('removeRange', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'removeRange', [arg0, arg1])
-},
- _lib1_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib2_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib3_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib4_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib5_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib6_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib0_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib5_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib0_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib8_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib9_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- _lib10_clearAttachedInfo$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_clearAttachedInfo', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_clearAttachedInfo', [arg0])
-},
- fillText$3: function (arg0, arg1, arg2) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('fillText', [arg0, arg1, arg2])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'fillText', [arg0, arg1, arg2])
-},
- $dom_getAttribute$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_getAttribute', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_getAttribute', [arg0])
-},
- _lib1_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib2_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib3_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib4_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib5_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib6_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib7_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib5_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib8_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib9_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- _lib10_asNonSentinelEntry$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_asNonSentinelEntry', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_asNonSentinelEntry', [])
-},
- setProperty$3: function (arg0, arg1, arg2) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('setProperty', [arg0, arg1, arg2])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'setProperty', [arg0, arg1, arg2])
-},
- _lib1_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib2_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib3_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib4_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib5_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib6_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib7_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib0_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib5_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib0_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib8_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib9_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib10_ensureRequestAnimationFrame$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_ensureRequestAnimationFrame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_ensureRequestAnimationFrame', [])
-},
- _lib1_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib2_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib3_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib4_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib5_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib6_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib7_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib0_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib5_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib0_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib8_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib9_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- _lib10_requestAnimationFrame$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_requestAnimationFrame', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_requestAnimationFrame', [arg0])
-},
- split$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('split', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'split', [arg0])
-},
- _lib1_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib2_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib3_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib4_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib5_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib6_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib7_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib5_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib8_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib9_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- _lib10_advance$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('_advance', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, '_advance', [])
-},
- isEmpty$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('isEmpty', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'isEmpty', [])
-},
- addEntity$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('addEntity', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'addEntity', [arg0])
-},
- ceil$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('ceil', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'ceil', [])
-},
- tick$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('tick', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'tick', [])
-},
- drawDebugInfo$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('drawDebugInfo', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'drawDebugInfo', [])
-},
- hashCode$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('hashCode', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'hashCode', [])
-},
- lineTo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('lineTo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'lineTo', [arg0, arg1])
-},
- strokeRect$4: function (arg0, arg1, arg2, arg3) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('strokeRect', [arg0, arg1, arg2, arg3])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'strokeRect', [arg0, arg1, arg2, arg3])
-},
- setTimeout$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('setTimeout', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'setTimeout', [arg0, arg1])
-},
- getAsset$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('getAsset', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'getAsset', [arg0])
-},
- $dom_removeAttribute$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('$dom_removeAttribute', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, '$dom_removeAttribute', [arg0])
-},
- reset$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('reset', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'reset', [])
-},
- operator$shr$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('operator$shr', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'operator$shr', [arg0])
-},
- moveTo$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('moveTo', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'moveTo', [arg0, arg1])
-},
- visitNativeJsSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitNativeJsSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitNativeJsSendPort', [arg0])
-},
- visitNativeJsSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitNativeJsSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitNativeJsSendPort', [arg0])
-},
- eval$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('eval', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'eval', [arg0])
-},
- visitSendPortSync$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitSendPortSync', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitSendPortSync', [arg0])
-},
- substring$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('substring', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'substring', [arg0])
-},
- substring$2: function (arg0, arg1) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('substring', [arg0, arg1])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'substring', [arg0, arg1])
-},
- iterator$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('iterator', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'iterator', [])
-},
- play$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('play', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'play', [])
-},
- visitMap$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitMap', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitMap', [arg0])
-},
- cleanup$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('cleanup', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'cleanup', [])
-},
- getKeys$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('getKeys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'getKeys', [])
-},
- removeFirst$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('removeFirst', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'removeFirst', [])
-},
- startsWith$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('startsWith', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'startsWith', [arg0])
-},
- visitSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitSendPort', [arg0])
-},
- visitSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitSendPort', [arg0])
-},
- visitSendPort$1: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('visitSendPort', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'visitSendPort', [arg0])
-},
- closePath$0: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('closePath', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'closePath', [])
-},
- get$gameTime: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get gameTime', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get gameTime', [])
-},
- get$_lib1_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib2_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib3_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib4_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib5_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib6_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib0_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib5_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib0_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib8_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib9_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib10_id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _id', [])
-},
- get$_lib1_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib2_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib3_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib4_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib5_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib6_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib7_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib0_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib5_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib0_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib8_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib9_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$_lib10_element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _element', [])
-},
- get$isWorker: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get isWorker', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get isWorker', [])
-},
- get$key: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get key', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get key', [])
-},
- get$y: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get y', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get y', [])
-},
- get$loop: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get loop', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get loop', [])
-},
- get$$$dom_scrollWidth: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_scrollWidth', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_scrollWidth', [])
-},
- get$load: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get load', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get load', [])
-},
- get$$$dom_scrollLeft: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_scrollLeft', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_scrollLeft', [])
-},
- get$name: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get name', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get name', [])
-},
- get$player1: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get player1', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get player1', [])
-},
- get$_lib1_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib2_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib3_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib4_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib5_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib6_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib7_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib0_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib5_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib0_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib9_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$_lib10_errorCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _errorCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _errorCount', [])
-},
- get$touches: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get touches', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get touches', [])
-},
- get$width: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get width', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get width', [])
-},
- get$_lib1_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib2_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib3_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib4_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib5_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib6_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib0_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib5_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib0_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib8_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib9_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$_lib10_receivePortId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePortId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePortId', [])
-},
- get$rootContext: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get rootContext', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get rootContext', [])
-},
- get$timer: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get timer', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get timer', [])
-},
- get$box: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get box', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get box', [])
-},
- get$fromCommandLine: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get fromCommandLine', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get fromCommandLine', [])
-},
- get$length: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get length', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get length', [])
-},
- get$month: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get month', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get month', [])
-},
- get$currentManagerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get currentManagerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get currentManagerId', [])
-},
- get$$$dom_attributes: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_attributes', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_attributes', [])
-},
- get$halfSurfaceWidth: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get halfSurfaceWidth', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get halfSurfaceWidth', [])
-},
- get$$$dom_offsetWidth: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_offsetWidth', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_offsetWidth', [])
-},
- get$_lib1_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib2_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib3_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib4_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib5_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib6_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib7_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib5_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib8_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib9_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$_lib10_next: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _next', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _next', [])
-},
- get$minute: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get minute', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get minute', [])
-},
- get$right: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get right', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get right', [])
-},
- get$mouseMove: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get mouseMove', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get mouseMove', [])
-},
- get$value: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get value', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get value', [])
-},
- get$isUtc: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get isUtc', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get isUtc', [])
-},
- get$left: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get left', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get left', [])
-},
- get$navigator: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get navigator', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get navigator', [])
-},
- get$exceptionName: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get exceptionName', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get exceptionName', [])
-},
- get$attributes: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get attributes', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get attributes', [])
-},
- get$clientY: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get clientY', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get clientY', [])
-},
- get$momentum: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get momentum', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get momentum', [])
-},
- get$yVel: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get yVel', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get yVel', [])
-},
- get$bottom: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get bottom', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get bottom', [])
-},
- get$$$dom_scrollTop: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_scrollTop', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_scrollTop', [])
-},
- get$mouse: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get mouse', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get mouse', [])
-},
- get$_lib1_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib2_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib4_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib5_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib6_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib7_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib0_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib5_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib0_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib8_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib9_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$_lib10_keys: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _keys', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _keys', [])
-},
- get$tag: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get tag', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get tag', [])
-},
- get$id: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get id', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get id', [])
-},
- get$useWorkers: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get useWorkers', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get useWorkers', [])
-},
- get$needSerialization: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get needSerialization', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get needSerialization', [])
-},
- get$millisecondsSinceEpoch: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get millisecondsSinceEpoch', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get millisecondsSinceEpoch', [])
-},
- get$topEventLoop: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get topEventLoop', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get topEventLoop', [])
-},
- get$touchStart: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get touchStart', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get touchStart', [])
-},
- get$click: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get click', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get click', [])
-},
- get$_lib1_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib2_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib3_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib4_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib5_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib6_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib7_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib5_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib8_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib9_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib10_previous: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _previous', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _previous', [])
-},
- get$_lib1_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib2_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib3_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib4_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib5_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib6_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib7_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib0_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib5_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib0_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib9_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$_lib10_successCount: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _successCount', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _successCount', [])
-},
- get$height: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get height', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get height', [])
-},
- get$bounding: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get bounding', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get bounding', [])
-},
- get$message: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get message', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get message', [])
-},
- get$xVel: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get xVel', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get xVel', [])
-},
- get$fps: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get fps', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get fps', [])
-},
- get$hour: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get hour', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get hour', [])
-},
- get$_lib1_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib2_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib3_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib4_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib5_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib6_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib0_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib5_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib0_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib8_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib9_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib10_port: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _port', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _port', [])
-},
- get$_lib1_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib2_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib3_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib4_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib5_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib6_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib7_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib0_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib5_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib0_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib8_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib9_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$_lib10_top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _top', [])
-},
- get$$$dom_offsetHeight: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_offsetHeight', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_offsetHeight', [])
-},
- get$on: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get on', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get on', [])
-},
- get$_lib1_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib2_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib3_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib4_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib5_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib6_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib0_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib5_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib0_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib8_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib9_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$_lib10_receivePort: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _receivePort', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _receivePort', [])
-},
- get$ignoreCase: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get ignoreCase', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get ignoreCase', [])
-},
- get$ball: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get ball', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get ball', [])
-},
- get$day: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get day', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get day', [])
-},
- get$$$dom_length: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_length', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_length', [])
-},
- get$startVel: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get startVel', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get startVel', [])
-},
- get$inMilliseconds: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get inMilliseconds', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get inMilliseconds', [])
-},
- get$_lib1_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib2_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib3_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib4_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib5_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib6_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib0_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib5_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib0_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib8_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib9_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$_lib10_workerId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _workerId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _workerId', [])
-},
- get$top: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get top', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get top', [])
-},
- get$clientX: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get clientX', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get clientX', [])
-},
- get$canvas: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get canvas', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get canvas', [])
-},
- get$clockTick: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get clockTick', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get clockTick', [])
-},
- get$isolates: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get isolates', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get isolates', [])
-},
- get$ports: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get ports', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get ports', [])
-},
- get$mainManager: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get mainManager', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get mainManager', [])
-},
- get$error: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get error', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get error', [])
-},
- get$second: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get second', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get second', [])
-},
- get$element: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get element', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get element', [])
-},
- get$set: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get set', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get set', [])
-},
- get$player2: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get player2', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get player2', [])
-},
- get$millisecond: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get millisecond', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get millisecond', [])
-},
- get$$$dom_clientHeight: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_clientHeight', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_clientHeight', [])
-},
- get$nextIsolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get nextIsolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get nextIsolateId', [])
-},
- get$_lib1_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib2_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib3_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib4_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib5_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib6_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib7_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib0_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib5_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib0_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib9_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$_lib10_removeFromGame: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _removeFromGame', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _removeFromGame', [])
-},
- get$year: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get year', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get year', [])
-},
- get$hasValue: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get hasValue', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get hasValue', [])
-},
- get$$$dom_offsetLeft: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_offsetLeft', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_offsetLeft', [])
-},
- get$touchMove: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get touchMove', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get touchMove', [])
-},
- get$clientPoint: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get clientPoint', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get clientPoint', [])
-},
- get$exception: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get exception', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get exception', [])
-},
- get$ctx: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get ctx', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get ctx', [])
-},
- get$src: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get src', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get src', [])
-},
- get$pattern: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get pattern', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get pattern', [])
-},
- get$completer: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get completer', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get completer', [])
-},
- get$currentContext: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get currentContext', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get currentContext', [])
-},
- get$showOutlines: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get showOutlines', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get showOutlines', [])
-},
- get$future: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get future', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get future', [])
-},
- get$halfSurfaceHeight: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get halfSurfaceHeight', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get halfSurfaceHeight', [])
-},
- get$userAgent: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get userAgent', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get userAgent', [])
-},
- get$x: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get x', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get x', [])
-},
- get$_lib1_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib2_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib3_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib4_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib5_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib6_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib7_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib5_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib8_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib9_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$_lib10_backingMap: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _backingMap', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _backingMap', [])
-},
- get$$$dom_clientWidth: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_clientWidth', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_clientWidth', [])
-},
- get$multiLine: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get multiLine', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get multiLine', [])
-},
- get$rect: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get rect', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get rect', [])
-},
- get$$$dom_clientLeft: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_clientLeft', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_clientLeft', [])
-},
- get$$$dom_offsetTop: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_offsetTop', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_offsetTop', [])
-},
- get$$$dom_clientTop: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_clientTop', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_clientTop', [])
-},
- get$parent: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get parent', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get parent', [])
-},
- get$p: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get p', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get p', [])
-},
- get$isComplete: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get isComplete', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get isComplete', [])
-},
- get$_lib1_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib2_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib3_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib4_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib5_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib6_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib0_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib5_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib0_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib8_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib9_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$_lib10_isolateId: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get _isolateId', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get _isolateId', [])
-},
- get$$$dom_scrollHeight: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get $dom_scrollHeight', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get $dom_scrollHeight', [])
-},
- get$score: function () {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('get score', [])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'get score', [])
-},
- set$left: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set left', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set left', [arg0])
-},
- set$opacity: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set opacity', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set opacity', [arg0])
-},
- set$volume: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set volume', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set volume', [arg0])
-},
- set$font: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set font', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set font', [arg0])
-},
- set$yVel: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set yVel', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set yVel', [arg0])
-},
- set$y: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set y', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set y', [arg0])
-},
- set$bottom: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set bottom', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set bottom', [arg0])
-},
- set$gameTime: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set gameTime', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set gameTime', [arg0])
-},
- set$mouse: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set mouse', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set mouse', [arg0])
-},
- set$exception: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set exception', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set exception', [arg0])
-},
- set$bgStyle: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set bgStyle', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set bgStyle', [arg0])
-},
- set$clientPoint: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set clientPoint', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set clientPoint', [arg0])
-},
- set$src: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set src', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set src', [arg0])
-},
- set$_lib1_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib2_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib3_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib4_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib5_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib6_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib7_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib0_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib5_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib0_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib9_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$_lib10_errorCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _errorCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _errorCount', [arg0])
-},
- set$strokeStyle: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set strokeStyle', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set strokeStyle', [arg0])
-},
- set$width: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set width', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set width', [arg0])
-},
- set$top: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set top', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set top', [arg0])
-},
- set$xAccel: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set xAccel', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set xAccel', [arg0])
-},
- set$rootContext: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set rootContext', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set rootContext', [arg0])
-},
- set$length: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set length', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set length', [arg0])
-},
- set$click: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set click', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set click', [arg0])
-},
- set$_lib1_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib2_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib3_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib4_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib5_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib6_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib7_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib5_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib8_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib9_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$_lib10_previous: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _previous', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _previous', [arg0])
-},
- set$x: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set x', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set x', [arg0])
-},
- set$lineWidth: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set lineWidth', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set lineWidth', [arg0])
-},
- set$_lib1_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib2_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib3_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib4_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib5_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib6_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib7_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib0_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib5_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib0_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib9_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$_lib10_successCount: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _successCount', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _successCount', [arg0])
-},
- set$text: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set text', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set text', [arg0])
-},
- set$currentContext: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set currentContext', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set currentContext', [arg0])
-},
- set$height: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set height', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set height', [arg0])
-},
- set$_lib1_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib2_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib3_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib4_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib5_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib6_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib7_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib5_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib8_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib9_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$_lib10_next: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set _next', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set _next', [arg0])
-},
- set$nextIsolateId: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set nextIsolateId', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set nextIsolateId', [arg0])
-},
- set$xMax: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set xMax', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set xMax', [arg0])
-},
- set$right: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set right', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set right', [arg0])
-},
- set$value: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set value', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set value', [arg0])
-},
- set$xVel: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set xVel', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set xVel', [arg0])
-},
- set$score: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set score', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set score', [arg0])
-},
- set$fillStyle: function (arg0) {
-  return this.noSuchMethod$2
-      ? this.noSuchMethod$2('set fillStyle', [arg0])
-      : $.Object.prototype.noSuchMethod$2.call(this, 'set fillStyle', [arg0])
-}
+ }
 };
 
 $$.IndexOutOfRangeException = {"":
@@ -5986,7 +1309,7 @@ $$.CastException = {"":
 };
 
 $$.PongGame = {"":
- ["ball?", "player2?", "player1?", "lastPowerUp", "highscore", "score=", "includeUI", "showOutlines", "_supportsMp3", "bgStyle", "enableSound", "debugMode", "assetManager", "clientPoint", "surfaceHeight", "surfaceWidth", "clockTick", "timer", "mouse", "click", "ctx", "entities"],
+ ["ball?", "player2?", "player1?", "p2Dead!", "p1Dead!", "paused=", "lastPowerUp", "highscore", "score=", "includeUI", "showOutlines", "_supportsMp3", "bgStyle", "enableSound", "debugMode", "assetManager", "clientPoint", "surfaceHeight", "surfaceWidth", "clockTick", "timer", "mouse", "click", "ctx", "entities"],
  super: "Game",
  bgFade$0: function() {
   this.bgStyle = 'rgba(0, 0, 0, 0.8)';
@@ -6019,13 +1342,26 @@ $$.PongGame = {"":
  },
  newGame$0: function() {
   this.ball.set$y(0);
-  $.forEach($.filter(this.entities, new $.PongGame_newGame_anon()), new $.PongGame_newGame_anon0());
+  this.score = 0;
+  var t1 = this.entities;
+  $.forEach($.filter(t1, new $.PongGame_newGame_anon()), new $.PongGame_newGame_anon0());
+  $.forEach($.filter(t1, new $.PongGame_newGame_anon1()), new $.PongGame_newGame_anon2());
   if ($.gtB($.Math_random(), 0.5)) {
-    var t1 = $.Utils_random(0, 200, false);
+    t1 = $.Utils_random(0, 200, false);
     this.ball.get$momentum().set$yVel(t1);
   } else {
     t1 = $.Utils_random(-200, 0, false);
     this.ball.get$momentum().set$yVel(t1);
+  }
+  if ($.eqB(this.p1Dead, true) || this.player1 == null) {
+    this.player1 = $.Paddle$(this, $.neg($.sub(this.get$halfSurfaceWidth(), 10)), 10);
+    this.addEntity$1(this.player1);
+    this.p1Dead = false;
+  }
+  if ($.eqB(this.p2Dead, true) || this.player2 == null) {
+    this.player2 = $.ComputerPaddle$(this, $.sub(this.get$halfSurfaceWidth(), 10), 10, 3);
+    this.addEntity$1(this.player2);
+    this.p2Dead = false;
   }
   this.player1.set$height(120);
   this.player2.set$height(120);
@@ -6049,7 +1385,7 @@ $$.PongGame = {"":
   var t1 = this.ctx;
   t1.set$fillStyle('rgba(255, 255, 255, 1)');
   t1.set$font('26px cinnamoncake, Verdana');
-  t1.fillText$3($.S(this.player1.get$score()) + '              ' + $.S(this.player2.get$score()), -60, $.neg($.sub(this.get$halfSurfaceHeight(), 30)));
+  t1.fillText$3($.S(this.player1.get$score()) + '              ' + $.S(this.player2.get$score()) + '                               Rally Length: ' + $.S(this.score), -60, $.neg($.sub(this.get$halfSurfaceHeight(), 30)));
  },
  drawDebugInfo$0: function() {
   var t1 = this.ctx;
@@ -6057,6 +1393,20 @@ $$.PongGame = {"":
   t1.set$font('16px Verdana');
   t1.fillText$3('V: ' + $.S($.toStringAsFixed(this.ball.get$momentum().get$xVel(), 0)), $.neg($.sub(this.get$halfSurfaceWidth(), 20)), $.neg($.sub(this.get$halfSurfaceHeight(), 30)));
   $.Game.prototype.drawDebugInfo$0.call(this);
+ },
+ run$0: function() {
+  var t1 = new $.PongGame_run_onKeyboardEvent(this);
+  $.document().get$window().get$on().get$keyDown().add$2(t1, false);
+ },
+ newBullet$3: function(x, y, p1) {
+  if ($.eqB(p1, true)) {
+    var t1 = this.player1;
+    t1.set$bullet($.sub(t1.get$bullet(), 1));
+  } else {
+    t1 = this.player2;
+    t1.set$bullet($.sub(t1.get$bullet(), 1));
+  }
+  this.addEntity$1($.Bullet$(this, x, y, p1));
  },
  newPowerUp$0: function() {
   if ($.geB($.Math_random(), 0.1)) return;
@@ -6083,19 +1433,15 @@ $$.PongGame = {"":
   $.Game.prototype.update$0.call(this);
  },
  start$0: function() {
-  this.player1 = $.Paddle$(this, $.neg($.sub(this.get$halfSurfaceWidth(), 10)), 10);
-  this.player2 = $.ComputerPaddle$(this, $.sub(this.get$halfSurfaceWidth(), 10), 10, 3);
   this.ball = $.Ball$(this, 0, 0);
   this.addEntity$1(this.ball);
-  this.addEntity$1(this.player1);
-  this.addEntity$1(this.player2);
   this.newGame$0();
   $.Game.prototype.start$0.call(this);
  }
 };
 
 $$.Paddle = {"":
- ["score=", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
+ ["bulletTime=", "bullet=", "score=", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
  super: "GameEntity",
  fade$0: function() {
   this.opacity = 0.5;
@@ -6104,8 +1450,9 @@ $$.Paddle = {"":
   $.window().setTimeout$2(new $.Paddle_fade_anon1(this), 150);
  },
  move$0: function() {
-  var t1 = this.game;
-  !(t1.get$mouse() == null) && this.set$y(t1.get$mouse().get$y());
+  var g = this.game;
+  !(g.get$mouse() == null) && this.set$y(g.get$mouse().get$y());
+  $.add$1($.document().get$on().get$click(), new $.Paddle_move_anon(this, g));
  },
  update$0: function() {
   this.move$0();
@@ -6117,7 +1464,7 @@ $$.Paddle = {"":
 };
 
 $$.ComputerPaddle = {"":
- ["_skillLevel", "ballComing", "amountToMove", "targetOffset", "targetPaddleSide", "score", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
+ ["_skillLevel", "ballComing", "amountToMove", "targetOffset", "targetPaddleSide", "bulletTime", "bullet", "score", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
  super: "Paddle",
  getTargetOffset$0: function() {
   switch (this._skillLevel) {
@@ -6151,6 +1498,14 @@ $$.ComputerPaddle = {"":
  move$0: function() {
   var g = this.game;
   if (g.get$ball() == null) return;
+  if ($.leB($.add(this.bulletTime, 0.25), g.get$timer().get$gameTime())) {
+    if ($.geB(g.get$player2().get$bullet(), 1)) {
+      if ($.geB($.add(this.get$y(), 60), g.get$player1().get$y()) && $.leB($.sub(this.get$y(), 60), g.get$player1().get$y())) {
+        g.newBullet$3($.sub(this.get$x(), 10), this.get$y(), false);
+        this.bulletTime = g.get$timer().get$gameTime();
+      }
+    }
+  }
   if (!($.gtB(this.get$x(), 0) && $.gtB(g.get$ball().get$momentum().get$xVel(), 0))) {
     var newBallComing = $.ltB(this.get$x(), 0) && $.ltB(g.get$ball().get$momentum().get$xVel(), 0);
   } else newBallComing = true;
@@ -6187,22 +1542,22 @@ $$.Ball = {"":
   var g = this.game;
   var t1 = this.momentum;
   var t2 = t1.get$xVel();
-  if (typeof t2 !== 'number') return this.update$0$bailout(1, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(1, t2, g, t1, 0);
   if (t2 > 0) {
     t2 = this.box.get$right();
-    if (typeof t2 !== 'number') return this.update$0$bailout(2, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(2, t2, g, t1, 0);
     var t4 = g.get$player2().get$box().get$left();
-    if (typeof t4 !== 'number') return this.update$0$bailout(3, t1, t2, t4, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(3, t2, g, t1, t4);
     if (t2 > t4) {
       t2 = g.get$player2().get$box().get$top();
-      if (typeof t2 !== 'number') return this.update$0$bailout(4, t1, t2, g, 0);
+      if (typeof t2 !== 'number') return this.update$0$bailout(4, g, t1, t2, 0);
       t4 = this.box.get$bottom();
-      if (typeof t4 !== 'number') return this.update$0$bailout(5, t1, g, t2, t4);
+      if (typeof t4 !== 'number') return this.update$0$bailout(5, g, t1, t2, t4);
       if (t2 < t4) {
         t2 = g.get$player2().get$box().get$bottom();
-        if (typeof t2 !== 'number') return this.update$0$bailout(6, t1, t2, g, 0);
+        if (typeof t2 !== 'number') return this.update$0$bailout(6, g, t1, t2, 0);
         t4 = this.box.get$top();
-        if (typeof t4 !== 'number') return this.update$0$bailout(7, t1, t4, g, t2);
+        if (typeof t4 !== 'number') return this.update$0$bailout(7, t4, g, t1, t2);
         t4 = t2 > t4;
         t2 = t4;
       } else t2 = false;
@@ -6210,28 +1565,28 @@ $$.Ball = {"":
   } else t2 = false;
   if (t2) {
     t2 = g.get$player2().get$box().get$left();
-    if (typeof t2 !== 'number') return this.update$0$bailout(8, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(8, g, t1, t2, 0);
     t4 = this.get$width();
-    if (typeof t4 !== 'number') return this.update$0$bailout(9, t1, t2, t4, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(9, g, t1, t2, t4);
     this.set$x(t2 - t4 / 2);
   }
   t2 = t1.get$xVel();
-  if (typeof t2 !== 'number') return this.update$0$bailout(10, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(10, t2, g, t1, 0);
   if (t2 < 0) {
     t2 = this.box.get$left();
-    if (typeof t2 !== 'number') return this.update$0$bailout(11, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(11, t2, g, t1, 0);
     t4 = g.get$player1().get$box().get$right();
-    if (typeof t4 !== 'number') return this.update$0$bailout(12, t1, t2, t4, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(12, t2, g, t1, t4);
     if (t2 < t4) {
       t2 = g.get$player1().get$box().get$top();
-      if (typeof t2 !== 'number') return this.update$0$bailout(13, t1, t2, g, 0);
+      if (typeof t2 !== 'number') return this.update$0$bailout(13, g, t1, t2, 0);
       t4 = this.box.get$bottom();
-      if (typeof t4 !== 'number') return this.update$0$bailout(14, t1, t4, t2, g);
+      if (typeof t4 !== 'number') return this.update$0$bailout(14, t4, g, t1, t2);
       if (t2 < t4) {
         t2 = g.get$player1().get$box().get$bottom();
-        if (typeof t2 !== 'number') return this.update$0$bailout(15, t1, t2, g, 0);
+        if (typeof t2 !== 'number') return this.update$0$bailout(15, t2, g, t1, 0);
         t4 = this.box.get$top();
-        if (typeof t4 !== 'number') return this.update$0$bailout(16, t1, t2, t4, g);
+        if (typeof t4 !== 'number') return this.update$0$bailout(16, t2, t4, g, t1);
         t4 = t2 > t4;
         t2 = t4;
       } else t2 = false;
@@ -6239,62 +1594,62 @@ $$.Ball = {"":
   } else t2 = false;
   if (t2) {
     t2 = g.get$player1().get$box().get$right();
-    if (typeof t2 !== 'number') return this.update$0$bailout(17, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(17, g, t1, t2, 0);
     t4 = this.get$width();
-    if (typeof t4 !== 'number') return this.update$0$bailout(18, t1, t2, t4, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(18, g, t1, t2, t4);
     this.set$x(t2 + t4 / 2);
   }
   t2 = t1.get$yVel();
-  if (typeof t2 !== 'number') return this.update$0$bailout(19, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(19, t2, g, t1, 0);
   if (t2 > 0) {
     t2 = this.box.get$bottom();
-    if (typeof t2 !== 'number') return this.update$0$bailout(20, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(20, t2, g, t1, 0);
     t4 = g.get$halfSurfaceHeight();
-    if (typeof t4 !== 'number') return this.update$0$bailout(21, t1, t2, t4, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(21, t2, t4, g, t1);
     t4 = t2 > t4;
     t2 = t4;
   } else t2 = false;
   if (t2) {
     t2 = g.get$halfSurfaceHeight();
-    if (typeof t2 !== 'number') return this.update$0$bailout(22, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(22, g, t1, t2, 0);
     t4 = this.get$height();
-    if (typeof t4 !== 'number') return this.update$0$bailout(23, t1, t2, t4, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(23, g, t1, t4, t2);
     this.set$y(t2 - t4 / 2);
   }
   t2 = t1.get$yVel();
-  if (typeof t2 !== 'number') return this.update$0$bailout(24, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(24, t2, g, t1, 0);
   if (t2 < 0) {
     t2 = this.box.get$top();
-    if (typeof t2 !== 'number') return this.update$0$bailout(25, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(25, g, t1, t2, 0);
     t4 = g.get$halfSurfaceHeight();
-    if (typeof t4 !== 'number') return this.update$0$bailout(26, t1, t4, t2, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(26, t4, g, t1, t2);
     t2 = t2 < -t4;
   } else t2 = false;
   if (t2) {
     t2 = g.get$halfSurfaceHeight();
-    if (typeof t2 !== 'number') return this.update$0$bailout(27, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(27, g, t1, t2, 0);
     t2 = -t2;
     t4 = this.get$height();
-    if (typeof t4 !== 'number') return this.update$0$bailout(28, t1, t4, t2, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(28, t4, g, t1, t2);
     this.set$y(t2 + t4 / 2);
   }
   t2 = this.box.get$bottom();
-  if (typeof t2 !== 'number') return this.update$0$bailout(29, t1, t2, g, 0);
+  if (typeof t2 !== 'number') return this.update$0$bailout(29, t2, g, t1, 0);
   t4 = g.get$halfSurfaceHeight();
-  if (typeof t4 !== 'number') return this.update$0$bailout(30, t1, t2, t4, g);
+  if (typeof t4 !== 'number') return this.update$0$bailout(30, t2, g, t1, t4);
   if (!(t2 >= t4)) {
     t2 = this.box.get$top();
-    if (typeof t2 !== 'number') return this.update$0$bailout(31, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(31, g, t1, t2, 0);
     t4 = g.get$halfSurfaceHeight();
-    if (typeof t4 !== 'number') return this.update$0$bailout(32, t1, t4, t2, g);
+    if (typeof t4 !== 'number') return this.update$0$bailout(32, g, t1, t2, t4);
     t2 = t2 <= -t4;
   } else t2 = true;
   if (t2) {
     t2 = t1.get$yVel();
-    if (typeof t2 !== 'number') return this.update$0$bailout(33, t1, t2, g, 0);
+    if (typeof t2 !== 'number') return this.update$0$bailout(33, g, t1, t2, 0);
     t1.set$yVel(t2 * -1);
     t4 = $.Math_atan2($.abs(t1.get$xVel()), $.abs(t1.get$yVel()));
-    if (typeof t4 !== 'number') return this.update$0$bailout(34, t4, g, 0, 0);
+    if (typeof t4 !== 'number') return this.update$0$bailout(34, g, t4, 0, 0);
     g.playSound$2('Sounds/hit3', $.Math_min((90 - t4 / 0.017453292519943295) / 50, 1));
   }
   if (this.collidesWith$1(g.get$player1()) === true) {
@@ -6309,19 +1664,19 @@ $$.Ball = {"":
     }
   }
   t1 = this.get$x();
-  if (typeof t1 !== 'number') return this.update$0$bailout(35, t1, g, 0, 0);
+  if (typeof t1 !== 'number') return this.update$0$bailout(35, g, t1, 0, 0);
   var t3 = g.get$halfSurfaceWidth();
   if (typeof t3 !== 'number') return this.update$0$bailout(36, g, t1, t3, 0);
   if (!(t1 > t3)) {
     t1 = this.get$x();
-    if (typeof t1 !== 'number') return this.update$0$bailout(37, t1, g, 0, 0);
+    if (typeof t1 !== 'number') return this.update$0$bailout(37, g, t1, 0, 0);
     t3 = g.get$halfSurfaceWidth();
-    if (typeof t3 !== 'number') return this.update$0$bailout(38, t3, t1, g, 0);
+    if (typeof t3 !== 'number') return this.update$0$bailout(38, t3, g, t1, 0);
     t1 = t1 < -t3;
   } else t1 = true;
   if (t1) {
     t1 = this.get$x();
-    if (typeof t1 !== 'number') return this.update$0$bailout(39, t1, g, 0, 0);
+    if (typeof t1 !== 'number') return this.update$0$bailout(39, g, t1, 0, 0);
     if (t1 > 0) {
       this.set$x(-400);
       this.startVel = 400;
@@ -6329,13 +1684,15 @@ $$.Ball = {"":
       t2 = t1.get$score();
       if (typeof t2 !== 'number') return this.update$0$bailout(40, t2, g, t1, 0);
       t1.set$score(t2 + 1);
+      g.playSound$1('sounds/sweep');
     } else {
       this.set$x(400);
       this.startVel = -400;
       t1 = g.get$player2();
       t2 = t1.get$score();
-      if (typeof t2 !== 'number') return this.update$0$bailout(41, t1, t2, g, 0);
+      if (typeof t2 !== 'number') return this.update$0$bailout(41, g, t1, t2, 0);
       t1.set$score(t2 + 1);
+      g.playSound$1('sounds/sweep');
     }
     g.gameOver$0();
   }
@@ -6343,191 +1700,191 @@ $$.Ball = {"":
  update$0$bailout: function(state, env0, env1, env2, env3) {
   switch (state) {
     case 1:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
       break;
     case 2:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
       break;
     case 3:
-      t1 = env0;
-      t2 = env1;
-      t4 = env2;
-      g = env3;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      t4 = env3;
       break;
     case 4:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 5:
-      t1 = env0;
-      g = env1;
+      g = env0;
+      t1 = env1;
       t2 = env2;
       t4 = env3;
       break;
     case 6:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 7:
-      t1 = env0;
-      t4 = env1;
-      g = env2;
+      t4 = env0;
+      g = env1;
+      t1 = env2;
       t2 = env3;
       break;
     case 8:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 9:
-      t1 = env0;
-      t2 = env1;
-      t4 = env2;
-      g = env3;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      t4 = env3;
       break;
     case 10:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
       break;
     case 11:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
       break;
     case 12:
-      t1 = env0;
-      t2 = env1;
-      t4 = env2;
-      g = env3;
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      t4 = env3;
       break;
     case 13:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
     case 14:
-      t1 = env0;
-      t4 = env1;
-      t2 = env2;
-      g = env3;
-      break;
-    case 15:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 16:
-      t1 = env0;
-      t2 = env1;
-      t4 = env2;
-      g = env3;
-      break;
-    case 17:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 18:
-      t1 = env0;
-      t2 = env1;
-      t4 = env2;
-      g = env3;
-      break;
-    case 19:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 20:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 21:
-      t1 = env0;
-      t2 = env1;
-      t4 = env2;
-      g = env3;
-      break;
-    case 22:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 23:
-      t1 = env0;
-      t2 = env1;
-      t4 = env2;
-      g = env3;
-      break;
-    case 24:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 25:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 26:
-      t1 = env0;
-      t4 = env1;
-      t2 = env2;
-      g = env3;
-      break;
-    case 27:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 28:
-      t1 = env0;
-      t4 = env1;
-      t2 = env2;
-      g = env3;
-      break;
-    case 29:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 30:
-      t1 = env0;
-      t2 = env1;
-      t4 = env2;
-      g = env3;
-      break;
-    case 31:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 32:
-      t1 = env0;
-      t4 = env1;
-      t2 = env2;
-      g = env3;
-      break;
-    case 33:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
-      break;
-    case 34:
       t4 = env0;
       g = env1;
+      t1 = env2;
+      t2 = env3;
+      break;
+    case 15:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 16:
+      t2 = env0;
+      t4 = env1;
+      g = env2;
+      t1 = env3;
+      break;
+    case 17:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 18:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      t4 = env3;
+      break;
+    case 19:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 20:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 21:
+      t2 = env0;
+      t4 = env1;
+      g = env2;
+      t1 = env3;
+      break;
+    case 22:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 23:
+      g = env0;
+      t1 = env1;
+      t4 = env2;
+      t2 = env3;
+      break;
+    case 24:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 25:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 26:
+      t4 = env0;
+      g = env1;
+      t1 = env2;
+      t2 = env3;
+      break;
+    case 27:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 28:
+      t4 = env0;
+      g = env1;
+      t1 = env2;
+      t2 = env3;
+      break;
+    case 29:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      break;
+    case 30:
+      t2 = env0;
+      g = env1;
+      t1 = env2;
+      t4 = env3;
+      break;
+    case 31:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 32:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      t4 = env3;
+      break;
+    case 33:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+    case 34:
+      g = env0;
+      t4 = env1;
       break;
     case 35:
-      t1 = env0;
-      g = env1;
+      g = env0;
+      t1 = env1;
       break;
     case 36:
       g = env0;
@@ -6535,17 +1892,17 @@ $$.Ball = {"":
       t3 = env2;
       break;
     case 37:
-      t1 = env0;
-      g = env1;
+      g = env0;
+      t1 = env1;
       break;
     case 38:
       t3 = env0;
-      t1 = env1;
-      g = env2;
+      g = env1;
+      t1 = env2;
       break;
     case 39:
-      t1 = env0;
-      g = env1;
+      g = env0;
+      t1 = env1;
       break;
     case 40:
       t2 = env0;
@@ -6553,9 +1910,9 @@ $$.Ball = {"":
       t1 = env2;
       break;
     case 41:
-      t1 = env0;
-      t2 = env1;
-      g = env2;
+      g = env0;
+      t1 = env1;
+      t2 = env2;
       break;
   }
   switch (state) {
@@ -6850,6 +2207,7 @@ $$.Ball = {"":
                 case 40:
                   state = 0;
                   t1.set$score($.add(t2, 1));
+                  g.playSound$1('sounds/sweep');
               }
             } else {
               switch (state) {
@@ -6861,6 +2219,7 @@ $$.Ball = {"":
                 case 41:
                   state = 0;
                   t1.set$score($.add(t2, 1));
+                  g.playSound$1('sounds/sweep');
               }
             }
             g.gameOver$0();
@@ -6878,6 +2237,18 @@ $$.Ball = {"":
 $$.PowerUp = {"":
  ["creationTime", "type", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
  super: "GameEntity",
+ shrinkUpdate$0: function() {
+  var g = this.game;
+  if ($.gtB(g.get$ball().get$momentum().get$xVel(), 0)) {
+    var t1 = g.get$player1();
+    t1.set$height($.sub(t1.get$height(), 50));
+  } else {
+    if ($.ltB(g.get$ball().get$momentum().get$xVel(), 0)) {
+      t1 = g.get$player2();
+      t1.set$height($.sub(t1.get$height(), 50));
+    }
+  }
+ },
  extendUpdate$0: function() {
   var g = this.game;
   if ($.gtB(g.get$ball().get$momentum().get$xVel(), 0)) {
@@ -6911,6 +2282,12 @@ $$.PowerUp = {"":
     case 'extendor':
       ctx.fillText$3('E', $.sub(this.get$x(), 8), $.add(this.get$y(), 8));
       break;
+    case 'shrink':
+      ctx.fillText$3('S', $.sub(this.get$x(), 8), $.add(this.get$y(), 8));
+      break;
+    case 'bullet':
+      ctx.fillText$3('B', $.sub(this.get$x(), 8), $.add(this.get$y(), 8));
+      break;
   }
  },
  update$0: function() {
@@ -6924,7 +2301,22 @@ $$.PowerUp = {"":
       case 'extendor':
         this.extendUpdate$0();
         break;
+      case 'shrink':
+        this.shrinkUpdate$0();
+        break;
+      case 'bullet':
+        if ($.gtB(g.get$ball().get$momentum().get$xVel(), 0)) {
+          var t1 = g.get$player1();
+          t1.set$bullet($.add(t1.get$bullet(), 2));
+        } else {
+          if ($.ltB(g.get$ball().get$momentum().get$xVel(), 0)) {
+            t1 = g.get$player2();
+            t1.set$bullet($.add(t1.get$bullet(), 2));
+          }
+        }
+        break;
     }
+    g.playSound$2('sounds/sweep', 0.1);
     this.removeFromGame$0();
   }
   $.GameEntity.prototype.update$0.call(this);
@@ -6932,15 +2324,118 @@ $$.PowerUp = {"":
  PowerUp$3: function(game, x, y) {
   var rType = $.Math_random();
   this.creationTime = game.get$timer().get$gameTime();
-  if ($.gtB(rType, 0.5)) {
+  if ($.ltB(rType, 0.2)) {
     this.color = '255, 255, 255';
     this.type = 'reflector';
   } else {
-    this.color = '255, 255, 0';
-    this.type = 'extendor';
+    if ($.ltB(rType, 0.4)) {
+      this.color = '255, 255, 0';
+      this.type = 'extendor';
+    } else {
+      if ($.ltB(rType, 0.6)) {
+        this.color = '255, 0, 255';
+        this.type = 'shrink';
+      } else {
+        if ($.ltB(rType, 1.0)) {
+          this.color = '0, 255, 255';
+          this.type = 'bullet';
+        }
+      }
+    }
   }
  },
  is$PowerUp: true
+};
+
+$$.Bullet = {"":
+ ["isP1", "fill", "color", "opacity", "momentum", "radius", "sprite", "_removeFromGame", "previousBox", "box", "_height", "_width", "_y", "_x", "game"],
+ super: "GameEntity",
+ move$0: function() {
+  if ($.eqB(this.isP1, true)) this.set$x($.add(this.get$x(), 4));
+  else this.set$x($.sub(this.get$x(), 4));
+ },
+ update$0: function() {
+  var g = this.game;
+  this.move$0();
+  if (this.collidesWith$1(g.get$player1()) === true) {
+    var t1 = g.get$player1();
+    var t2 = t1.get$x();
+    if (typeof t2 !== 'number') return this.update$0$bailout(1, t1, g, t2);
+    t1.set$x(t2 - 100);
+    g.get$player1().removeFromGame$0();
+    this.removeFromGame$0();
+    g.set$p1Dead(true);
+  } else {
+    if (this.collidesWith$1(g.get$player2()) === true) {
+      t1 = g.get$player2();
+      t2 = t1.get$x();
+      if (typeof t2 !== 'number') return this.update$0$bailout(2, g, t1, t2);
+      t1.set$x(t2 + 100);
+      g.get$player2().removeFromGame$0();
+      this.removeFromGame$0();
+      g.set$p2Dead(true);
+    }
+  }
+  $.GameEntity.prototype.update$0.call(this);
+ },
+ update$0$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      t1 = env0;
+      g = env1;
+      t2 = env2;
+      break;
+    case 2:
+      g = env0;
+      t1 = env1;
+      t2 = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var g = this.game;
+      this.move$0();
+    default:
+      if (state == 1 || (state == 0 && this.collidesWith$1(g.get$player1()) === true)) {
+        switch (state) {
+          case 0:
+            var t1 = g.get$player1();
+            var t2 = t1.get$x();
+          case 1:
+            state = 0;
+            t1.set$x($.sub(t2, 100));
+            g.get$player1().removeFromGame$0();
+            this.removeFromGame$0();
+            g.set$p1Dead(true);
+        }
+      } else {
+        switch (state) {
+          case 0:
+          case 2:
+            if (state == 2 || (state == 0 && this.collidesWith$1(g.get$player2()) === true)) {
+              switch (state) {
+                case 0:
+                  t1 = g.get$player2();
+                  t2 = t1.get$x();
+                case 2:
+                  state = 0;
+                  t1.set$x($.add(t2, 100));
+                  g.get$player2().removeFromGame$0();
+                  this.removeFromGame$0();
+                  g.set$p2Dead(true);
+              }
+            }
+        }
+      }
+      $.GameEntity.prototype.update$0.call(this);
+  }
+ },
+ Bullet$4: function(game, x, y, p1) {
+  this.opacity = 1;
+  this.color = '255, 0, 0';
+  this.isP1 = p1;
+ },
+ is$Bullet: true
 };
 
 $$._AbstractWorkerEventsImpl = {"":
@@ -6995,14 +2490,6 @@ $$._DedicatedWorkerContextEventsImpl = {"":
  }
 };
 
-$$._DeprecatedPeerConnectionEventsImpl = {"":
- ["_ptr"],
- super: "_EventsImpl",
- get$message: function() {
-  return this.operator$index$1('message');
- }
-};
-
 $$._DocumentEventsImpl = {"":
  ["_ptr"],
  super: "_ElementEventsImpl",
@@ -7021,6 +2508,9 @@ $$._DocumentEventsImpl = {"":
  },
  get$load: function() {
   return this.operator$index$1('load');
+ },
+ get$keyDown: function() {
+  return this.operator$index$1('keydown');
  },
  get$error: function() {
   return this.operator$index$1('error');
@@ -7188,6 +2678,9 @@ $$._ElementEventsImpl = {"":
  get$load: function() {
   return this.operator$index$1('load');
  },
+ get$keyDown: function() {
+  return this.operator$index$1('keydown');
+ },
  get$error: function() {
   return this.operator$index$1('error');
  },
@@ -7199,6 +2692,9 @@ $$._ElementEventsImpl = {"":
 $$._EventSourceEventsImpl = {"":
  ["_ptr"],
  super: "_EventsImpl",
+ get$open: function() {
+  return this.operator$index$1('open');
+ },
  get$message: function() {
   return this.operator$index$1('message');
  },
@@ -7316,6 +2812,11 @@ $$._MediaStreamEventsImpl = {"":
  super: "_EventsImpl"
 };
 
+$$._MediaStreamTrackEventsImpl = {"":
+ ["_ptr"],
+ super: "_EventsImpl"
+};
+
 $$._MediaStreamTrackListEventsImpl = {"":
  ["_ptr"],
  super: "_EventsImpl"
@@ -7397,6 +2898,9 @@ $$._NotificationEventsImpl = {"":
  get$error: function() {
   return this.operator$index$1('error');
  },
+ get$close: function() {
+  return this.operator$index$1('close');
+ },
  get$click: function() {
   return this.operator$index$1('click');
  }
@@ -7404,7 +2908,10 @@ $$._NotificationEventsImpl = {"":
 
 $$._PeerConnection00EventsImpl = {"":
  ["_ptr"],
- super: "_EventsImpl"
+ super: "_EventsImpl",
+ get$open: function() {
+  return this.operator$index$1('open');
+ }
 };
 
 $$._SVGElementInstanceEventsImpl = {"":
@@ -7419,6 +2926,9 @@ $$._SVGElementInstanceEventsImpl = {"":
  },
  get$load: function() {
   return this.operator$index$1('load');
+ },
+ get$keyDown: function() {
+  return this.operator$index$1('keydown');
  },
  get$error: function() {
   return this.operator$index$1('error');
@@ -7463,11 +2973,17 @@ $$._TextTrackListEventsImpl = {"":
 $$._WebSocketEventsImpl = {"":
  ["_ptr"],
  super: "_EventsImpl",
+ get$open: function() {
+  return this.operator$index$1('open');
+ },
  get$message: function() {
   return this.operator$index$1('message');
  },
  get$error: function() {
   return this.operator$index$1('error');
+ },
+ get$close: function() {
+  return this.operator$index$1('close');
  }
 };
 
@@ -7496,6 +3012,9 @@ $$._WindowEventsImpl = {"":
  },
  get$load: function() {
   return this.operator$index$1('load');
+ },
+ get$keyDown: function() {
+  return this.operator$index$1('keydown');
  },
  get$error: function() {
   return this.operator$index$1('error');
@@ -7561,6 +3080,10 @@ $$._DOMWindowCrossFrameImpl = {"":
  postMessage$2: function(message,targetOrigin) {
   return this.postMessage$3(message,targetOrigin,null)
 },
+ close$0: function() {
+  return $._DOMWindowCrossFrameImpl__close(this._window);
+ },
+ get$close: function() { return new $.BoundClosure1(this, 'close$0'); },
  get$top: function() {
   return $._DOMWindowCrossFrameImpl__createSafe($._DOMWindowCrossFrameImpl__top(this._window));
  }
@@ -7814,8 +3337,111 @@ $$._Serializer = {"":
  }
 };
 
+$$._Deserializer = {"":
+ [],
+ super: "Object",
+ _deserializeMap$1: function(x) {
+  var result = $.HashMapImplementation$();
+  var id = $.index(x, 1);
+  $.indexSet(this._deserialized, id, result);
+  var keys = $.index(x, 2);
+  if (typeof keys !== 'string' && (typeof keys !== 'object' || keys === null || (keys.constructor !== Array && !keys.is$JavaScriptIndexingBehavior()))) return this._deserializeMap$1$bailout(1, x, result, keys);
+  var values = $.index(x, 3);
+  if (typeof values !== 'string' && (typeof values !== 'object' || values === null || (values.constructor !== Array && !values.is$JavaScriptIndexingBehavior()))) return this._deserializeMap$1$bailout(2, values, result, keys);
+  var len = keys.length;
+  for (var i = 0; i < len; ++i) {
+    var t1 = keys.length;
+    if (i < 0 || i >= t1) throw $.ioore(i);
+    var key = this._deserializeHelper$1(keys[i]);
+    var t2 = values.length;
+    if (i < 0 || i >= t2) throw $.ioore(i);
+    result.operator$indexSet$2(key, this._deserializeHelper$1(values[i]));
+  }
+  return result;
+ },
+ _deserializeMap$1$bailout: function(state, env0, env1, env2) {
+  switch (state) {
+    case 1:
+      var x = env0;
+      result = env1;
+      keys = env2;
+      break;
+    case 2:
+      values = env0;
+      result = env1;
+      keys = env2;
+      break;
+  }
+  switch (state) {
+    case 0:
+      var result = $.HashMapImplementation$();
+      var id = $.index(x, 1);
+      $.indexSet(this._deserialized, id, result);
+      var keys = $.index(x, 2);
+    case 1:
+      state = 0;
+      var values = $.index(x, 3);
+    case 2:
+      state = 0;
+      var len = $.get$length(keys);
+      for (var i = 0; $.ltB(i, len); ++i) {
+        result.operator$indexSet$2(this._deserializeHelper$1($.index(keys, i)), this._deserializeHelper$1($.index(values, i)));
+      }
+      return result;
+  }
+ },
+ _deserializeList$1: function(x) {
+  var id = $.index(x, 1);
+  var dartList = $.index(x, 2);
+  if (typeof dartList !== 'object' || dartList === null || ((dartList.constructor !== Array || !!dartList.immutable$list) && !dartList.is$JavaScriptIndexingBehavior())) return this._deserializeList$1$bailout(1, dartList, id);
+  $.indexSet(this._deserialized, id, dartList);
+  var len = dartList.length;
+  for (var i = 0; i < len; ++i) {
+    var t1 = dartList.length;
+    if (i < 0 || i >= t1) throw $.ioore(i);
+    var t2 = this._deserializeHelper$1(dartList[i]);
+    var t3 = dartList.length;
+    if (i < 0 || i >= t3) throw $.ioore(i);
+    dartList[i] = t2;
+  }
+  return dartList;
+ },
+ _deserializeList$1$bailout: function(state, dartList, id) {
+  $.indexSet(this._deserialized, id, dartList);
+  var len = $.get$length(dartList);
+  for (var i = 0; $.ltB(i, len); ++i) {
+    $.indexSet(dartList, i, this._deserializeHelper$1($.index(dartList, i)));
+  }
+  return dartList;
+ },
+ _deserializeRef$1: function(x) {
+  var id = $.index(x, 1);
+  return $.index(this._deserialized, id);
+ },
+ _deserializeHelper$1: function(x) {
+  if ($._Deserializer_isPrimitive(x) === true) return x;
+  switch ($.index(x, 0)) {
+    case 'ref':
+      return this._deserializeRef$1(x);
+    case 'list':
+      return this._deserializeList$1(x);
+    case 'map':
+      return this._deserializeMap$1(x);
+    case 'sendport':
+      return this.deserializeSendPort$1(x);
+    default:
+      throw $.captureStackTrace('Unexpected serialized object');
+  }
+ },
+ deserialize$1: function(x) {
+  if ($._Deserializer_isPrimitive(x) === true) return x;
+  this._deserialized = $.HashMapImplementation$();
+  return this._deserializeHelper$1(x);
+ }
+};
+
 $$._Manager = {"":
- ["managers", "mainManager?", "isolates?", "supportsWorkers", "isWorker?", "fromCommandLine?", "topEventLoop?", "rootContext=", "currentContext=", "nextManagerId", "currentManagerId?", "nextIsolateId="],
+ ["managers?", "mainManager?", "isolates?", "supportsWorkers", "isWorker?", "fromCommandLine?", "topEventLoop?", "rootContext=", "currentContext=", "nextManagerId", "currentManagerId?", "nextIsolateId="],
  super: "Object",
  maybeCloseWorker$0: function() {
   $.isEmpty(this.isolates) === true && this.mainManager.postMessage$1($._serializeMessage($.makeLiteralMap(['command', 'close'])));
@@ -7853,6 +3479,9 @@ $$._Manager = {"":
 $$._IsolateContext = {"":
  ["isolateStatics", "ports?", "id?"],
  super: "Object",
+ lookup$1: function(portId) {
+  return $.index(this.ports, portId);
+ },
  _setGlobals$0: function() {
   $setGlobals(this);;
  },
@@ -7923,6 +3552,17 @@ $$._EventLoop = {"":
   var t1 = this.events;
   if ($.isEmpty(t1) === true) return;
   return t1.removeFirst$0();
+ },
+ enqueue$3: function(isolate, fn, msg) {
+  $.addLast(this.events, $._IsolateEvent$(isolate, fn, msg));
+ }
+};
+
+$$._IsolateEvent = {"":
+ ["message?", "fn", "isolate"],
+ super: "Object",
+ process$0: function() {
+  this.isolate.eval$1(this.fn);
  }
 };
 
@@ -7940,6 +3580,9 @@ $$._MainManagerStub = {"":
 $$._BaseSendPort = {"":
  ["_isolateId?"],
  super: "Object",
+ _checkReplyTo$1: function(replyTo) {
+  if (!(replyTo == null) && (!((typeof replyTo === 'object' && replyTo !== null) && !!replyTo.is$_NativeJsSendPort) && (!((typeof replyTo === 'object' && replyTo !== null) && !!replyTo.is$_WorkerSendPort) && !((typeof replyTo === 'object' && replyTo !== null) && !!replyTo.is$_BufferingSendPort)))) throw $.captureStackTrace($.ExceptionImplementation$('SendPort.send: Illegal replyTo port type'));
+ },
  is$SendPort: true
 };
 
@@ -7952,6 +3595,12 @@ $$._NativeJsSendPort = {"":
  operator$eq$1: function(other) {
   return typeof other === 'object' && other !== null && !!other.is$_NativeJsSendPort && $.eqB(this._receivePort, other._receivePort);
  },
+ send$2: function(message, replyTo) {
+  $._waitForPendingPorts([message, replyTo], new $._NativeJsSendPort_send_anon(message, this, replyTo));
+ },
+ send$1: function(message) {
+  return this.send$2(message,null)
+},
  is$_NativeJsSendPort: true,
  is$SendPort: true
 };
@@ -7968,8 +3617,39 @@ $$._WorkerSendPort = {"":
   } else t1 = false;
   return t1;
  },
+ send$2: function(message, replyTo) {
+  $._waitForPendingPorts([message, replyTo], new $._WorkerSendPort_send_anon(message, this, replyTo));
+ },
+ send$1: function(message) {
+  return this.send$2(message,null)
+},
  is$_WorkerSendPort: true,
  is$SendPort: true
+};
+
+$$._PendingSendPortFinder = {"":
+ ["ports?", "_visited"],
+ super: "_MessageTraverser",
+ visitSendPort$1: function(port) {
+  typeof port === 'object' && port !== null && !!port.is$_BufferingSendPort && port.get$_port() == null && $.add$1(this.ports, port.get$_futurePort());
+ },
+ visitMap$1: function(map) {
+  var t1 = this._visited;
+  if (!($.index(t1, map) == null)) return;
+  $.indexSet(t1, map, true);
+  $.forEach(map.getValues$0(), new $._PendingSendPortFinder_visitMap_anon(this));
+ },
+ visitList$1: function(list) {
+  var t1 = this._visited;
+  if (!($.index(t1, list) == null)) return;
+  $.indexSet(t1, list, true);
+  $.forEach(list, new $._PendingSendPortFinder_visitList_anon(this));
+ },
+ visitPrimitive$1: function(x) {
+ },
+ _PendingSendPortFinder$0: function() {
+  this._visited = $._JsVisitedMap$();
+ }
 };
 
 $$._JsSerializer = {"":
@@ -8017,6 +3697,22 @@ $$._JsCopier = {"":
  },
  _JsCopier$0: function() {
   this._visited = $._JsVisitedMap$();
+ }
+};
+
+$$._JsDeserializer = {"":
+ ["_deserialized"],
+ super: "_Deserializer",
+ deserializeSendPort$1: function(x) {
+  var managerId = $.index(x, 1);
+  var isolateId = $.index(x, 2);
+  var receivePortId = $.index(x, 3);
+  if ($.eqB(managerId, $._globalState().get$currentManagerId())) {
+    var isolate = $.index($._globalState().get$isolates(), isolateId);
+    if (isolate == null) return;
+    return $._NativeJsSendPort$(isolate.lookup$1(receivePortId), isolateId);
+  }
+  return $._WorkerSendPort$(managerId, isolateId, receivePortId);
  }
 };
 
@@ -8158,7 +3854,7 @@ $$.Game = {"":
   $.print('game initialized');
  },
  Game$2: function(assetManager, ctx) {
-  this.timer = $.Timer$();
+  this.timer = $.GameTimer$();
   this.entities = [];
  }
 };
@@ -8264,7 +3960,7 @@ $$.AssetManager = {"":
  }
 };
 
-$$.Timer = {"":
+$$.GameTimer = {"":
  ["fpsSampleRate", "fps?", "wallLastTimestamp", "gameTime="],
  super: "Object",
  tick$0: function() {
@@ -8296,12 +3992,12 @@ $$.GameEntity = {"":
  },
  draw$1: function(ctx) {
   var t1 = this.color;
-  if (!(t1 === null)) {
+  if (!(t1 == null)) {
     if (this.fill === true) {
-      ctx.set$fillStyle('rgba(' + t1 + ', ' + $.S(this.opacity) + ')');
+      ctx.set$fillStyle('rgba(' + $.S(t1) + ', ' + $.S(this.opacity) + ')');
       ctx.fillRect$4(this.box.get$left(), this.box.get$top(), this.box.get$width(), this.box.get$height());
     } else {
-      ctx.set$strokeStyle('rgba(' + t1 + ', ' + $.S(this.opacity) + ')');
+      ctx.set$strokeStyle('rgba(' + $.S(t1) + ', ' + $.S(this.opacity) + ')');
       ctx.strokeRect$4(this.box.get$left(), this.box.get$top(), this.box.get$width(), this.box.get$height());
     }
   }
@@ -8515,7 +4211,7 @@ $$.Momentum = {"":
 };
 
 $$.Vector = {"":
- ["y=", "x?"],
+ ["y=", "x="],
  super: "Object",
  updateFrom$1: function(vect) {
   this.x = vect.get$x();
@@ -8524,11 +4220,45 @@ $$.Vector = {"":
 };
 
 $$.main_anon = {"":
- ["game_0"],
+ ["ws_2"],
+ super: "Closure",
+ $call$1: function(e) {
+  $.print('sent: ' + $.S(this.ws_2.send$1('Hello')));
+ }
+};
+
+$$.main_anon0 = {"":
+ ["ws_3", "box_0"],
+ super: "Closure",
+ $call$1: function(e) {
+  var msgCount = $.add(this.box_0.msgCount_1, 1);
+  this.box_0.msgCount_1 = msgCount;
+  $.eqB(e.get$data(), 'ping') && this.ws_3.send$1('pong');
+ }
+};
+
+$$.main_anon1 = {"":
+ [],
+ super: "Closure",
+ $call$1: function(e) {
+  $.print('Error was : ' + $.S(e));
+ }
+};
+
+$$.main_anon2 = {"":
+ [],
+ super: "Closure",
+ $call$1: function(e) {
+  $.print('Closed: ' + $.S(e));
+ }
+};
+
+$$.main_anon3 = {"":
+ ["game_4"],
  super: "Closure",
  $call$0: function() {
-  this.game_0.init$0();
-  this.game_0.start$0();
+  this.game_4.init$0();
+  this.game_4.start$0();
  }
 };
 
@@ -8594,6 +4324,24 @@ $$.invokeClosure_anon1 = {"":
  super: "Closure",
  $call$0: function() {
   return this.closure_5.$call$2(this.arg1_4, this.arg2_3);
+ }
+};
+
+$$.PongGame_run_onKeyboardEvent = {"":
+ ["this_0"],
+ super: "Closure",
+ $call$1: function(e) {
+  switch (e.get$keyCode()) {
+    case 27:
+      var t1 = $.eqB(this.this_0.get$paused(), true);
+      var t2 = this.this_0;
+      if (t1) t2.set$paused(false);
+      else t2.set$paused(true);
+      break;
+    default:
+      $.print($.S(e.get$keyCode()));
+      break;
+  }
  }
 };
 
@@ -8707,30 +4455,6 @@ $$.PongGame_bgFade_function9 = {"":
  super: "Closure",
  $call$0: function() {
   this.this_10.set$bgStyle('rgba(0, 0, 0, 0.85)');
- }
-};
-
-$$.Paddle_fade_anon = {"":
- ["this_0"],
- super: "Closure",
- $call$0: function() {
-  this.this_0.set$opacity(0.4);
- }
-};
-
-$$.Paddle_fade_anon0 = {"":
- ["this_1"],
- super: "Closure",
- $call$0: function() {
-  this.this_1.set$opacity(0.3);
- }
-};
-
-$$.Paddle_fade_anon1 = {"":
- ["this_2"],
- super: "Closure",
- $call$0: function() {
-  this.this_2.set$opacity(0.2);
  }
 };
 
@@ -8862,6 +4586,60 @@ $$.PongGame_newGame_anon0 = {"":
  }
 };
 
+$$.PongGame_newGame_anon1 = {"":
+ [],
+ super: "Closure",
+ $call$1: function(e) {
+  return typeof e === 'object' && e !== null && !!e.is$Bullet;
+ }
+};
+
+$$.PongGame_newGame_anon2 = {"":
+ [],
+ super: "Closure",
+ $call$1: function(e) {
+  return e.removeFromGame$0();
+ }
+};
+
+$$.Paddle_move_anon = {"":
+ ["this_1", "g_0"],
+ super: "Closure",
+ $call$1: function(e) {
+  if ($.leB($.add(this.this_1.get$bulletTime(), 0.1), this.g_0.get$timer().get$gameTime())) {
+    if ($.geB(this.g_0.get$player1().get$bullet(), 1)) {
+      var t1 = this.g_0.get$timer().get$gameTime();
+      this.this_1.set$bulletTime(t1);
+      this.g_0.newBullet$3($.add(this.this_1.get$x(), 10), this.this_1.get$y(), true);
+    }
+  }
+ }
+};
+
+$$.Paddle_fade_anon = {"":
+ ["this_0"],
+ super: "Closure",
+ $call$0: function() {
+  this.this_0.set$opacity(0.4);
+ }
+};
+
+$$.Paddle_fade_anon0 = {"":
+ ["this_1"],
+ super: "Closure",
+ $call$0: function() {
+  this.this_1.set$opacity(0.3);
+ }
+};
+
+$$.Paddle_fade_anon1 = {"":
+ ["this_2"],
+ super: "Closure",
+ $call$0: function() {
+  this.this_2.set$opacity(0.2);
+ }
+};
+
 $$.Game_init_anon = {"":
  ["this_0"],
  super: "Closure",
@@ -8990,6 +4768,61 @@ $$.HashMapImplementation_getKeys__ = {"":
  }
 };
 
+$$._WorkerSendPort_send_anon = {"":
+ ["message_2", "this_1", "replyTo_0"],
+ super: "Closure",
+ $call$0: function() {
+  this.this_1._checkReplyTo$1(this.replyTo_0);
+  var workerMessage = $._serializeMessage($.makeLiteralMap(['command', 'message', 'port', this.this_1, 'msg', this.message_2, 'replyTo', this.replyTo_0]));
+  if ($._globalState().get$isWorker() === true) $._globalState().get$mainManager().postMessage$1(workerMessage);
+  else $.index($._globalState().get$managers(), this.this_1.get$_workerId()).postMessage$1(workerMessage);
+ }
+};
+
+$$._waitForPendingPorts_anon = {"":
+ ["callback_0"],
+ super: "Closure",
+ $call$1: function(_) {
+  return this.callback_0.$call$0();
+ }
+};
+
+$$.Futures_wait_anon = {"":
+ ["result_5", "pos_4", "completer_3", "box_0", "values_2"],
+ super: "Closure",
+ $call$1: function(value) {
+  $.indexSet(this.values_2, this.pos_4, value);
+  var remaining = $.sub(this.box_0.remaining_1, 1);
+  this.box_0.remaining_1 = remaining;
+  $.eqB(remaining, 0) && this.result_5.get$isComplete() !== true && this.completer_3.complete$1(this.values_2);
+ }
+};
+
+$$.Futures_wait_anon0 = {"":
+ ["result_8", "completer_7", "future_6"],
+ super: "Closure",
+ $call$1: function(exception) {
+  this.result_8.get$isComplete() !== true && this.completer_7.completeException$2(exception, this.future_6.get$stackTrace());
+  return true;
+ }
+};
+
+$$._PendingSendPortFinder_visitList_anon = {"":
+ ["this_0"],
+ super: "Closure",
+ $call$1: function(e) {
+  return this.this_0._dispatch$1(e);
+ }
+};
+
+$$._PendingSendPortFinder_visitMap_anon = {"":
+ ["this_0"],
+ super: "Closure",
+ $call$1: function(e) {
+  return this.this_0._dispatch$1(e);
+ }
+};
+
 $$._StorageImpl_getValues_anon = {"":
  ["values_0"],
  super: "Closure",
@@ -9030,6 +4863,44 @@ $$.HashMapImplementation_getValues__ = {"":
  }
 };
 
+$$._NativeJsSendPort_send_anon = {"":
+ ["message_5", "this_4", "replyTo_3"],
+ super: "Closure",
+ $call$0: function() {
+  var t1 = ({});
+  this.this_4._checkReplyTo$1(this.replyTo_3);
+  var isolate = $.index($._globalState().get$isolates(), this.this_4.get$_isolateId());
+  if (isolate == null) return;
+  if (this.this_4.get$_receivePort().get$_callback() == null) return;
+  var shouldSerialize = !($._globalState().get$currentContext() == null) && !$.eqB($._globalState().get$currentContext().get$id(), this.this_4.get$_isolateId());
+  t1.msg_1 = this.message_5;
+  t1.reply_2 = this.replyTo_3;
+  if (shouldSerialize) {
+    t1.msg_1 = $._serializeMessage(t1.msg_1);
+    t1.reply_2 = $._serializeMessage(t1.reply_2);
+  }
+  $._globalState().get$topEventLoop().enqueue$3(isolate, new $._NativeJsSendPort_send_anon0(this.this_4, t1, shouldSerialize), 'receive ' + $.S(this.message_5));
+ }
+};
+
+$$._NativeJsSendPort_send_anon0 = {"":
+ ["this_7", "box_0", "shouldSerialize_6"],
+ super: "Closure",
+ $call$0: function() {
+  if (!(this.this_7.get$_receivePort().get$_callback() == null)) {
+    if (this.shouldSerialize_6 === true) {
+      var msg = $._deserializeMessage(this.box_0.msg_1);
+      this.box_0.msg_1 = msg;
+      var reply = $._deserializeMessage(this.box_0.reply_2);
+      this.box_0.reply_2 = reply;
+    }
+    var t1 = this.this_7.get$_receivePort();
+    var t2 = this.box_0;
+    t1._callback$2(t2.msg_1, t2.reply_2);
+  }
+ }
+};
+
 $$._Copier_visitMap_anon = {"":
  ["this_2", "box_0"],
  super: "Closure",
@@ -9047,14 +4918,6 @@ $$._EventLoop__runHelper_next = {"":
  }
 };
 
-$$.Closure = {"":
- [],
- super: "Object",
- toString$0: function() {
-  return 'Closure';
- }
-};
-
 $$.BoundClosure = {'':
  ['self', 'target'],
  'super': 'Closure',
@@ -9069,6 +4932,33 @@ $$.BoundClosure1 = {'':
  ['self', 'target'],
  'super': 'Closure',
 $call$0: function() { return this.self[this.target](); }
+};
+$$.BoundClosure2 = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
+$call$2: function(p0, p1) { return this.self[this.target](p0, p1); },
+ $call$0: function() {
+  return this.$call$2(null,null)
+},
+ $call$1: function(code) {
+  return this.$call$2(code,null)
+}
+};
+$$.BoundClosure3 = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
+$call$3: function(p0, p1, p2) { return this.self[this.target](p0, p1, p2); },
+ $call$2: function(url,name$) {
+  return this.$call$3(url,name$,null)
+}
+};
+$$.BoundClosure4 = {'':
+ ['self', 'target'],
+ 'super': 'Closure',
+$call$5: function(p0, p1, p2, p3, p4) { return this.self[this.target](p0, p1, p2, p3, p4); },
+ $call$2: function(method,url) {
+  return this.$call$5(method,url,null,null,null)
+}
 };
 $.mul$slow = function(a, b) {
   if ($.checkNumbers(a, b) === true) return a * b;
@@ -9210,6 +5100,12 @@ $.IllegalJSRegExpException$ = function(_pattern, _errmsg) {
   return new $.IllegalJSRegExpException(_errmsg, _pattern);
 };
 
+$.FutureImpl_FutureImpl$immediate = function(value) {
+  var res = $.FutureImpl$();
+  res._setValue$1(value);
+  return res;
+};
+
 $._IDBOpenDBRequestEventsImpl$ = function(_ptr) {
   return new $._IDBOpenDBRequestEventsImpl(_ptr);
 };
@@ -9230,10 +5126,6 @@ $.typeNameInIE = function(obj) {
   if ($.eqB(name$, 'MSStyleCSSProperties')) return 'CSSStyleDeclaration';
   if ($.eqB(name$, 'MouseWheelEvent')) return 'WheelEvent';
   return name$;
-};
-
-$.Vector$ = function(x, y) {
-  return new $.Vector(y, x);
 };
 
 $.constructorNameFallback = function(obj) {
@@ -9257,6 +5149,10 @@ $.NullPointerException$ = function(functionName, arguments$) {
 $._serializeMessage = function(message) {
   if ($._globalState().get$needSerialization() === true) return $._JsSerializer$().traverse$1(message);
   return $._JsCopier$().traverse$1(message);
+};
+
+$.Vector$ = function(x, y) {
+  return new $.Vector(y, x);
 };
 
 $.clear = function(receiver) {
@@ -9331,7 +5227,7 @@ $.removeRange = function(receiver, start, length$) {
 };
 
 $.PongGame$ = function(assetManager, ctx) {
-  var t1 = new $.PongGame(null, null, null, 5, 0, 0, true, false, null, 'rgba(0, 0, 0, 0.85)', true, false, assetManager, null, null, null, null, null, null, null, ctx, null);
+  var t1 = new $.PongGame(null, null, null, null, null, false, 5, 0, 0, true, false, null, 'rgba(0, 0, 0, 0.85)', true, false, assetManager, null, null, null, null, null, null, null, ctx, null);
   t1.Game$2(assetManager, ctx);
   return t1;
 };
@@ -9342,6 +5238,11 @@ $.typeNameInChrome = function(obj) {
   if (name$ === 'CanvasPixelArray') return 'Uint8ClampedArray';
   if (name$ === 'WebKitMutationObserver') return 'MutationObserver';
   return name$;
+};
+
+$._deserializeMessage = function(message) {
+  if ($._globalState().get$needSerialization() === true) return $._JsDeserializer$().deserialize$1(message);
+  return message;
 };
 
 $.Math_sqrt = function(x) {
@@ -9365,6 +5266,10 @@ $.shr = function(a, b) {
     return (a >> b) >>> 0;
   }
   return a.operator$shr$1(b);
+};
+
+$.GameTimer$ = function() {
+  return new $.GameTimer(60, 0, 0, 0);
 };
 
 $.and = function(a, b) {
@@ -9519,7 +5424,7 @@ $._browserPrefix = function() {
   return $._cachedBrowserPrefix;
 };
 
-$._MessageTraverser_isPrimitive = function(x) {
+$._Deserializer_isPrimitive = function(x) {
   return x == null || (typeof x === 'string' || (typeof x === 'number' || typeof x === 'boolean'));
 };
 
@@ -9566,6 +5471,10 @@ $.neg = function(a) {
   return a.operator$negate$0();
 };
 
+$._MessageTraverser_isPrimitive = function(x) {
+  return x == null || (typeof x === 'string' || (typeof x === 'number' || typeof x === 'boolean'));
+};
+
 $.Collections__emitCollection = function(c, result, visiting) {
   $.add$1(visiting, c);
   var isList = typeof c === 'object' && c !== null && (c.constructor === Array || c.is$List());
@@ -9584,12 +5493,6 @@ $.checkMutable = function(list, reason) {
   if (!!(list.immutable$list)) throw $.captureStackTrace($.UnsupportedOperationException$(reason));
 };
 
-$.DoubleLinkedQueueEntry$ = function(e) {
-  var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
-  t1.DoubleLinkedQueueEntry$1(e);
-  return t1;
-};
-
 $.sub$slow = function(a, b) {
   if ($.checkNumbers(a, b) === true) return a - b;
   return a.operator$sub$1(b);
@@ -9603,8 +5506,18 @@ $._PeerConnection00EventsImpl$ = function(_ptr) {
   return new $._PeerConnection00EventsImpl(_ptr);
 };
 
+$._DOMWindowCrossFrameImpl__close = function(win) {
+  win.close();
+};
+
 $._WorkerContextEventsImpl$ = function(_ptr) {
   return new $._WorkerContextEventsImpl(_ptr);
+};
+
+$.DoubleLinkedQueueEntry$ = function(e) {
+  var t1 = new $.DoubleLinkedQueueEntry(null, null, null);
+  t1.DoubleLinkedQueueEntry$1(e);
+  return t1;
 };
 
 $.Rectangle_intersect = function(r1, r2) {
@@ -9627,6 +5540,10 @@ $.typeNameInOpera = function(obj) {
   var name$ = $.constructorNameFallback(obj);
   if ($.eqB(name$, 'Window')) return 'DOMWindow';
   return name$;
+};
+
+$._WebSocketFactoryProvider_WebSocket = function(url) {
+  return new WebSocket(url);;
 };
 
 $.Primitives_getDay = function(receiver) {
@@ -9673,8 +5590,35 @@ $._SpeechRecognitionEventsImpl$ = function(_ptr) {
   return new $._SpeechRecognitionEventsImpl(_ptr);
 };
 
+$._MediaStreamTrackEventsImpl$ = function(_ptr) {
+  return new $._MediaStreamTrackEventsImpl(_ptr);
+};
+
 $._SVGElementInstanceEventsImpl$ = function(_ptr) {
   return new $._SVGElementInstanceEventsImpl(_ptr);
+};
+
+$.Futures_wait = function(futures) {
+  var t1 = ({});
+  if (typeof futures !== 'string' && (typeof futures !== 'object' || futures === null || (futures.constructor !== Array && !futures.is$JavaScriptIndexingBehavior()))) return $.Futures_wait$bailout(1, futures, t1);
+  if ($.isEmpty(futures) === true) {
+    t1 = $.FutureImpl_FutureImpl$immediate($.CTC);
+    $.setRuntimeTypeInfo(t1, ({T: 'List'}));
+    return t1;
+  }
+  var completer = $.CompleterImpl$();
+  $.setRuntimeTypeInfo(completer, ({T: 'List'}));
+  var result = completer.get$future();
+  t1.remaining_1 = futures.length;
+  var values = $.ListFactory_List(futures.length);
+  for (var i = 0; t2 = futures.length, i < t2; ++i) {
+    if (i < 0 || i >= t2) throw $.ioore(i);
+    var future = futures[i];
+    future.then$1(new $.Futures_wait_anon(result, i, completer, t1, values));
+    future.handleException$1(new $.Futures_wait_anon0(result, completer, future));
+  }
+  return result;
+  var t2;
 };
 
 $.Rectangle$clone = function(rect) {
@@ -9805,6 +5749,10 @@ $.iterator = function(receiver) {
   return receiver.iterator$0();
 };
 
+$._JsDeserializer$ = function() {
+  return new $._JsDeserializer(null);
+};
+
 $.PowerUp$ = function(game, x, y) {
   var t1 = new $.PowerUp(0, null, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
   t1.GameEntity$withPosition$5(game, x, y, 36, 36);
@@ -9816,6 +5764,11 @@ $.Maps_mapToString = function(m) {
   var result = $.StringBufferImpl$('');
   $.Maps__emitMap(m, result, $.ListFactory_List(null));
   return result.toString$0();
+};
+
+$.isEmpty = function(receiver) {
+  if (typeof receiver === 'string' || $.isJsArray(receiver) === true) return receiver.length === 0;
+  return receiver.isEmpty$0();
 };
 
 $.Primitives_lazyAsJsDate = function(receiver) {
@@ -9846,6 +5799,10 @@ $.Collections__emitObject = function(o, result, visiting) {
   }
 };
 
+$._IsolateEvent$ = function(isolate, fn, message) {
+  return new $._IsolateEvent(message, fn, isolate);
+};
+
 $.Maps__emitMap = function(m, result, visiting) {
   var t1 = ({});
   $.add$1(visiting, m);
@@ -9866,11 +5823,6 @@ $._Device_isFirefox = function() {
 
 $.ge = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? (a >= b) : $.ge$slow(a, b);
-};
-
-$.isEmpty = function(receiver) {
-  if (typeof receiver === 'string' || $.isJsArray(receiver) === true) return receiver.length === 0;
-  return receiver.isEmpty$0();
 };
 
 $._MeasurementRequest$ = function(computeValue, completer) {
@@ -9916,10 +5868,6 @@ $._FileReaderEventsImpl$ = function(_ptr) {
   return new $._FileReaderEventsImpl(_ptr);
 };
 
-$.Timer$ = function() {
-  return new $.Timer(60, 0, 0, 0);
-};
-
 $.concat = function(receiver, other) {
   if (!(typeof receiver === 'string')) return receiver.concat$1(other);
   if (!(typeof other === 'string')) throw $.captureStackTrace($.IllegalArgumentException$(other));
@@ -9932,18 +5880,18 @@ $._JsCopier$ = function() {
   return t1;
 };
 
-$.addLast = function(receiver, value) {
-  if ($.isJsArray(receiver) !== true) return receiver.addLast$1(value);
-  $.checkGrowable(receiver, 'addLast');
-  receiver.push(value);
-};
-
 $.NoMoreElementsException$ = function() {
   return new $.NoMoreElementsException();
 };
 
 $.Primitives_getYear = function(receiver) {
   return receiver.get$isUtc() === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCFullYear()) : ($.Primitives_lazyAsJsDate(receiver).getFullYear());
+};
+
+$.addLast = function(receiver, value) {
+  if ($.isJsArray(receiver) !== true) return receiver.addLast$1(value);
+  $.checkGrowable(receiver, 'addLast');
+  receiver.push(value);
 };
 
 $._Manager$ = function() {
@@ -9974,7 +5922,9 @@ $.Primitives_newList = function(length$) {
 };
 
 $.main = function() {
+  var t1 = ({});
   var ctx = $.document().query$1('#surface').getContext$1('2d');
+  t1.msgCount_1 = 0;
   var assetManager = $.AssetManager$();
   assetManager.queueDownload$1('Sounds/hit1.ogg');
   assetManager.queueDownload$1('Sounds/hit2.ogg');
@@ -9984,10 +5934,15 @@ $.main = function() {
   assetManager.queueDownload$1('Sounds/hit2.mp3');
   assetManager.queueDownload$1('Sounds/hit3.mp3');
   assetManager.queueDownload$1('Sounds/sweep.mp3');
+  var ws = $._WebSocketFactoryProvider_WebSocket('ws://localhost:8000/ws');
+  $.add$1(ws.get$on().get$open(), new $.main_anon(ws));
+  $.add$1(ws.get$on().get$message(), new $.main_anon0(ws, t1));
+  $.add$1(ws.get$on().get$error(), new $.main_anon1());
+  $.add$1(ws.get$on().get$close(), new $.main_anon2());
   var game = $.PongGame$(assetManager, ctx);
-  game.enableSound = true;
+  game.enableSound = false;
   game.debugMode = false;
-  assetManager.downloadAll$1(new $.main_anon(game));
+  assetManager.downloadAll$1(new $.main_anon3(game));
 };
 
 $._AbstractWorkerEventsImpl$ = function(_ptr) {
@@ -10069,15 +6024,15 @@ $.isNaN = function(receiver) {
   return receiver.isNaN$0();
 };
 
+$.Utils_round = function(value, decimals) {
+  var o = $.Math_pow(10, decimals);
+  return $.div($.round($.mul(value, o)), o);
+};
+
 $.round = function(receiver) {
   if (!(typeof receiver === 'number')) return receiver.round$0();
   if (receiver < 0) return -Math.round(-receiver);
   return Math.round(receiver);
-};
-
-$.Utils_round = function(value, decimals) {
-  var o = $.Math_pow(10, decimals);
-  return $.div($.round($.mul(value, o)), o);
 };
 
 $.allMatchesInStringUnchecked = function(needle, haystack) {
@@ -10234,7 +6189,7 @@ $.split = function(receiver, pattern) {
 };
 
 $.ComputerPaddle$ = function(game, x, y, skillLevel) {
-  var t1 = new $.ComputerPaddle(null, null, 3, 0, 0, 0, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
+  var t1 = new $.ComputerPaddle(null, null, 3, 0, 0, 0, 0, 0, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
   t1.GameEntity$withPosition$5(game, x, y, 8, 120);
   t1.Paddle$3(game, x, y);
   t1.ComputerPaddle$4(game, x, y, skillLevel);
@@ -10301,8 +6256,18 @@ $.LinkedHashMapImplementation$ = function() {
   return t1;
 };
 
-$._DeprecatedPeerConnectionEventsImpl$ = function(_ptr) {
-  return new $._DeprecatedPeerConnectionEventsImpl(_ptr);
+$._PendingSendPortFinder$ = function() {
+  var t1 = $._MessageTraverserVisitedMap$();
+  t1 = new $._PendingSendPortFinder([], t1);
+  t1._PendingSendPortFinder$0();
+  return t1;
+};
+
+$.Paddle$ = function(game, x, y) {
+  var t1 = new $.Paddle(0, 0, 0, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
+  t1.GameEntity$withPosition$5(game, x, y, 8, 120);
+  t1.Paddle$3(game, x, y);
+  return t1;
 };
 
 $.regExpGetNative = function(regExp) {
@@ -10310,20 +6275,13 @@ $.regExpGetNative = function(regExp) {
   return r == null ? (regExp._re = $.regExpMakeNative(regExp, false)) : r;
 };
 
-$.Paddle$ = function(game, x, y) {
-  var t1 = new $.Paddle(0, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
-  t1.GameEntity$withPosition$5(game, x, y, 8, 120);
-  t1.Paddle$3(game, x, y);
-  return t1;
+$.throwNoSuchMethod = function(obj, name$, arguments$) {
+  throw $.captureStackTrace($.NoSuchMethodException$(obj, name$, arguments$, null));
 };
 
 $.checkNull = function(object) {
   if (object == null) throw $.captureStackTrace($.NullPointerException$(null, $.CTC));
   return object;
-};
-
-$.throwNoSuchMethod = function(obj, name$, arguments$) {
-  throw $.captureStackTrace($.NoSuchMethodException$(obj, name$, arguments$, null));
 };
 
 $.CompleterImpl$ = function() {
@@ -10372,10 +6330,6 @@ $.Utils_random = function(min, max, wholeNumbers) {
   return wholeNumbers === true ? $.round(value) : value;
 };
 
-$.Math_random = function() {
-  return $.MathNatives_random();
-};
-
 $._DoubleLinkedQueueEntrySentinel$ = function() {
   var t1 = new $._DoubleLinkedQueueEntrySentinel(null, null, null);
   t1.DoubleLinkedQueueEntry$1(null);
@@ -10385,6 +6339,10 @@ $._DoubleLinkedQueueEntrySentinel$ = function() {
 
 $.Primitives_getHours = function(receiver) {
   return receiver.get$isUtc() === true ? ($.Primitives_lazyAsJsDate(receiver).getUTCHours()) : ($.Primitives_lazyAsJsDate(receiver).getHours());
+};
+
+$.Math_random = function() {
+  return $.MathNatives_random();
 };
 
 $.MathNatives_random = function() {
@@ -10597,28 +6555,13 @@ $._callInIsolate = function(isolate, function$) {
 };
 
 $.DateImplementation$fromMillisecondsSinceEpoch = function(millisecondsSinceEpoch, isUtc) {
-  var t1 = new $.DateImplementation($.checkNull(isUtc), millisecondsSinceEpoch);
+  var t1 = new $.DateImplementation(isUtc, millisecondsSinceEpoch);
   t1.DateImplementation$fromMillisecondsSinceEpoch$2(millisecondsSinceEpoch, isUtc);
   return t1;
 };
 
 $.Primitives_objectToString = function(object) {
   return 'Instance of \'' + $.S($.Primitives_objectTypeName(object)) + '\'';
-};
-
-$.Arrays_indexOf = function(a, element, startIndex, endIndex) {
-  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if (typeof endIndex !== 'number') return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
-  if ($.geB(startIndex, a.length)) return -1;
-  if ($.ltB(startIndex, 0)) startIndex = 0;
-  if (typeof startIndex !== 'number') return $.Arrays_indexOf$bailout(2, a, element, startIndex, endIndex);
-  for (var i = startIndex; i < endIndex; ++i) {
-    if (i !== (i | 0)) throw $.iae(i);
-    var t1 = a.length;
-    if (i < 0 || i >= t1) throw $.ioore(i);
-    if ($.eqB(a[i], element)) return i;
-  }
-  return -1;
 };
 
 $.HashMapImplementation__firstProbe = function(hashCode, length$) {
@@ -10782,6 +6725,12 @@ $.getFunctionForTypeNameOf = function() {
   return $.constructorNameFallback;
 };
 
+$._waitForPendingPorts = function(message, callback) {
+  var finder = $._PendingSendPortFinder$();
+  finder.traverse$1(message);
+  $.Futures_wait(finder.ports).then$1(new $._waitForPendingPorts_anon(callback));
+};
+
 $.index = function(a, index) {
   if (typeof a == "string" || a.constructor === Array) {
     var key = (index >>> 0);
@@ -10793,6 +6742,21 @@ $.index = function(a, index) {
 $.xor = function(a, b) {
   if ($.checkNumbers(a, b) === true) return (a ^ b) >>> 0;
   return a.operator$xor$1(b);
+};
+
+$.Arrays_indexOf = function(a, element, startIndex, endIndex) {
+  if (typeof a !== 'string' && (typeof a !== 'object' || a === null || (a.constructor !== Array && !a.is$JavaScriptIndexingBehavior()))) return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if (typeof endIndex !== 'number') return $.Arrays_indexOf$bailout(1, a, element, startIndex, endIndex);
+  if ($.geB(startIndex, a.length)) return -1;
+  if ($.ltB(startIndex, 0)) startIndex = 0;
+  if (typeof startIndex !== 'number') return $.Arrays_indexOf$bailout(2, a, element, startIndex, endIndex);
+  for (var i = startIndex; i < endIndex; ++i) {
+    if (i !== (i | 0)) throw $.iae(i);
+    var t1 = a.length;
+    if (i < 0 || i >= t1) throw $.ioore(i);
+    if ($.eqB(a[i], element)) return i;
+  }
+  return -1;
 };
 
 $._ElementEventsImpl$ = function(_ptr) {
@@ -10834,6 +6798,12 @@ $.eq = function(a, b) {
   return a === b;
 };
 
+$.StringBufferImpl$ = function(content$) {
+  var t1 = new $.StringBufferImpl(null, null);
+  t1.StringBufferImpl$1(content$);
+  return t1;
+};
+
 $.HashMapImplementation$ = function() {
   var t1 = new $.HashMapImplementation(null, null, null, null, null);
   t1.HashMapImplementation$0();
@@ -10850,12 +6820,6 @@ $.div$slow = function(a, b) {
   return a.operator$div$1(b);
 };
 
-$.StringBufferImpl$ = function(content$) {
-  var t1 = new $.StringBufferImpl(null, null);
-  t1.StringBufferImpl$1(content$);
-  return t1;
-};
-
 $.some = function(receiver, f) {
   if ($.isJsArray(receiver) !== true) return receiver.some$1(f);
   return $.Collections_some(receiver, f);
@@ -10868,19 +6832,26 @@ $.Collections_some = function(iterable, f) {
   return false;
 };
 
+$._Collections_some = function(iterable, f) {
+  for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
+    if (f.$call$1(t1.next$0()) === true) return true;
+  }
+  return false;
+};
+
+$.Bullet$ = function(game, x, y, p1) {
+  var t1 = new $.Bullet(null, true, '255, 255, 255', 1, null, null, null, false, null, null, 1, 1, 0, 0, game);
+  t1.GameEntity$withPosition$5(game, x, y, 8, 8);
+  t1.Bullet$4(game, x, y, p1);
+  return t1;
+};
+
 $._SharedWorkerContextEventsImpl$ = function(_ptr) {
   return new $._SharedWorkerContextEventsImpl(_ptr);
 };
 
 $._IDBVersionChangeRequestEventsImpl$ = function(_ptr) {
   return new $._IDBVersionChangeRequestEventsImpl(_ptr);
-};
-
-$._Collections_some = function(iterable, f) {
-  for (var t1 = $.iterator(iterable); t1.hasNext$0() === true; ) {
-    if (f.$call$1(t1.next$0()) === true) return true;
-  }
-  return false;
 };
 
 $.gtB = function(a, b) {
@@ -11233,6 +7204,25 @@ $.StringBase__toJsStringArray$bailout = function(state, strings) {
   return array;
 };
 
+$.Futures_wait$bailout = function(state, futures, t1) {
+  if ($.isEmpty(futures) === true) {
+    t1 = $.FutureImpl_FutureImpl$immediate($.CTC);
+    $.setRuntimeTypeInfo(t1, ({T: 'List'}));
+    return t1;
+  }
+  var completer = $.CompleterImpl$();
+  $.setRuntimeTypeInfo(completer, ({T: 'List'}));
+  var result = completer.get$future();
+  t1.remaining_1 = $.get$length(futures);
+  var values = $.ListFactory_List($.get$length(futures));
+  for (var i = 0; $.ltB(i, $.get$length(futures)); ++i) {
+    var future = $.index(futures, i);
+    future.then$1(new $.Futures_wait_anon(result, i, completer, t1, values));
+    future.handleException$1(new $.Futures_wait_anon0(result, completer, future));
+  }
+  return result;
+};
+
 $.dynamicBind.$call$4 = $.dynamicBind;
 $.dynamicBind.$name = "dynamicBind";
 $.typeNameInOpera.$call$1 = $.typeNameInOpera;
@@ -11260,10 +7250,10 @@ Isolate.makeConstantList = function(list) {
 };
 $.CTC = Isolate.makeConstantList([]);
 $.CTC2 = new Isolate.$isolateProperties.ConstantMap(Isolate.$isolateProperties.CTC, {}, 0);
+$.CTC9 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
 $.CTC7 = new Isolate.$isolateProperties._SimpleClientRect(0, 0, 0, 0);
 $.CTC8 = new Isolate.$isolateProperties.EmptyElementRect(Isolate.$isolateProperties.CTC, Isolate.$isolateProperties.CTC7, Isolate.$isolateProperties.CTC7, Isolate.$isolateProperties.CTC7, Isolate.$isolateProperties.CTC7);
 $.CTC5 = new Isolate.$isolateProperties._DeletedKeySentinel();
-$.CTC9 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, 'Chrome|DumpRenderTree');
 $.CTC10 = new Isolate.$isolateProperties.Object();
 $.CTC3 = new Isolate.$isolateProperties.IllegalAccessException();
 $.CTC6 = new Isolate.$isolateProperties.JSSyntaxRegExp(false, false, '^#[_a-zA-Z]\\w*$');
@@ -11271,7 +7261,6 @@ $.CTC0 = new Isolate.$isolateProperties.NullPointerException(Isolate.$isolatePro
 $.CTC1 = new Isolate.$isolateProperties.NoMoreElementsException();
 $.CTC4 = new Isolate.$isolateProperties.EmptyQueueException();
 $._pendingRequests = null;
-$.dynamicUnknownElementDispatcher = null;
 $._getTypeNameOf = null;
 $._cachedBrowserPrefix = null;
 $._nextMeasurementFrameScheduled = false;
@@ -11306,8 +7295,8 @@ $.$defineNativeClass = function(cls, fields, methods) {
     $.dynamicFunction(method)[cls] = methods[method];
   }
 };
-$.defineProperty(Object.prototype, 'is$TouchEvent', function() { return false; });
 $.defineProperty(Object.prototype, 'is$JavaScriptIndexingBehavior', function() { return false; });
+$.defineProperty(Object.prototype, 'is$TouchEvent', function() { return false; });
 $.defineProperty(Object.prototype, 'is$Collection', function() { return false; });
 $.defineProperty(Object.prototype, 'is$ImageElement', function() { return false; });
 $.defineProperty(Object.prototype, 'is$List', function() { return false; });
@@ -11333,7 +7322,7 @@ $.$defineNativeClass('HTMLAnchorElement', ["name?"], {
  }
 });
 
-$.$defineNativeClass('WebKitAnimation', ["name?"], {
+$.$defineNativeClass('WebKitAnimation', ["paused?", "name?"], {
  play$0: function() {
   return this.play();
  }
@@ -11524,13 +7513,16 @@ $.$defineNativeClass('CanvasRenderingContext2D', ["strokeStyle!", "lineWidth!", 
  }
 });
 
-$.$defineNativeClass('CharacterData', ["length?"], {
+$.$defineNativeClass('CharacterData', ["length?", "data?"], {
 });
 
 $.$defineNativeClass('ClientRect', ["width?", "top?", "right?", "left?", "height?", "bottom?"], {
 });
 
 $.$defineNativeClass('ClientRectList', ["length?"], {
+});
+
+$.$defineNativeClass('CompositionEvent', ["data?"], {
 });
 
 _ConsoleImpl = (typeof console == 'undefined' ? {} : console);
@@ -11665,13 +7657,7 @@ $.$defineNativeClass('DedicatedWorkerContext', [], {
  }
 });
 
-$.$defineNativeClass('DeprecatedPeerConnection', [], {
- $dom_addEventListener$3: function(type, listener, useCapture) {
-  return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
- },
- get$on: function() {
-  return $._DeprecatedPeerConnectionEventsImpl$(this);
- }
+$.$defineNativeClass('HTMLDetailsElement', ["open?"], {
 });
 
 $.$defineNativeClass('HTMLDocument', [], {
@@ -11684,6 +7670,9 @@ $.$defineNativeClass('HTMLDocument', [], {
  },
  $dom_getElementById$1: function(elementId) {
   return this.getElementById(elementId);
+ },
+ get$window: function() {
+  return this.defaultView;;
  },
  get$on: function() {
   return $._DocumentEventsImpl$(this);
@@ -11854,6 +7843,10 @@ $.$defineNativeClass('EventException', ["name?", "message?"], {
 });
 
 $.$defineNativeClass('EventSource', [], {
+ close$0: function() {
+  return this.close();
+ },
+ get$close: function() { return new $.BoundClosure1(this, 'close$0'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -12143,6 +8136,10 @@ $.$defineNativeClass('IDBCursorWithValue', ["value?"], {
 });
 
 $.$defineNativeClass('IDBDatabase', ["name?"], {
+ close$0: function() {
+  return this.close();
+ },
+ get$close: function() { return new $.BoundClosure1(this, 'close$0'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -12155,6 +8152,13 @@ $.$defineNativeClass('IDBDatabaseException', ["name?", "message?"], {
  toString$0: function() {
   return this.toString();
  }
+});
+
+$.$defineNativeClass('IDBFactory', [], {
+ open$1: function(name) {
+  return this.open(name);
+ },
+ get$open: function() { return new $.BoundClosure0(this, 'open$1'); }
 });
 
 $.$defineNativeClass('IDBIndex', ["name?"], {
@@ -12210,7 +8214,7 @@ $.$defineNativeClass('IDBVersionChangeRequest', [], {
 $.$defineNativeClass('HTMLIFrameElement', ["width?", "src=", "name?", "height="], {
 });
 
-$.$defineNativeClass('ImageData', ["width?", "height?"], {
+$.$defineNativeClass('ImageData', ["width?", "height?", "data?"], {
 });
 
 $.$defineNativeClass('HTMLImageElement', ["y?", "x?", "width?", "src=", "name?", "height="], {
@@ -12392,7 +8396,7 @@ $.$defineNativeClass('HTMLMarqueeElement', ["width?", "height="], {
  }
 });
 
-$.$defineNativeClass('MediaController', ["volume!"], {
+$.$defineNativeClass('MediaController', ["volume!", "paused?"], {
  play$0: function() {
   return this.play();
  },
@@ -12401,7 +8405,7 @@ $.$defineNativeClass('MediaController', ["volume!"], {
  }
 });
 
-$.$defineNativeClass('HTMLMediaElement', ["volume!", "src=", "error?"], {
+$.$defineNativeClass('HTMLMediaElement', ["volume!", "src=", "paused?", "error?"], {
  play$0: function() {
   return this.play();
  },
@@ -12479,6 +8483,15 @@ $.$defineNativeClass('MediaStream', [], {
 $.$defineNativeClass('MediaStreamList', ["length?"], {
 });
 
+$.$defineNativeClass('MediaStreamTrack', [], {
+ $dom_addEventListener$3: function(type, listener, useCapture) {
+  return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
+ },
+ get$on: function() {
+  return $._MediaStreamTrackEventsImpl$(this);
+ }
+});
+
 $.$defineNativeClass('MediaStreamTrackList', ["length?"], {
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
@@ -12491,7 +8504,7 @@ $.$defineNativeClass('MediaStreamTrackList', ["length?"], {
  }
 });
 
-$.$defineNativeClass('MessageEvent', ["ports?"], {
+$.$defineNativeClass('MessageEvent', ["ports?", "data?"], {
 });
 
 $.$defineNativeClass('MessagePort', [], {
@@ -12504,6 +8517,10 @@ $.$defineNativeClass('MessagePort', [], {
  postMessage$1: function(message) {
   return this.postMessage(message);
 },
+ close$0: function() {
+  return this.close();
+ },
+ get$close: function() { return new $.BoundClosure1(this, 'close$0'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -12661,6 +8678,10 @@ $.$defineNativeClass('NodeList', ["length?"], {
 });
 
 $.$defineNativeClass('Notification', ["tag?"], {
+ close$0: function() {
+  return this.close();
+ },
+ get$close: function() { return new $.BoundClosure1(this, 'close$0'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -12673,7 +8694,7 @@ $.$defineNativeClass('HTMLOListElement', [], {
  start$0: function() { return this.start.$call$0(); }
 });
 
-$.$defineNativeClass('HTMLObjectElement', ["width?", "name?", "height="], {
+$.$defineNativeClass('HTMLObjectElement', ["width?", "name?", "height=", "data?"], {
 });
 
 $.$defineNativeClass('HTMLOptionElement', ["value="], {
@@ -12686,6 +8707,10 @@ $.$defineNativeClass('HTMLParamElement', ["value=", "name?"], {
 });
 
 $.$defineNativeClass('PeerConnection00', [], {
+ close$0: function() {
+  return this.close();
+ },
+ get$close: function() { return new $.BoundClosure1(this, 'close$0'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -12694,13 +8719,16 @@ $.$defineNativeClass('PeerConnection00', [], {
  }
 });
 
-$.$defineNativeClass('WebKitPoint', ["y=", "x?"], {
+$.$defineNativeClass('WebKitPoint', ["y=", "x="], {
 });
 
 $.$defineNativeClass('PositionError', ["message?"], {
 });
 
 $.$defineNativeClass('HTMLPreElement', ["width?"], {
+});
+
+$.$defineNativeClass('ProcessingInstruction', ["data?"], {
 });
 
 $.$defineNativeClass('HTMLProgressElement', ["value="], {
@@ -12825,7 +8853,7 @@ $.$defineNativeClass('SVGFilterElement', ["y?", "x?", "width?", "height?"], {
 $.$defineNativeClass('SVGForeignObjectElement', ["y?", "x?", "width?", "height?"], {
 });
 
-$.$defineNativeClass('SVGGlyphRefElement', ["y=", "x?"], {
+$.$defineNativeClass('SVGGlyphRefElement', ["y=", "x="], {
 });
 
 $.$defineNativeClass('SVGImageElement', ["y?", "x?", "width?", "height?"], {
@@ -12858,46 +8886,46 @@ $.$defineNativeClass('SVGNumberList', [], {
  }
 });
 
-$.$defineNativeClass('SVGPathSegArcAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegArcAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegArcRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegArcRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoCubicSmoothRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegCurvetoQuadraticSmoothRel', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegLinetoAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoHorizontalAbs', ["x?"], {
+$.$defineNativeClass('SVGPathSegLinetoHorizontalAbs', ["x="], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoHorizontalRel', ["x?"], {
+$.$defineNativeClass('SVGPathSegLinetoHorizontalRel', ["x="], {
 });
 
-$.$defineNativeClass('SVGPathSegLinetoRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegLinetoRel', ["y=", "x="], {
 });
 
 $.$defineNativeClass('SVGPathSegLinetoVerticalAbs', ["y="], {
@@ -12912,16 +8940,16 @@ $.$defineNativeClass('SVGPathSegList', [], {
  }
 });
 
-$.$defineNativeClass('SVGPathSegMovetoAbs', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegMovetoAbs', ["y=", "x="], {
 });
 
-$.$defineNativeClass('SVGPathSegMovetoRel', ["y=", "x?"], {
+$.$defineNativeClass('SVGPathSegMovetoRel', ["y=", "x="], {
 });
 
 $.$defineNativeClass('SVGPatternElement', ["y?", "x?", "width?", "height?"], {
 });
 
-$.$defineNativeClass('SVGPoint', ["y=", "x?"], {
+$.$defineNativeClass('SVGPoint', ["y=", "x="], {
 });
 
 $.$defineNativeClass('SVGPointList', [], {
@@ -12930,7 +8958,7 @@ $.$defineNativeClass('SVGPointList', [], {
  }
 });
 
-$.$defineNativeClass('SVGRect', ["y=", "x?", "width?", "height="], {
+$.$defineNativeClass('SVGRect', ["y=", "x=", "width?", "height="], {
 });
 
 $.$defineNativeClass('SVGRectElement', ["y?", "x?", "width?", "height?"], {
@@ -12964,6 +8992,9 @@ $.$defineNativeClass('HTMLScriptElement', ["src="], {
 });
 
 $.$defineNativeClass('HTMLSelectElement', ["value=", "name?", "length="], {
+ add$2: function(element, before) {
+  return this.add(element,before);
+ }
 });
 
 $.$defineNativeClass('ShadowRoot', [], {
@@ -12978,6 +9009,12 @@ $.$defineNativeClass('ShadowRoot', [], {
 $.$defineNativeClass('SharedWorkerContext', ["name?"], {
  get$on: function() {
   return $._SharedWorkerContextEventsImpl$(this);
+ }
+});
+
+$.$defineNativeClass('SourceBufferList', ["length?"], {
+ $dom_addEventListener$3: function(type, listener, useCapture) {
+  return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  }
 });
 
@@ -13126,6 +9163,9 @@ $.$defineNativeClass('HTMLTableElement', ["width?"], {
 $.$defineNativeClass('HTMLTextAreaElement', ["value=", "name?"], {
 });
 
+$.$defineNativeClass('TextEvent', ["data?"], {
+});
+
 $.$defineNativeClass('TextMetrics', ["width?"], {
 });
 
@@ -13217,6 +9257,9 @@ $.$defineNativeClass('HTMLTrackElement', ["src="], {
 
 $.$defineNativeClass('TreeWalker', [], {
  filter$1: function(arg0) { return this.filter.$call$1(arg0); }
+});
+
+$.$defineNativeClass('UIEvent', ["keyCode?"], {
 });
 
 $.$defineNativeClass('Uint16Array', ["length?"], {
@@ -13356,13 +9399,6 @@ $.$defineNativeClass('Uint8ClampedArray', [], {
  is$Collection: function() { return true; }
 });
 
-$.$defineNativeClass('HTMLUnknownElement', [], {
- noSuchMethod$2: function(name$, args) {
-  if ($.dynamicUnknownElementDispatcher == null) throw $.captureStackTrace($.NoSuchMethodException$(this, name$, args, null));
-  return $.dynamicUnknownElementDispatcher.$call$3(this, name$, args);
- }
-});
-
 $.$defineNativeClass('HTMLVideoElement', ["width?", "height="], {
 });
 
@@ -13379,6 +9415,13 @@ $.$defineNativeClass('WebKitNamedFlow', ["name?"], {
 });
 
 $.$defineNativeClass('WebSocket', [], {
+ send$1: function(data) {
+  return this.send(data);
+ },
+ close$2: function(code, reason) {
+  return this.close(code,reason);
+ },
+ get$close: function() { return new $.BoundClosure2(this, 'close$2'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -13387,7 +9430,7 @@ $.$defineNativeClass('WebSocket', [], {
  }
 });
 
-$.$defineNativeClass('DOMWindow', ["navigator?", "name?", "length?"], {
+$.$defineNativeClass('DOMWindow', ["window?", "navigator?", "name?", "length?"], {
  setTimeout$2: function(handler, timeout) {
   return this.setTimeout($.convertDartClosureToJS(handler, 0),timeout);
  },
@@ -13400,6 +9443,10 @@ $.$defineNativeClass('DOMWindow', ["navigator?", "name?", "length?"], {
  moveTo$2: function(x, y) {
   return this.moveTo(x,y);
  },
+ close$0: function() {
+  return this.close();
+ },
+ get$close: function() { return new $.BoundClosure1(this, 'close$0'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -13429,6 +9476,17 @@ $.$defineNativeClass('DOMWindow', ["navigator?", "name?", "length?"], {
   this._ensureRequestAnimationFrame$0();
   return this._requestAnimationFrame$1(callback);
  },
+ open$3: function(url, name$, options) {
+  if (options == null) return $._DOMWindowCrossFrameImpl__createSafe(this._open2$2(url, name$));
+  return $._DOMWindowCrossFrameImpl__createSafe(this._open3$3(url, name$, options));
+ },
+ get$open: function() { return new $.BoundClosure3(this, 'open$3'); },
+ _open3$3: function(url, name, options) {
+  return this.open(url, name, options);;
+ },
+ _open2$2: function(url, name) {
+  return this.open(url, name);;
+ },
  get$top: function() {
   return $._DOMWindowCrossFrameImpl__createSafe(this.get$_top());
  },
@@ -13453,6 +9511,10 @@ $.$defineNativeClass('WorkerContext', ["navigator?"], {
  setTimeout$2: function(handler, timeout) {
   return this.setTimeout($.convertDartClosureToJS(handler, 0),timeout);
  },
+ close$0: function() {
+  return this.close();
+ },
+ get$close: function() { return new $.BoundClosure1(this, 'close$0'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -13475,6 +9537,13 @@ $.$defineNativeClass('WorkerNavigator', ["userAgent?"], {
 });
 
 $.$defineNativeClass('XMLHttpRequest', [], {
+ send$1: function(data) {
+  return this.send(data);
+ },
+ open$5: function(method, url, async, user, password) {
+  return this.open(method,url,async,user,password);
+ },
+ get$open: function() { return new $.BoundClosure4(this, 'open$5'); },
  $dom_addEventListener$3: function(type, listener, useCapture) {
   return this.addEventListener(type,$.convertDartClosureToJS(listener, 1),useCapture);
  },
@@ -13531,47 +9600,49 @@ $.$defineNativeClass('Worker', [], {
  }
 });
 
-// 249 dynamic classes.
-// 379 classes
+// 255 dynamic classes.
+// 381 classes
 // 32 !leaf
 (function(){
-  var v0/*class(_SVGTextPositioningElementImpl)*/ = 'SVGTextPositioningElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement';
-  var v1/*class(_SVGElementImpl)*/ = [v0/*class(_SVGTextPositioningElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,v0/*class(_SVGTextPositioningElementImpl)*/,'SVGElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement'].join('|');
-  var v2/*class(_MediaElementImpl)*/ = 'HTMLMediaElement|HTMLVideoElement|HTMLAudioElement|HTMLVideoElement|HTMLAudioElement';
-  var v3/*class(_MouseEventImpl)*/ = 'MouseEvent|WheelEvent|WheelEvent';
-  var v4/*class(_ElementImpl)*/ = [v1/*class(_SVGElementImpl)*/,v2/*class(_MediaElementImpl)*/,v1/*class(_SVGElementImpl)*/,v2/*class(_MediaElementImpl)*/,'Element|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement'].join('|');
-  var v5/*class(_DocumentFragmentImpl)*/ = 'DocumentFragment|ShadowRoot|ShadowRoot';
-  var v6/*class(_DocumentImpl)*/ = 'HTMLDocument|SVGDocument|SVGDocument';
-  var v7/*class(_CharacterDataImpl)*/ = 'CharacterData|Text|CDATASection|CDATASection|Comment|Text|CDATASection|CDATASection|Comment';
-  var v8/*class(_WorkerContextImpl)*/ = 'WorkerContext|SharedWorkerContext|DedicatedWorkerContext|SharedWorkerContext|DedicatedWorkerContext';
-  var v9/*class(_NodeImpl)*/ = [v4/*class(_ElementImpl)*/,v5/*class(_DocumentFragmentImpl)*/,v6/*class(_DocumentImpl)*/,v7/*class(_CharacterDataImpl)*/,v4/*class(_ElementImpl)*/,v5/*class(_DocumentFragmentImpl)*/,v6/*class(_DocumentImpl)*/,v7/*class(_CharacterDataImpl)*/,'Node|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr'].join('|');
-  var v10/*class(_MediaStreamImpl)*/ = 'MediaStream|LocalMediaStream|LocalMediaStream';
-  var v11/*class(_IDBRequestImpl)*/ = 'IDBRequest|IDBOpenDBRequest|IDBVersionChangeRequest|IDBOpenDBRequest|IDBVersionChangeRequest';
-  var v12/*class(_AbstractWorkerImpl)*/ = 'AbstractWorker|Worker|SharedWorker|Worker|SharedWorker';
+  var v0/*class(_MouseEventImpl)*/ = 'MouseEvent|WheelEvent|WheelEvent';
+  var v1/*class(_SVGTextPositioningElementImpl)*/ = 'SVGTextPositioningElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement|SVGTextElement|SVGTSpanElement|SVGTRefElement|SVGAltGlyphElement';
+  var v2/*class(_SVGElementImpl)*/ = [v1/*class(_SVGTextPositioningElementImpl)*/,v1/*class(_SVGTextPositioningElementImpl)*/,v1/*class(_SVGTextPositioningElementImpl)*/,v1/*class(_SVGTextPositioningElementImpl)*/,'SVGElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement|SVGViewElement|SVGVKernElement|SVGUseElement|SVGTitleElement|SVGTextContentElement|SVGTextPathElement|SVGTextPathElement|SVGSymbolElement|SVGSwitchElement|SVGStyleElement|SVGStopElement|SVGScriptElement|SVGSVGElement|SVGRectElement|SVGPolylineElement|SVGPolygonElement|SVGPatternElement|SVGPathElement|SVGMissingGlyphElement|SVGMetadataElement|SVGMaskElement|SVGMarkerElement|SVGMPathElement|SVGLineElement|SVGImageElement|SVGHKernElement|SVGGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGRadialGradientElement|SVGLinearGradientElement|SVGGlyphRefElement|SVGGlyphElement|SVGGElement|SVGForeignObjectElement|SVGFontFaceUriElement|SVGFontFaceSrcElement|SVGFontFaceNameElement|SVGFontFaceFormatElement|SVGFontFaceElement|SVGFontElement|SVGFilterElement|SVGFETurbulenceElement|SVGFETileElement|SVGFESpotLightElement|SVGFESpecularLightingElement|SVGFEPointLightElement|SVGFEOffsetElement|SVGFEMorphologyElement|SVGFEMergeNodeElement|SVGFEMergeElement|SVGFEImageElement|SVGFEGaussianBlurElement|SVGFEFloodElement|SVGFEDropShadowElement|SVGFEDistantLightElement|SVGFEDisplacementMapElement|SVGFEDiffuseLightingElement|SVGFEConvolveMatrixElement|SVGFECompositeElement|SVGFEComponentTransferElement|SVGFEColorMatrixElement|SVGFEBlendElement|SVGEllipseElement|SVGDescElement|SVGDefsElement|SVGCursorElement|SVGComponentTransferFunctionElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGFEFuncRElement|SVGFEFuncGElement|SVGFEFuncBElement|SVGFEFuncAElement|SVGClipPathElement|SVGCircleElement|SVGAnimationElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGSetElement|SVGAnimateTransformElement|SVGAnimateMotionElement|SVGAnimateElement|SVGAnimateColorElement|SVGAltGlyphItemElement|SVGAltGlyphDefElement|SVGAElement'].join('|');
+  var v3/*class(_MediaElementImpl)*/ = 'HTMLMediaElement|HTMLVideoElement|HTMLAudioElement|HTMLVideoElement|HTMLAudioElement';
+  var v4/*class(_UIEventImpl)*/ = [v0/*class(_MouseEventImpl)*/,v0/*class(_MouseEventImpl)*/,'UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent'].join('|');
+  var v5/*class(_ElementImpl)*/ = [v2/*class(_SVGElementImpl)*/,v3/*class(_MediaElementImpl)*/,v2/*class(_SVGElementImpl)*/,v3/*class(_MediaElementImpl)*/,'Element|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement|HTMLUnknownElement|HTMLUListElement|HTMLTrackElement|HTMLTitleElement|HTMLTextAreaElement|HTMLTableSectionElement|HTMLTableRowElement|HTMLTableElement|HTMLTableColElement|HTMLTableCellElement|HTMLTableCaptionElement|HTMLStyleElement|HTMLSpanElement|HTMLSourceElement|HTMLShadowElement|HTMLSelectElement|HTMLScriptElement|HTMLQuoteElement|HTMLProgressElement|HTMLPreElement|HTMLParamElement|HTMLParagraphElement|HTMLOutputElement|HTMLOptionElement|HTMLOptGroupElement|HTMLObjectElement|HTMLOListElement|HTMLModElement|HTMLMeterElement|HTMLMetaElement|HTMLMenuElement|HTMLMarqueeElement|HTMLMapElement|HTMLLinkElement|HTMLLegendElement|HTMLLabelElement|HTMLLIElement|HTMLKeygenElement|HTMLInputElement|HTMLImageElement|HTMLIFrameElement|HTMLHtmlElement|HTMLHeadingElement|HTMLHeadElement|HTMLHRElement|HTMLFrameSetElement|HTMLFrameElement|HTMLFormElement|HTMLFontElement|HTMLFieldSetElement|HTMLEmbedElement|HTMLDivElement|HTMLDirectoryElement|HTMLDetailsElement|HTMLDListElement|HTMLContentElement|HTMLCanvasElement|HTMLButtonElement|HTMLBodyElement|HTMLBaseFontElement|HTMLBaseElement|HTMLBRElement|HTMLAreaElement|HTMLAppletElement|HTMLAnchorElement|HTMLElement'].join('|');
+  var v6/*class(_DocumentFragmentImpl)*/ = 'DocumentFragment|ShadowRoot|ShadowRoot';
+  var v7/*class(_DocumentImpl)*/ = 'HTMLDocument|SVGDocument|SVGDocument';
+  var v8/*class(_CharacterDataImpl)*/ = 'CharacterData|Text|CDATASection|CDATASection|Comment|Text|CDATASection|CDATASection|Comment';
+  var v9/*class(_WorkerContextImpl)*/ = 'WorkerContext|SharedWorkerContext|DedicatedWorkerContext|SharedWorkerContext|DedicatedWorkerContext';
+  var v10/*class(_NodeImpl)*/ = [v5/*class(_ElementImpl)*/,v6/*class(_DocumentFragmentImpl)*/,v7/*class(_DocumentImpl)*/,v8/*class(_CharacterDataImpl)*/,v5/*class(_ElementImpl)*/,v6/*class(_DocumentFragmentImpl)*/,v7/*class(_DocumentImpl)*/,v8/*class(_CharacterDataImpl)*/,'Node|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr|ProcessingInstruction|Notation|EntityReference|Entity|DocumentType|Attr'].join('|');
+  var v11/*class(_MediaStreamImpl)*/ = 'MediaStream|LocalMediaStream|LocalMediaStream';
+  var v12/*class(_IDBRequestImpl)*/ = 'IDBRequest|IDBOpenDBRequest|IDBVersionChangeRequest|IDBOpenDBRequest|IDBVersionChangeRequest';
+  var v13/*class(_AbstractWorkerImpl)*/ = 'AbstractWorker|Worker|SharedWorker|Worker|SharedWorker';
   var table = [
     // [dynamic-dispatch-tag, tags of classes implementing dynamic-dispatch-tag]
-    ['SVGTextPositioningElement', v0/*class(_SVGTextPositioningElementImpl)*/],
-    ['AbstractWorker', v12/*class(_AbstractWorkerImpl)*/],
+    ['SVGTextPositioningElement', v1/*class(_SVGTextPositioningElementImpl)*/],
+    ['AbstractWorker', v13/*class(_AbstractWorkerImpl)*/],
+    ['MouseEvent', v0/*class(_MouseEventImpl)*/],
+    ['UIEvent', v4/*class(_UIEventImpl)*/],
     ['Uint8Array', 'Uint8Array|Uint8ClampedArray|Uint8ClampedArray'],
     ['AudioParam', 'AudioParam|AudioGain|AudioGain'],
-    ['WorkerContext', v8/*class(_WorkerContextImpl)*/],
+    ['WorkerContext', v9/*class(_WorkerContextImpl)*/],
     ['CSSValueList', 'CSSValueList|WebKitCSSFilterValue|WebKitCSSTransformValue|WebKitCSSFilterValue|WebKitCSSTransformValue'],
     ['CanvasRenderingContext', 'CanvasRenderingContext|WebGLRenderingContext|CanvasRenderingContext2D|WebGLRenderingContext|CanvasRenderingContext2D'],
-    ['CharacterData', v7/*class(_CharacterDataImpl)*/],
+    ['CharacterData', v8/*class(_CharacterDataImpl)*/],
     ['DOMTokenList', 'DOMTokenList|DOMSettableTokenList|DOMSettableTokenList'],
-    ['HTMLDocument', v6/*class(_DocumentImpl)*/],
-    ['DocumentFragment', v5/*class(_DocumentFragmentImpl)*/],
-    ['SVGElement', v1/*class(_SVGElementImpl)*/],
-    ['HTMLMediaElement', v2/*class(_MediaElementImpl)*/],
-    ['Element', v4/*class(_ElementImpl)*/],
+    ['HTMLDocument', v7/*class(_DocumentImpl)*/],
+    ['DocumentFragment', v6/*class(_DocumentFragmentImpl)*/],
+    ['SVGElement', v2/*class(_SVGElementImpl)*/],
+    ['HTMLMediaElement', v3/*class(_MediaElementImpl)*/],
+    ['Element', v5/*class(_ElementImpl)*/],
     ['Entry', 'Entry|FileEntry|DirectoryEntry|FileEntry|DirectoryEntry'],
     ['EntrySync', 'EntrySync|FileEntrySync|DirectoryEntrySync|FileEntrySync|DirectoryEntrySync'],
-    ['MouseEvent', v3/*class(_MouseEventImpl)*/],
-    ['Event', [v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,v3/*class(_MouseEventImpl)*/,'Event|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent|WebGLContextEvent|UIEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|TouchEvent|TextEvent|SVGZoomEvent|KeyboardEvent|CompositionEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent'].join('|')],
-    ['Node', v9/*class(_NodeImpl)*/],
-    ['MediaStream', v10/*class(_MediaStreamImpl)*/],
-    ['IDBRequest', v11/*class(_IDBRequestImpl)*/],
-    ['EventTarget', [v8/*class(_WorkerContextImpl)*/,v9/*class(_NodeImpl)*/,v10/*class(_MediaStreamImpl)*/,v11/*class(_IDBRequestImpl)*/,v12/*class(_AbstractWorkerImpl)*/,v8/*class(_WorkerContextImpl)*/,v9/*class(_NodeImpl)*/,v10/*class(_MediaStreamImpl)*/,v11/*class(_IDBRequestImpl)*/,v12/*class(_AbstractWorkerImpl)*/,'EventTarget|XMLHttpRequestUpload|XMLHttpRequest|DOMWindow|WebSocket|TextTrackList|TextTrackCue|TextTrack|SpeechRecognition|Performance|PeerConnection00|Notification|MessagePort|MediaStreamTrackList|MediaController|IDBTransaction|IDBDatabase|FileWriter|FileReader|EventSource|DeprecatedPeerConnection|DOMApplicationCache|BatteryManager|AudioContext|XMLHttpRequestUpload|XMLHttpRequest|DOMWindow|WebSocket|TextTrackList|TextTrackCue|TextTrack|SpeechRecognition|Performance|PeerConnection00|Notification|MessagePort|MediaStreamTrackList|MediaController|IDBTransaction|IDBDatabase|FileWriter|FileReader|EventSource|DeprecatedPeerConnection|DOMApplicationCache|BatteryManager|AudioContext'].join('|')],
+    ['Event', [v4/*class(_UIEventImpl)*/,v4/*class(_UIEventImpl)*/,'Event|WebGLContextEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent|WebGLContextEvent|WebKitTransitionEvent|TrackEvent|StorageEvent|SpeechRecognitionEvent|SpeechRecognitionError|SpeechInputEvent|ProgressEvent|XMLHttpRequestProgressEvent|XMLHttpRequestProgressEvent|PopStateEvent|PageTransitionEvent|OverflowEvent|OfflineAudioCompletionEvent|MutationEvent|MessageEvent|MediaStreamTrackEvent|MediaStreamEvent|MediaKeyEvent|IDBVersionChangeEvent|HashChangeEvent|ErrorEvent|DeviceOrientationEvent|DeviceMotionEvent|CustomEvent|CloseEvent|BeforeLoadEvent|AudioProcessingEvent|WebKitAnimationEvent'].join('|')],
+    ['Node', v10/*class(_NodeImpl)*/],
+    ['MediaStream', v11/*class(_MediaStreamImpl)*/],
+    ['IDBRequest', v12/*class(_IDBRequestImpl)*/],
+    ['EventTarget', [v9/*class(_WorkerContextImpl)*/,v10/*class(_NodeImpl)*/,v11/*class(_MediaStreamImpl)*/,v12/*class(_IDBRequestImpl)*/,v13/*class(_AbstractWorkerImpl)*/,v9/*class(_WorkerContextImpl)*/,v10/*class(_NodeImpl)*/,v11/*class(_MediaStreamImpl)*/,v12/*class(_IDBRequestImpl)*/,v13/*class(_AbstractWorkerImpl)*/,'EventTarget|XMLHttpRequestUpload|XMLHttpRequest|DOMWindow|WebSocket|TextTrackList|TextTrackCue|TextTrack|SpeechRecognition|SourceBufferList|Performance|PeerConnection00|Notification|MessagePort|MediaStreamTrackList|MediaStreamTrack|MediaController|IDBTransaction|IDBDatabase|FileWriter|FileReader|EventSource|DOMApplicationCache|BatteryManager|AudioContext|XMLHttpRequestUpload|XMLHttpRequest|DOMWindow|WebSocket|TextTrackList|TextTrackCue|TextTrack|SpeechRecognition|SourceBufferList|Performance|PeerConnection00|Notification|MessagePort|MediaStreamTrackList|MediaStreamTrack|MediaController|IDBTransaction|IDBDatabase|FileWriter|FileReader|EventSource|DOMApplicationCache|BatteryManager|AudioContext'].join('|')],
     ['HTMLCollection', 'HTMLCollection|HTMLOptionsCollection|HTMLOptionsCollection'],
     ['IDBCursor', 'IDBCursor|IDBCursorWithValue|IDBCursorWithValue'],
     ['NodeList', 'NodeList|RadioNodeList|RadioNodeList']];
