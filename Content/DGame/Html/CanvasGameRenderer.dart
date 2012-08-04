@@ -8,14 +8,8 @@ class CanvasGameRenderer implements GameRenderer {
   
   CanvasGameRenderer(String this.targetId) {
     CanvasElement canvas = query('#$targetId');
-    CanvasRenderingContext2D ctx = canvas.getContext('2d');
-    
-    Future<ElementRect> futureRect = ctx.canvas.rect;
-    futureRect.then((ElementRect r) {
-      rect = new Rectangle(r.bounding.top, r.bounding.left, r.bounding.right, r.bounding.bottom);
-    });
-    Futures.wait([futureRect]);
-    
+    ctx = canvas.getContext('2d');
+    rect = new Rectangle(0, 0, ctx.canvas.width, ctx.canvas.height);
     defaultRenderer = new DefaultCanvasRenderer(this);
   }
   

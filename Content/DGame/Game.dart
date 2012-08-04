@@ -17,7 +17,7 @@ class Game {
   List<GameEntity> entities;
   GameTimer timer;
   num clockTick;
-  Rectangle _rect;
+  Rectangle rect;
   bool debugMode = false;
   String bgStyle = "rgba(0, 0, 0, 0.85)";
   bool showOutlines = false;
@@ -26,7 +26,7 @@ class Game {
   GameRenderer renderer;
   GameLoop loop;
   
-  Game(Rectangle this._rect) {
+  Game(Rectangle this.rect) {
     timer = new GameTimer();
     sound = new GameSound();
     input = new GameInput();
@@ -36,13 +36,13 @@ class Game {
   }
   
   Game.withServices(GameSound this.sound, GameInput this.input, GameRenderer this.renderer, GameLoop this.loop) {
-    this.input.game = this;
-    this.renderer.game = this;
     timer = new GameTimer();
     entities = new List<GameEntity>();
+    rect = renderer.rect;
+
+    input.game = this;
+    renderer.game = this;
   }
-  
-  Rectangle get rect() => _rect != null ? _rect : renderer.rect; 
   
   void start() {
     print("starting game");
