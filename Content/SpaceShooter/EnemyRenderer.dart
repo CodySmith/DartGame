@@ -8,8 +8,8 @@ class EnemyRenderer extends DefaultCanvasEntityRenderer<Enemy> {
     gr.ctx.font = "24px Verdana";
     
     switch (e.type) {
-      case 'SpreadShot':      
-        gr.ctx.fillText("S", e.x - 8, e.y + 8);
+      case 'Normal':      
+        gr.ctx.fillText("N", e.x - 8, e.y + 8);
         break;
 
     }
