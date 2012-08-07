@@ -1,4 +1,5 @@
 #library("PongHtml");
+#import('dart:core');
 #import('dart:html');
 #import('PongGame.dart');
 #import('../DGame/Game.dart');
@@ -6,3 +7,4 @@
 
 #source("PongGameRenderer.dart");
 #source("PowerUpRenderer.dart");
+#source("PongGameClient.dart");
