@@ -1,4 +1,4 @@
-class Bullet extends GameEntity {
+class Bullet extends GameEntity<SpaceGame> {
   bool isP1;
   num dir;
   
@@ -14,7 +14,7 @@ class Bullet extends GameEntity {
     
     move();
     
-    if (x > g.halfSurfaceWidth)
+    if (x > g.rect.halfWidth)
       removeFromGame();
     
     g.entities.filter((e) => e is Enemy && collidesWith(e)).forEach((e) => removeThem(e));

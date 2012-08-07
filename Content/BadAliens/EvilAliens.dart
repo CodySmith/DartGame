@@ -1,3 +1,12 @@
+#library("EvilAliensGame");
+#import('../DGame/Game.dart');
+#source('Alien.dart');
+#source('AlienExplosion.dart');
+#source('Sentry.dart');
+#source('Bullet.dart');
+#source('BulletExplosion.dart');
+#source('Earth.dart');
+
 class EvilAliens extends Game {
   num lives = 10;
   num score = 0;
@@ -5,8 +14,9 @@ class EvilAliens extends Game {
   Sentry sentry;
   Earth earth;
   num lastAlienAddedAt;
-  
-  EvilAliens(AssetManager assetManager, CanvasRenderingContext2D ctx) : super(assetManager, ctx);
+
+  EvilAliens(Rectangle rect) : super(rect);
+  EvilAliens.withServices(GameSound sound, GameInput input, GameRenderer renderer, GameLoop loop) : super.withServices(sound, input, renderer, loop);
   
   void start() {
     sentry = new Sentry(this);
@@ -18,7 +28,7 @@ class EvilAliens extends Game {
   
   void update() {
     if (lastAlienAddedAt == null || (timer.gameTime - lastAlienAddedAt) > 1) {
-      addEntity(new Alien(this, ctx.canvas.width, Math.random() * Math.PI * 180));
+      addEntity(new Alien(this, rect.width, Math.random() * Math.PI * 180));
       lastAlienAddedAt = timer.gameTime;
     }
   
@@ -27,22 +37,5 @@ class EvilAliens extends Game {
     }
   
     super.update();
-  }
-  
-  void drawBeforeCtxRestore() {
-    drawScore();
-    drawLives();
-  }
-  
-  void drawLives() {
-    ctx.fillStyle = "red";
-    ctx.font = "bold 2em Arial";
-    ctx.fillText("Lives: $lives", -ctx.canvas.width / 2 + 50, ctx.canvas.height/2 - 80);
-  }
-  
-  void drawScore() {
-    ctx.fillStyle = "red";
-    ctx.font = "bold 2em Arial";
-    ctx.fillText("Score: $score", -ctx.canvas.width / 2 + 50, ctx.canvas.height/2 - 50);
   }
 }

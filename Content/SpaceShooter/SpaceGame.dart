@@ -1,6 +1,6 @@
-#library("spaceshooter");
-#import('dart:html', prefix:"html");
-#import('../dgame/game.dart');
+#library("SpaceShooter");
+#import('dart:html');
+#import('../DGame/Game.dart');
 #source('Ship.dart');
 #source('Enemy.dart');
 #source('PowerUp.dart');

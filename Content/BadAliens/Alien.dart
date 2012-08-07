@@ -27,12 +27,6 @@ class Alien extends GameEntity {
     }
   }
   
-  void draw(CanvasRenderingContext2D ctx) {
-    drawSpriteCentered(ctx);
-    
-    super.draw(ctx);
-  }
-  
   bool hitPlanet() {
     var distance_squared = ((x * x) + (y * y));
     var radii_squared = (radius + Earth.RADIUS) * (radius + Earth.RADIUS);

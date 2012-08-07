@@ -1,10 +1,17 @@
 #import('dart:io');
 #import('dart:isolate');
 #import('dart:json');
+#import('../Content/Pong/PongGame.dart');
+#import('../Content/DGame/Game.dart');
+
 #source('StaticFileHandler.dart');
 #source('NotFoundHandler.dart');
 
 void main() {
+  var game = new PongGame(new Rectangle(0, 0, 960, 600));
+  game.debugMode = false;
+  game.start();
+  
   Map clients = new Map<double, WebSocketConnection>();
   int ballX = 0, ballY = 0;
   

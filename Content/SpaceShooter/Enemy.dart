@@ -1,4 +1,4 @@
-class Enemy extends GameEntity {
+class Enemy extends GameEntity<SpaceGame> {
   String type;
   num creationTime = 0;
   

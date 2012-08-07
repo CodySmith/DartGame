@@ -8,7 +8,7 @@ class ComputerPaddle extends Paddle {
   // Computer skill level between 1 and 3;
   num _skillLevel;
   
-  ComputerPaddle(Game game, num x, num y, [int skillLevel = 1]) : super(game, x, y) {
+  ComputerPaddle(PongGame game, num x, num y, [int skillLevel = 1]) : super(game, x, y) {
     _skillLevel = Math.max(Math.min(skillLevel, 3), 1);
   }
   
@@ -16,23 +16,22 @@ class ComputerPaddle extends Paddle {
   
   void move()
   {
-    PongGame g = game;
-    if (g.ball == null)
+    if (game.ball == null)
       return;
     
-    if (bulletTime + .25 <= g.timer.gameTime)
+    if (bulletTime + .25 <= game.timer.gameTime)
     {
-      if (g.player2.bullet >= 1) {
-        if (y + 60 >= g.player1.y && y - 60 <= g.player1.y)
+      if (game.player2.bullet >= 1) {
+        if (y + 60 >= game.player1.y && y - 60 <= game.player1.y)
         {
-          g.newBullet(x - 10, y, false);
-          bulletTime = g.timer.gameTime;
+          game.newBullet(x - 10, y, false);
+          bulletTime = game.timer.gameTime;
         }
       }
     }
     
     // detect if the ball is coming towards us or away from us
-    bool newBallComing = (x > 0 && g.ball.momentum.xVel > 0) || (x < 0 && g.ball.momentum.xVel < 0);
+    bool newBallComing = (x > 0 && game.ball.momentum.xVel > 0) || (x < 0 && game.ball.momentum.xVel < 0);
     // if the direction changed, then set a new random target
     if (ballComing == null || newBallComing != ballComing) {
       // randomly pick if we should target the top, middle or bottom of the paddle
@@ -46,7 +45,7 @@ class ComputerPaddle extends Paddle {
     
     // either move toward the ball or toward the middle of the screen
     num targetPosition = ballComing ?
-        g.ball.y + (targetPaddleSide * ((height / 2) - 5))
+        game.ball.y + (targetPaddleSide * ((height / 2) - 5))
         : 0;
     
     // add random variation

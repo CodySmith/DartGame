@@ -1,18 +1,11 @@
 #import('dart:html');
-#import('../dgame/game.dart');
-#source('Alien.dart');
-#source('AlienExplosion.dart');
-#source('Sentry.dart');
-#source('Bullet.dart');
-#source('BulletExplosion.dart');
-#source('Earth.dart');
-#source('EvilAliens.dart');
+#import('EvilAliens.dart');
+#import('EvilAliensHtml.dart');
+#import('../DGame/Game.dart');
+#import('../DGame/Html/HtmlGame.dart');
 
 void main() {
-  CanvasElement canvas = document.query('#surface');
-  var ctx = canvas.getContext('2d');
-  
-  AssetManager assetManager = new AssetManager();
+  var assetManager = new AssetManager();
   
   assetManager.queueDownload('img/alien-explosion.png');
   assetManager.queueDownload('img/alien.png');
@@ -21,10 +14,9 @@ void main() {
   assetManager.queueDownload('img/sentry.png');
   assetManager.queueDownload('img/explosion.png');
   
-  var game = new EvilAliens(assetManager, ctx);
+  var game = new EvilAliens();
   
   assetManager.downloadAll(() {
-    game.init();
     game.start();
   });
 }

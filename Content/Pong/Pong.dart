@@ -1,23 +1,11 @@
-#import('ponggame.dart');
 #import('dart:html');
-#import('dart:isolate');
-#import('../dgame/game.dart');
+#import('./PongGame.dart');
+#import('PongHtml.dart');
+#import('../DGame/Game.dart');
+#import('../DGame/Html/HtmlGame.dart');
 
 void main() {
-  CanvasElement canvas = document.query('#surface');
-  var ctx = canvas.getContext('2d');
   num msgCount = 0;
-  
-  AssetManager assetManager = new AssetManager();
-  assetManager.queueDownload("Sounds/hit1.ogg");
-  assetManager.queueDownload("Sounds/hit2.ogg");
-  assetManager.queueDownload("Sounds/hit3.ogg");
-  assetManager.queueDownload("Sounds/sweep.ogg");
-  // for browsers that don't support ogg
-  assetManager.queueDownload("Sounds/hit1.mp3");
-  assetManager.queueDownload("Sounds/hit2.mp3");
-  assetManager.queueDownload("Sounds/hit3.mp3");
-  assetManager.queueDownload("Sounds/sweep.mp3");
 
   var ws = new WebSocket("ws://localhost:8000/ws");
   ws.on.open.add((e) {
@@ -40,15 +28,16 @@ void main() {
     print("Closed: $e");
   });
   
-  window.setInterval(() => print(msgCount), 1000);
+  //window.setInterval(() => print(msgCount), 1000);
   
-  var game = new PongGame(assetManager, ctx);
-  game.enableSound = false;
+  var sound = new HtmlGameSound();
+  var input = new HtmlGameInput();
+  var renderer = new PongGameRenderer("surface");
+  var loop  = new HtmlGameLoop();
+
+  var game = new PongGame.withServices(sound, input, renderer, loop);
+  //game.sound.enabled = false;
   game.debugMode = false;
-  
-  assetManager.downloadAll(() {
-    game.init();
-    game.start();
-  });
+  game.start();  
 }
 

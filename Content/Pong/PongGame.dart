@@ -1,6 +1,6 @@
 #library("pong");
-#import('dart:html');
-#import('../dgame/game.dart');
+#import('../DGame/Game.dart');
+#import('../DGame/Utils.dart');
 #source('Paddle.dart');
 #source('ComputerPaddle.dart');
 #source('Ball.dart');
@@ -17,15 +17,13 @@ class PongGame extends Game {
   Paddle player1;
   Paddle player2;
   Ball ball;
-   
-  PongGame(AssetManager assetManager, CanvasRenderingContext2D ctx) : super(assetManager, ctx);
+  
+  PongGame(Rectangle rect) : super(rect);
+  PongGame.withServices(GameSound sound, GameInput input, GameRenderer renderer, GameLoop loop) : super.withServices(sound, input, renderer, loop);
   
   void start() {
-
     ball = new Ball(this, 0, 0);
     addEntity(ball);
-    
-
     newGame();
     super.start();
   }
@@ -35,13 +33,6 @@ class PongGame extends Game {
     newPowerUp();
     
     super.update();
-  }
-  
-  void drawBeforeCtxRestore() {
-    drawMiddleLine();
-    //pauseUpdate();
-    drawScore();
-    super.drawBeforeCtxRestore();
   }
   
   void newPowerUp() {
@@ -57,13 +48,13 @@ class PongGame extends Game {
     if (lastPowerUp + 5 >= timer.gameTime)
       return;
     
-    PowerUp powerUp = new PowerUp(this, 0, 0);
+    var powerUp = new PowerUp(this, 0, 0);
     
     do {
-      powerUp.x = Utils.random(-halfSurfaceWidth + 100, halfSurfaceWidth - 100);
-      powerUp.y = Utils.random(-halfSurfaceHeight + 50, halfSurfaceHeight - 50);
+      powerUp.x = Utils.random(-rect.halfWidth + 100, rect.halfWidth - 100);
+      powerUp.y = Utils.random(-rect.halfHeight + 50, rect.halfHeight - 50);
       
-    } while(entities.filter((e) => e is PowerUp).some((e) => powerUp.collidesWith(e)));
+    } while (entities.filter((e) => e is PowerUp).some((e) => powerUp.collidesWith(e)));
     
     lastPowerUp = timer.gameTime;
     addEntity(powerUp);
@@ -75,58 +66,24 @@ class PongGame extends Game {
     else
       player2.bullet--;
     
-    Bullet bullet = new Bullet(this, x, y, p1);
+    var bullet = new Bullet(this, x, y, p1);
     addEntity(bullet);
   }
   
-  void pauseUpdate() {
-    if (paused == true) {
-      ctx.fillStyle = "rgba(255, 255, 255, 1.0)";
-      ctx.font = "72px Verdana";
-      ctx.fillText("PAUSED", 0, 0);
-    }
-  }
-  
   void run() {    
-    onKeyboardEvent(KeyboardEvent e) {
-      switch(e.keyCode) {
-        
-      case 27:
-        if (paused == true)
-          paused = false;
-        else
-          paused = true;
-        break;
-        
-      default:
-        print('${e.keyCode}');
-        break;
+    if (input.keyCode > 0) {
+      switch(input.keyCode) {
+        case 27:
+          if (paused == true)
+            paused = false;
+          else
+            paused = true;
+          break;
+        default:
+          print('${input.keyCode}');
+          break;
       }
     }
-    
-    document.window.on.keyDown.add(onKeyboardEvent, false);
-  }
-  
-  void drawDebugInfo() {
-    ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-    ctx.font = "16px Verdana";
-    ctx.fillText("V: ${ball.momentum.xVel.toStringAsFixed(0)}", -(halfSurfaceWidth - 20), -(halfSurfaceHeight - 30));
-    super.drawDebugInfo();
-  }
-  
-  void drawScore() {
-    ctx.fillStyle = "rgba(255, 255, 255, 1)";
-    ctx.font = "26px cinnamoncake, Verdana";
-    ctx.fillText("${player1.score}              ${player2.score}                               Rally Length: ${score}", -60, -(halfSurfaceHeight - 30));
-  }
-  
-  void drawMiddleLine() {
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-    ctx.lineWidth = 3;
-    
-    ctx.beginPath();
-    Utils.drawDashedLine(ctx, 0, -(halfSurfaceHeight), 0, halfSurfaceHeight);
-    ctx.stroke();
   }
   
   void ballHit() {
@@ -147,13 +104,13 @@ class PongGame extends Game {
       ball.momentum.yVel = Utils.random(-200, 0);
     
     if (p1Dead == true || player1 == null) {
-      player1 = new Paddle(this, -(halfSurfaceWidth - 10), 10);
+      player1 = new Paddle(this, -(rect.halfWidth - 10), 10);
       addEntity(player1);
       p1Dead = false;
     }
 
     if (p2Dead == true || player2 == null) {
-      player2 = new ComputerPaddle(this, halfSurfaceWidth - 10, 10, 3);
+      player2 = new ComputerPaddle(this, rect.halfWidth - 10, 10, 3);
       addEntity(player2);
       p2Dead = false;
     }
@@ -165,34 +122,34 @@ class PongGame extends Game {
   }
   
   void gameOver() {
-    playSound("Sounds/sweep");
+    sound.play("sweep");
     bgFade();
     newGame();
   }
   
   void subtleBgFade(){
-    bgStyle = "rgba(0, 0, 0, 0.84)";
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 25);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 50);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.81)"; }, 75);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 100);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 125);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.84)"; }, 150);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 175);
+//    bgStyle = "rgba(0, 0, 0, 0.84)";
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 25);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 50);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.81)"; }, 75);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.82)"; }, 100);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.83)"; }, 125);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.84)"; }, 150);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 175);
   }
   
   void bgFade(){
-    bgStyle = "rgba(0, 0, 0, 0.8)";
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 25);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 50);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 75);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 100);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.55)"; }, 125);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 150);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 175);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 200);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 225);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.80)"; }, 250);
-    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 275);
+//    bgStyle = "rgba(0, 0, 0, 0.8)";
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 25);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 50);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 75);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 100);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.55)"; }, 125);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.60)"; }, 150);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.65)"; }, 175);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.70)"; }, 200);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.75)"; }, 225);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.80)"; }, 250);
+//    window.setTimeout(function() { bgStyle = "rgba(0, 0, 0, 0.85)"; }, 275);
   }
 }

@@ -1,4 +1,4 @@
-class PowerUp extends GameEntity {
+class PowerUp extends GameEntity<SpaceGame> {
   String type;
   num creationTime = 0;
   
@@ -29,7 +29,7 @@ class PowerUp extends GameEntity {
           break;
       }
       
-      game.playSound("sounds/sweep", .1);
+      game.sound.play("sweep", .1);
       removeFromGame();
     }
    
