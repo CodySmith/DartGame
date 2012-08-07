@@ -126,7 +126,7 @@ class SpaceShooterGame extends Game {
   }
   
   void newGame() {
-    for (int i = 0; i < 60; i++)
+    for (int i = 0; i < 100; i++)
       startStars();
     
     score = 0;
