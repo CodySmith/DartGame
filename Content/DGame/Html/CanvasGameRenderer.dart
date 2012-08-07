@@ -10,6 +10,12 @@ class CanvasGameRenderer<G extends Game> implements GameRenderer<G> {
     CanvasElement canvas = query('#$targetId');
     ctx = canvas.getContext('2d');
     rect = new Rectangle(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.canvas.rect.then((r) {
+      rect.top = r.bounding.top;
+      rect.left = r.bounding.left;
+      rect.right = r.bounding.right;
+      rect.bottom = r.bounding.bottom;
+    });
     
     defaultRenderer = new DefaultCanvasEntityRenderer(this);
   }
