@@ -8,8 +8,7 @@ class Ship extends GameEntity<SpaceShooterGame> {
   }
   
   void update() {
-    if (game.input.mouse != null)
-    {
+    if (game.input.mouse != null) {
       x = game.input.mouse.x;
       y = game.input.mouse.y;
     }

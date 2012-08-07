@@ -1,5 +1,6 @@
 #library("PongHtml");
 #import('dart:core');
+#import('dart:json');
 #import('dart:html');
 #import('PongGame.dart');
 #import('../DGame/Game.dart');

@@ -51,7 +51,22 @@ void main() {
     };
   };
   
-  new Timer.repeating(1000, (t) => clients.forEach((k, v) => v.send('ping')));
+  new Timer.repeating(50, (t) => clients.forEach((k, v) {
+    var msgs = [
+        {
+          'n': 1,
+          'd': {
+            'bx' : game.ball.x,
+            'by' : game.ball.y,
+            'bxv' : game.ball.momentum.xVel,
+            'byv' : game.ball.momentum.yVel,
+            'bxa' : game.ball.momentum.xAccel,
+            'bya' : game.ball.momentum.yAccel
+          }
+        }
+      ];
+    v.send(JSON.stringify(msgs));
+  }));
   
   httpServer.listen('127.0.0.1', 8000);
   print('listening on: http://127.0.0.1:8000');

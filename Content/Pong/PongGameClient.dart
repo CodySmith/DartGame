@@ -2,12 +2,12 @@ class PongGameClient extends PongGame {
   WebSocket _ws;
   bool _isConnected = false;
   String _serverUrl = "ws://localhost:8000/ws";
-  List<String> _messages;
+  Queue<String> _messageQueue;
   
   PongGameClient([String serverUrl = "ws://localhost:8000/ws"]) 
     : super.withServices(new HtmlGameSound(), new HtmlGameInput(), new PongGameRenderer("surface"), new HtmlGameLoop()) {
     
-    _messages = new List<String>();
+    _messageQueue = new Queue<String>();
     _serverUrl = serverUrl;
   }
   
@@ -20,16 +20,28 @@ class PongGameClient extends PongGame {
   }
   
   void update() {
-    for (String message in _messages)
-      _print(message);
+    while (_messageQueue.length > 0) {
+      var message = _messageQueue.removeFirst();
+      var messageData = JSON.parse(message);
+      for (var item in messageData) {
+        switch (item['n']) {
+          case 1:
+            ball.x = item['d']['bx'];
+            ball.y = item['d']['by'];
+            ball.momentum.xVel = item['d']['bxv'];
+            ball.momentum.yVel = item['d']['byv'];
+            ball.momentum.xAccel = item['d']['bxa'];
+            ball.momentum.yAccel = item['d']['bya'];
+            break;
+        }
+      }
+    }
     
-    
-        
     super.update();
   }
   
   void handleMessage(MessageEvent e){
-    _messages.add(e.data);
+    _messageQueue.add(e.data);
   }
   
   void sendMessage(String message) {
@@ -75,15 +87,14 @@ class PongGameClient extends PongGame {
   }
   
   bool disconnect() {
-    if(_ws == null) {
+    if (_ws == null)
       return true;
-    }
     
     try {
-      if(_isConnected){
+      if (_isConnected){
         _ws.close(0, "Client disconnected");
         _ws = null;
-        _messages.clear();
+        _messageQueue.clear();
       }
     } catch(Exception e){
       _print(e.toString());
