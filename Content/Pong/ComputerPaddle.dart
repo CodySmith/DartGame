@@ -35,7 +35,7 @@ class ComputerPaddle extends Paddle {
     // if the direction changed, then set a new random target
     if (ballComing == null || newBallComing != ballComing) {
       // randomly pick if we should target the top, middle or bottom of the paddle
-      targetPaddleSide = Utils.random(-1, 1, true);
+      targetPaddleSide = random(-1, 1, true);
       // introduce some target hit spot variation based on skill level
       targetOffset = getTargetOffset();
       // the amount to move based on skill level
@@ -63,7 +63,7 @@ class ComputerPaddle extends Paddle {
   }
   
   num getAmountToMove() {
-    num n = Utils.random(0, 100);
+    num n = random(0, 100);
     switch (_skillLevel) {
       case 1: {
         if (n >= 40) // 60% chance for 3
@@ -100,15 +100,15 @@ class ComputerPaddle extends Paddle {
   num getTargetOffset() {
     switch (_skillLevel) {
       case 1: {
-        return Utils.random(-20, 20, true);
+        return random(-20, 20, true);
         break;
       }
       case 2: {
-        return Utils.random(-10, 10, true);
+        return random(-10, 10, true);
         break;
       }
       case 3: {
-        return Utils.random(-5, 5, true);
+        return random(-5, 5, true);
         break;
       }
     }

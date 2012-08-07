@@ -5,7 +5,7 @@
 
 #source("AssetManager.dart");
 #source("CanvasGameRenderer.dart");
-#source("DefaultCanvasRenderer.dart");
+#source("DefaultCanvasEntityRenderer.dart");
 #source("SpriteAnimation.dart");
 #source("HtmlGameInput.dart");
 #source("HtmlGameSound.dart");

@@ -1,4 +1,4 @@
-#library("pong");
+#library("Pong");
 #import('../DGame/Game.dart');
 #import('../DGame/Utils.dart');
 #source('Paddle.dart');
@@ -51,8 +51,8 @@ class PongGame extends Game {
     var powerUp = new PowerUp(this, 0, 0);
     
     do {
-      powerUp.x = Utils.random(-rect.halfWidth + 100, rect.halfWidth - 100);
-      powerUp.y = Utils.random(-rect.halfHeight + 50, rect.halfHeight - 50);
+      powerUp.x = random(-rect.halfWidth + 100, rect.halfWidth - 100);
+      powerUp.y = random(-rect.halfHeight + 50, rect.halfHeight - 50);
       
     } while (entities.filter((e) => e is PowerUp).some((e) => powerUp.collidesWith(e)));
     
@@ -99,9 +99,9 @@ class PongGame extends Game {
     entities.filter((e) => e is Bullet).forEach((e) => e.removeFromGame());
     
     if (Math.random() > .5)
-      ball.momentum.yVel = Utils.random(0, 200);
+      ball.momentum.yVel = random(0, 200);
     else
-      ball.momentum.yVel = Utils.random(-200, 0);
+      ball.momentum.yVel = random(-200, 0);
     
     if (p1Dead == true || player1 == null) {
       player1 = new Paddle(this, -(rect.halfWidth - 10), 10);

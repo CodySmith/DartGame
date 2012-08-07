@@ -56,9 +56,9 @@ class PowerUp extends GameEntity<PongGame> {
   
   void reflectorUpdate() {
     if (Math.random() > .5)
-      game.ball.momentum.yVel = Utils.random(200, 600);
+      game.ball.momentum.yVel = random(200, 600);
     else
-      game.ball.momentum.yVel = Utils.random(-200, -600);
+      game.ball.momentum.yVel = random(-200, -600);
   }
   
   void extendUpdate() {

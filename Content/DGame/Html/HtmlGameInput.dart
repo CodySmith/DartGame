@@ -30,6 +30,14 @@ class HtmlGameInput extends GameInput {
     document.window.on.keyDown.add((KeyboardEvent e) {
       keyCode = e.keyCode;
     }, false);
+
+    document.on.mouseDown.add((e) {
+      mouseDown = true;
+    });
+    
+    document.on.mouseUp.add((e) {
+      mouseDown = false;     
+    });
     
     print('Input started');
   }

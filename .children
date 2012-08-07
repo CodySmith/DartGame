@@ -1,12 +1,13 @@
 Server/app.dart
 Content/Pong/PongHtml.dart
-Content/SpaceShooter/SpaceGame.dart
 Content/DGame/Html/HtmlGame.dart
 Content/BadAliens/EvilAliensHtml.dart
 Content/SpaceShooter/SpaceShooter.dart
 Content/BadAliens/EvilAliens.dart
 Content/DGame/Utils.dart
 Content/DGame/Game.dart
+Content/SpaceShooter/SpaceShooterHtml.dart
 Content/Pong/Pong.dart
 Content/BadAliens/BadAliensDart.dart
+Content/SpaceShooter/SpaceShooterGame.dart
 Content/Pong/PongGame.dart

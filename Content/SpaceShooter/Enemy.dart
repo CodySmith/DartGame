@@ -1,46 +1,27 @@
-class Enemy extends GameEntity<SpaceGame> {
+class Enemy extends GameEntity<SpaceShooterGame> {
   String type;
   num creationTime = 0;
   
-  Enemy(Game game, num x, num y) : super.withPosition(game, x, y, 36, 36) {
-    SpaceGame g = game;
-    
+  Enemy(SpaceShooterGame game, num x, num y) : super.withPosition(game, x, y, 36, 36) {
     num rType = Math.random();
-    creationTime = g.timer.gameTime;
+    creationTime = game.timer.gameTime;
     
     if (rType < 1) {
       color = "255, 0, 255";
-      type = 'Normal';
+      type = "Normal";
     }
+    
+    momentum.xVel = -50;
   }
   
   void update() {
-    SpaceGame g = game;
-    
-    x -= 2;
-    
-    if (creationTime + 10 <= g.timer.gameTime)
+    if (creationTime + 10 <= game.timer.gameTime)
       removeFromGame();
     
-    if (collidesWith(g.player1)) {
-      g.player1.removeFromGame();
-      }
-   
+    if (collidesWith(game.ship)) {
+      game.ship.removeFromGame();
+    }
+    
     super.update();
   }
-  
-  
-  void draw(html.CanvasRenderingContext2D ctx) {
-    super.draw(ctx);
-    
-    ctx.fillStyle = "rgba(0, 0, 0, .5)";
-    ctx.font = "24px Verdana";
-    
-    switch (type) {
-      case 'SpreadShot':      
-        ctx.fillText("S", x - 8, y + 8);
-        break;
-
-    }
-  } 
 }

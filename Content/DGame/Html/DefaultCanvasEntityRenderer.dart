@@ -1,8 +1,8 @@
-class DefaultCanvasEntityRenderer implements GameEntityRenderer {
+class DefaultCanvasEntityRenderer<E extends GameEntity> implements GameEntityRenderer<E> {
   CanvasGameRenderer gr;
   DefaultCanvasEntityRenderer(CanvasGameRenderer this.gr);
   
-  void render(GameEntity e) {
+  void render(E e) {
     if (e.color != null) {
       if (e.fill) {
         gr.ctx.fillStyle = "rgba(${e.color}, ${e.opacity})";
@@ -22,7 +22,7 @@ class DefaultCanvasEntityRenderer implements GameEntityRenderer {
     }
   }
   
-  void drawSpriteCentered(GameEntity e) {
+  void drawSpriteCentered(E e) {
     num cx = e.x - e.sprite.width / 2;
     num cy = e.y - e.sprite.height / 2;
     gr.ctx.drawImage(e.sprite, cx, cy);

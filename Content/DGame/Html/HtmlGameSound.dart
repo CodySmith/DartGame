@@ -38,7 +38,7 @@ class HtmlGameSound extends GameSound {
     });
     
     if (volume != null)
-      audioCopy.volume = Utils.round(volume, 3);
+      audioCopy.volume = round(volume, 3);
     
     audioCopy.play();
     audioCopy.classes.add("sound-clone");

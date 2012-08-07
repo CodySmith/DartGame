@@ -1,28 +1,24 @@
-class PowerUp extends GameEntity<SpaceGame> {
+class PowerUp extends GameEntity<SpaceShooterGame> {
   String type;
   num creationTime = 0;
   
-  PowerUp(Game game, num x, num y) : super.withPosition(game, x, y, 36, 36) {
-    SpaceGame g = game;
-    
+  PowerUp(SpaceShooterGame game, num x, num y) : super.withPosition(game, x, y, 36, 36) {
     num rType = Math.random();
-    creationTime = g.timer.gameTime;
+    creationTime = game.timer.gameTime;
     
     if (rType < 1) {
       color = "0, 255, 255";
       type = 'SpreadShot';
     }
+    
+    momentum.xVel = -50;
   }
   
   void update() {
-    SpaceGame g = game;
-    
-    x -= 2;
-    
-    if (creationTime + 10 <= g.timer.gameTime)
+    if (creationTime + 10 <= game.timer.gameTime)
       removeFromGame();
     
-    if (collidesWith(g.player1)) {
+    if (collidesWith(game.ship)) {
       switch (type) {
         case 'SpreadShot':
           SpreadUpdate();
@@ -36,25 +32,8 @@ class PowerUp extends GameEntity<SpaceGame> {
     super.update();
   }
   
-  
-  void draw(html.CanvasRenderingContext2D ctx) {
-    super.draw(ctx);
-    
-    ctx.fillStyle = "rgba(0, 0, 0, .5)";
-    ctx.font = "24px Verdana";
-    
-    switch (type) {
-      case 'SpreadShot':      
-        ctx.fillText("S", x - 8, y + 8);
-        break;
-
-    }
-  }
-  
   void SpreadUpdate() {
-    SpaceGame g = game;
-    
-    g.player1.spreadShot = true;
+    game.ship.spreadShot = true;
   }
   
 }

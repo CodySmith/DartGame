@@ -1,4 +1,4 @@
-#library("ponghtml");
+#library("PongHtml");
 #import('dart:html');
 #import('PongGame.dart');
 #import('../DGame/Game.dart');
